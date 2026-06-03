@@ -1,0 +1,270 @@
+/* ======================================
+   PAGE
+====================================== */
+
+.topic-choice-page {
+
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+
+    background-color: #ffffff;
+
+    overflow: hidden;
+}
+
+
+/* ======================================
+   TOP
+====================================== */
+
+.topic-choice-top {
+
+    display: flex;
+    align-items: center;
+
+    width: 100%;
+    min-height: 140px;
+
+    padding: 10px 20px;
+
+    gap: 10px;
+
+    background-color: white;
+
+    box-sizing: border-box;
+}
+
+
+/* ======================================
+   EXPLANATION
+====================================== */
+
+.explanation {
+
+    width: 320px;
+    min-height: 100px;
+
+    padding: 12px;
+
+    border-radius: 20px;
+
+    background: #f7f9fc;
+
+    box-shadow:
+        0 4px 12px rgba(0,0,0,0.08);
+
+    box-sizing: border-box;
+}
+
+.explanation h1,
+.explanation h3,
+.explanation p {
+
+    margin: 0;
+    padding: 0;
+}
+
+
+/* ======================================
+   SPACE
+====================================== */
+
+.space1 {
+
+    flex: 1;
+}
+
+.space2 {
+
+    width: 20px;
+}
+
+
+/* ======================================
+   CONTAINER
+====================================== */
+
+.topic-choice-container {
+
+    flex: 1;
+
+    display: flex;
+
+    overflow: hidden;
+
+    padding: 10px;
+
+    gap: 10px;
+
+    box-sizing: border-box;
+}
+
+
+/* ======================================
+   MAIN CONTENTS
+====================================== */
+
+.mtopic-choice-main {
+
+    width: 43%;
+
+    overflow-y: auto;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 20px;
+
+    padding-right: 10px;
+}
+
+
+/* ======================================
+   STORY BLOCK
+====================================== */
+
+.thema,
+.story-block {
+
+    width: 100%;
+
+    padding: 16px;
+
+    border-radius: 20px;
+
+    background: white;
+
+    box-shadow:
+        0 4px 12px rgba(0,0,0,0.08);
+
+    box-sizing: border-box;
+}
+
+
+/* ======================================
+   LINE BLOCK
+====================================== */
+
+.Reference-image-lines,
+.line-block {
+
+    writing-mode: vertical-rl;
+
+    text-orientation: upright;
+
+    width: 100%;
+
+    min-height: 380px;
+
+    padding: 16px;
+
+    border-radius: 20px;
+
+    background: white;
+
+    box-shadow:
+        0 4px 12px rgba(0,0,0,0.08);
+
+    box-sizing: border-box;
+}
+
+
+/* ======================================
+   RIGHT MENU
+====================================== */
+
+.topic-choice-right-menu {
+
+    flex: 1;
+
+    overflow-y: auto;
+
+    display: flex;
+    flex-wrap: wrap;
+
+    align-content: flex-start;
+
+    gap: 12px;
+}
+
+
+/* ======================================
+   ARTIST BUTTON
+====================================== */
+
+.artist {
+
+    width: 120px;
+    height: 120px;
+
+    border: none;
+
+    border-radius: 20px;
+
+    overflow: hidden;
+
+    background: white;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 4px 12px rgba(0,0,0,0.08);
+
+    transition: all 0.2s ease;
+}
+
+
+/* ======================================
+   ARTIST IMAGE
+====================================== */
+
+.artist img {
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+
+/* ======================================
+   SCREEN
+====================================== */
+
+.screen {
+
+    display: none;
+}
+
+.screen.active {
+
+    display: block;
+}
+
+
+/* ======================================
+   RESPONSIVE
+====================================== */
+
+@media screen and (max-width: 1200px) {
+
+    .topic-choice-container {
+
+        flex-direction: column;
+    }
+
+    .topic-choice-left-menu,
+    .topic-choice-main,
+    .topic-choice-right-menu {
+
+        width: 100%;
+    }
+
+    .topic-choice-top {
+
+        flex-wrap: wrap;
+    }
+}

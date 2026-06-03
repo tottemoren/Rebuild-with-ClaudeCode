@@ -1,0 +1,28 @@
+
+.left-menu {
+    width: 10%;
+    padding: 5px;
+    background-color: rgb(255, 255, 255);
+    box-sizing: border-box;
+}
+
+.left-menu nav {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.left-menu button {
+    width: 100%;
+    padding: 12px 8px;
+    border: 1px solid rgb(198, 186, 186);
+    border-radius: 100px;
+    background-color: white;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.left-menu button:hover {
+    background-color: rgb(240, 240, 240);
+}

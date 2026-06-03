@@ -1,0 +1,18 @@
+# React
+node_modules/
+dist/
+
+# Spring Boot
+build/
+.gradle/
+
+# Eclipse
+.project
+.classpath
+.settings/
+
+# Mac
+.DS_Store
+
+# logs
+*.log

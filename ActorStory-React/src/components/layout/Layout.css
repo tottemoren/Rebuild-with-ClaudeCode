@@ -1,0 +1,131 @@
+
+.app-wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f5f3f3; /* 余白色 */
+  overflow: hidden;
+
+}
+
+.app-canvas {
+  aspect-ratio: 16 / 9;
+  width: min(100vw, calc(100vh * 16 / 9));
+  height: min(100vh, calc(100vw * 9 / 16));
+  background: white;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.home-page {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* =======================================
+   TOP
+======================================= */
+
+
+
+
+
+
+
+
+
+
+
+/* =======================================
+   MAIN CONTAINER
+======================================= */
+
+.container {
+    display: flex;
+    width: 100%;
+    padding-top: 10px;
+    background-color: white;
+    box-sizing: border-box;
+
+    flex: 1;
+    min-height: 0;
+}
+
+/* =======================================
+   LEFT MENU
+======================================= */
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* =======================================
+   CENTER
+======================================= */
+
+.main-contents {
+    width: 68%;
+    height: 100%;
+    padding: 5px;
+    background-color: rgb(255, 255, 255);
+    box-sizing: border-box;
+    border-left: 1px solid rgb(220, 220, 220);
+    border-right: 1px solid rgb(220, 220, 220);
+}
+
+/* =======================================
+   RIGHT MENU
+======================================= */
+
+
+
+
+
+
+
+
+
+
+
+/* =======================================
+   RESPONSIVE
+======================================= */
+
+@media screen and (max-width: 900px) {
+
+    .container {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .left-menu,
+    .main-contents,
+    .right-menu {
+        width: 100%;
+    }
+
+    .HomePagetop {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .LogomarkSpace,
+    .space0,
+    .space {
+        width: 100%;
+    }
+}
