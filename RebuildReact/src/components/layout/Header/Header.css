@@ -1,0 +1,78 @@
+
+.HomePagetop {
+    display: flex;
+    width: 100%;
+    height: 15%;
+    background-color: rgb(255, 255, 255);
+    gap: 10px;
+    align-items: center;
+    border-bottom: 0.5px solid rgb(156, 156, 156);
+}
+
+.LogomarkSpace {
+    width: 10%;
+    height: 100%;
+    background-color: rgb(255, 255, 255);
+    box-sizing: border-box;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.Logomark {
+    width: 95%;
+    height: auto;
+    
+}
+
+.header-center {
+    width: 55%;
+    background-color: rgb(255, 255, 255);
+    border: 1px solid black;
+}
+
+.header-center h1,
+.header-center h3,
+.header-center p {
+    margin: 0;
+    padding: 0;
+}
+
+.header-center-simple {
+    width: 90%;
+    height: 100%;
+}
+
+.space {
+    width: 35%;
+}
+
+.search-input {
+    width: 220px;
+    height: 42px;
+    padding: 0 14px;
+    border: none;
+    border-radius: 14px;
+    background: #f1f5f9;
+    font-size: 14px;
+    outline: none;
+    box-shadow:
+        inset 0 2px 4px rgba(0,0,0,0.04);
+}
+
+.search-button {
+    height: 42px;
+    padding: 0 16px;
+}
+
+.icon-button {
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+
+    margin-left: auto;
+}

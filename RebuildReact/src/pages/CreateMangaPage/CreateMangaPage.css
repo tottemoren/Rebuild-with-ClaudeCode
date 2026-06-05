@@ -1,0 +1,48 @@
+
+.CreateMangaPage-top {
+    display:flex;
+    width: 100%;
+    height: 100%;
+}
+
+.CreateMangaPage-thema {
+    width: 55%;
+    max-height: 95%;
+    margin: 2px;
+    h3,p{
+        margin: 0;
+        padding: 0;
+    }
+    background-color: rgb(250, 250, 250);
+	border: 3px solid black; 
+}
+
+.CreateMangaPage-character {
+    width: 45%;
+    height: 100%;
+
+}
+
+.CreateMangaPage-character img {
+    width: auto;
+    height: 90%;
+    margin: 5px;
+}
+
+/*=======================================================*/
+/*  ↓↓  中央画面  ↓↓                                 */
+/*=======================================================*/
+
+.CreateMangaPage-left {
+    height: 99.5%;
+    width: auto;
+    padding: 5px;
+    background-color: rgb(78, 78, 78);
+}
+
+
+.blankpaper{
+    height: 99.5%;
+    width: auto;
+    padding: 5px;
+}
