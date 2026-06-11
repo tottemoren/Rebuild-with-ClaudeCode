@@ -81,7 +81,9 @@ Rebuild
 * データベース連携
 * React Routerによる画面遷移
 * 共通レイアウト機能
-* GitHubによるソース管理
+* 認証機能(localstorageにユーザー情報の一時保存)
+* ProtectedRoute
+* ログアウト機能
 
 ### 開発予定
 
@@ -98,8 +100,7 @@ Rebuild
 
 * AWSへのデプロイ
 * Docker対応
-* CI/CD導入
-* ユーザー認証の強化
+* セキュリティの強化
 
 ---
 
