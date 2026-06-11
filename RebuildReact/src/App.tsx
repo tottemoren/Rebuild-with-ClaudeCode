@@ -9,6 +9,7 @@ import MemoPage from "./pages/MemoPage/MemoPage"
 import CreateMangaPage from "./pages/CreateMangaPage/CreateMangaPage"
 import StoryCreatePage from "./pages/StoryCreatePage/StoryCreatePage";
 import RegisterPage from "./pages/RegisterPage/RegisterPage";
+import ProtectedRoute from "./components/auth/ProtectedRoute";
 
 function App() {
 
@@ -17,19 +18,25 @@ function App() {
 
       <Routes>
 
-        <Route path="/" element={<LoginPage />} />
+        <Route path="/" element={ <LoginPage /> } />
 
-        <Route path="/home" element={<HomePage />} />
+        <Route path="/register" element={ <RegisterPage /> } />
 
-        <Route path="/TopicChoice" element={<TopicChoice />} />
 
-        <Route path="/MemoPage" element={<MemoPage />} />
+        <Route element={<ProtectedRoute />}>
 
-        <Route path="/CreateMangaPage" element={<CreateMangaPage />} />
+          <Route path="/home" element={<HomePage />} />
 
-        <Route path="/StoryCreatePage" element={<StoryCreatePage />} />
+          <Route path="/TopicChoice" element={<TopicChoice />} />
 
-        <Route path="/register" element={<RegisterPage />} />
+          <Route path="/MemoPage" element={<MemoPage />} />
+
+          <Route path="/CreateMangaPage" element={<CreateMangaPage />} />
+
+          <Route path="/StoryCreatePage" element={ <StoryCreatePage />} />
+
+        </Route>
+        
 
       </Routes>
 

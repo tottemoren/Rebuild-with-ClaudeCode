@@ -1,5 +1,7 @@
 import "./Header.css"
 
+import { useNavigate } from "react-router-dom";
+
 type HeaderProps = {
   centerContent?: React.ReactNode;
 };
@@ -7,6 +9,21 @@ type HeaderProps = {
 function Header({
   centerContent
 }: HeaderProps) {
+
+  const navigate = useNavigate();
+
+  const logout = () => {
+
+    localStorage.removeItem(
+      "loginUser"
+    );
+
+    alert(
+      "ログアウトしました"
+    );
+
+    navigate("/");
+  };
 
     return (
         <div className="HomePagetop">
@@ -32,6 +49,10 @@ function Header({
               />
               <button className="modern-button search-button">
                 検索
+              </button>
+
+              <button className="logout-button" onClick={logout}>
+                ログアウト
               </button>
 
               <button className="modern-button icon-button">

@@ -43,7 +43,7 @@ public class RebuildJavaController {
     
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(
+    public ResponseEntity<?> login(
             @RequestBody LoginRequest request
     ) {
 
@@ -61,7 +61,7 @@ public class RebuildJavaController {
             ) {
 
                 return ResponseEntity.ok(
-                        "success");
+                        user);
             }
         }
 

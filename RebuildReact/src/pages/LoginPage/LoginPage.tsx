@@ -31,6 +31,14 @@ function LoginPage() {
 
     if (response.ok) {
 
+      const user =
+        await response.json();
+
+      localStorage.setItem(
+        "loginUser",
+        JSON.stringify(user)
+      );
+
       navigate("/home");
 
     } else {
