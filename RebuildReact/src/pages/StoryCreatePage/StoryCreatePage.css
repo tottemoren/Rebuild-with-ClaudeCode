@@ -29,3 +29,123 @@
 
     color: #666;
 } 
+
+/*=======================================================*/
+/*  ↓↓  コンテンツ画面（左・右画面） ↓↓                 */
+/*=======================================================*/
+
+.story-container {
+
+    display: flex;
+
+    width: 100%;
+
+    height: 100%;
+
+    background-color: rgb(0, 0, 0);
+
+}
+
+/*=======================================================*/
+/*  ↓↓  左側画面 ↓↓                                     */
+/*=======================================================*/
+
+.menu1 {
+
+    width: 50%;
+
+    height: 100%;
+
+    background-color: white;
+
+}
+
+.thema {
+
+    width: 85%;
+
+    height: 55%;
+
+    margin: 10px auto 20px auto;
+
+    border: 3px solid rgb(64, 128, 128);
+
+    padding: 30px;
+
+    text-align: center;
+
+}
+
+.Reference-image-lines {
+
+    writing-mode: vertical-rl;
+
+    text-orientation: upright;
+
+    text-align: start;
+
+    width: 90%;
+
+    height: 45%;
+
+    border: 3px solid black;
+
+    padding: 10px;
+
+    margin: 0 auto 20px auto;
+
+    overflow-y: scroll;
+
+}
+
+/*=======================================================*/
+/*  ↓↓  右側画面 ↓↓                                     */
+/*=======================================================*/
+
+.menu2 {
+
+    width: 50%;
+
+    height: 760px;
+
+    padding: 5px;
+
+    background-color: white;
+
+    overflow-y: scroll;
+
+}
+
+.story-block {
+
+    width: 85%;
+
+    margin: 10px auto 20px auto;
+
+    border: 3px solid rgb(0, 128, 255);
+
+    padding: 10px;
+
+    text-align: center;
+
+}
+
+.line-block {
+
+    writing-mode: vertical-rl;
+
+    text-orientation: upright;
+
+    text-align: start;
+
+    width: 90%;
+
+    height: 380px;
+
+    border: 3px solid rgb(0, 232, 232);
+
+    padding: 10px;
+
+    margin: 0 auto 20px auto;
+
+}

@@ -8,7 +8,7 @@ type Props = {
   headerContent?: React.ReactNode;
 };
 
-function LayoutSimple({ children,headerContent }: Props) {
+function LayoutAdvertisementSimple({ children,headerContent }: Props) {
 
   return (
 
@@ -30,7 +30,7 @@ function LayoutSimple({ children,headerContent }: Props) {
 
             {/* CENTER */}
             <div
-              className="main-contents"
+              className="LayoutAdvertisementSimple-maincontents"
             >
                 {children}
 
@@ -46,4 +46,4 @@ function LayoutSimple({ children,headerContent }: Props) {
   );
 }
 
-export default LayoutSimple;
+export default LayoutAdvertisementSimple;

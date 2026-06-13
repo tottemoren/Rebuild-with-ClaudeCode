@@ -72,7 +72,7 @@ function TopicChoice() {
         {/* CENTER */}
         <div className="topic-choice-main">
 
-          <div className="thema">
+          <div className="topic-choice-thema">
 
             <h3>【プロを名乗るなら】</h3>
 
@@ -91,7 +91,7 @@ function TopicChoice() {
 
           </div>
 
-          <div className="Reference-image-lines">
+          <div className="topic-choice-Reference-image-lines">
 
             <b>アリサ</b>
 

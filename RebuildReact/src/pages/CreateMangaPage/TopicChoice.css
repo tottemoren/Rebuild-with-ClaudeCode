@@ -107,7 +107,7 @@
    MAIN CONTENTS
 ====================================== */
 
-.mtopic-choice-main {
+.topic-choice-main {
 
     width: 43%;
 
@@ -126,8 +126,8 @@
    STORY BLOCK
 ====================================== */
 
-.thema,
-.story-block {
+.topic-choice-thema,
+.topic-choice-story-block {
 
     width: 100%;
 
@@ -148,8 +148,8 @@
    LINE BLOCK
 ====================================== */
 
-.Reference-image-lines,
-.line-block {
+.topic-choice-Reference-image-lines,
+.topic-choice-line-block {
 
     writing-mode: vertical-rl;
 

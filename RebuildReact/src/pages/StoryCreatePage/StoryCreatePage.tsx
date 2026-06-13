@@ -1,7 +1,11 @@
 import "./StoryCreatePage.css";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import type { Story } from "../../types/Story";
 import LayoutAdvertisementSimple from "../../components/layout/LayoutAdvertisementSimple";
+import useLoginUser from "../../hooks/useLoginUser";
+import type { Dialogue } from "../../types/Dialogue";
+
 
 type Line = {
   talkerName: string;
@@ -18,6 +22,11 @@ function StoryCreatePage() {
   const [categorize3, setCategorize3] = useState("");
 
   const [lines, setLines] = useState<Line[]>([]);
+  const [stories, setStories] = useState<Story[]>([]);
+  const [dialogues, setDialogues] = useState<Dialogue[]>([]);
+  const [selectedStoryId, setSelectedStoryId] = useState<number | null>(null);
+
+  const loginUser = useLoginUser();
 
   const addLine = () => {
 
@@ -28,6 +37,147 @@ function StoryCreatePage() {
         linky: "",
       },
     ]);
+  };
+
+
+  useEffect(() => {
+
+    fetchStories();
+
+  }, []);
+
+  const fetchStories = async () => {
+
+    const response =
+      await fetch(
+        "http://localhost:8080/stories"
+      );
+
+    const data =
+      await response.json();
+
+    setStories(data);
+
+  };
+
+  const fetchDialogues = async (storyId: number) => {
+
+    const response =
+      await fetch(
+        "http://localhost:8080/dialogues?storyId="
+        + storyId
+      );
+
+    const data =
+      await response.json();
+
+    setDialogues(data);
+
+  };
+
+  const handleStoryClick =
+    async (storyId: number) => {
+
+      if (
+        selectedStoryId === storyId
+      ) {
+
+        setSelectedStoryId(null);
+
+        return;
+
+      }
+
+      await fetchDialogues(storyId);
+
+      setSelectedStoryId(storyId);
+
+  };
+
+  const createStory = async () => {
+
+    const genre =
+      categorize1 +
+      " " +
+      categorize2 +
+      " " +
+      categorize3;
+
+    const response =
+      await fetch(
+        "http://localhost:8080/stories",
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type":
+              "application/json"
+          },
+
+          body: JSON.stringify({
+
+            title: title,
+
+            summary: synopsis,
+
+            genre: genre,
+
+            userId:
+              loginUser.id
+
+          })
+
+        }
+      );
+
+    if (response.ok) {
+
+      const savedStory =
+        await response.json();
+
+      for (let index = 0; index < lines.length; index++) {
+
+        const line = lines[index];
+
+        await fetch(
+          "http://localhost:8080/dialogues",
+          {
+
+            method: "POST",
+
+            headers: {
+              "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+
+              storyId: savedStory.id,
+
+              orderNo: index + 1,
+
+              talkerName: line.talkerName,
+
+              line: line.linky
+
+            })
+          }
+        );
+      }
+
+      await fetchStories();
+
+      alert(
+        "ストーリーを登録しました"
+      );
+
+    } else {
+
+      alert(
+        "登録に失敗しました"
+      );
+
+    }
+
   };
 
   const removeLine = (index: number) => {
@@ -215,7 +365,7 @@ function StoryCreatePage() {
                 行を追加
               </button>
 
-              <button type="button">
+              <button type="button" onClick={createStory}>
                 登録
               </button>
 
@@ -231,10 +381,64 @@ function StoryCreatePage() {
               作成済みストーリー
             </h2>
 
-            <p>
-              ここにAPIから取得した
-              ストーリー一覧を表示予定
-            </p>
+            {stories.map((story) => (
+
+              <div
+                key={story.id}
+                className="story-block"
+              >
+
+                <h3>
+                  {story.title}
+                </h3>
+
+                <p>
+                  {story.summary}
+                </p>
+
+                <p>
+                  {story.genre}
+                </p>
+
+                <button onClick={() => handleStoryClick(story.id)} >
+                  {
+                    selectedStoryId === story.id
+                      ? "閉じる"
+                      : "詳細を見る"
+                  }
+                </button>
+
+                {
+                  selectedStoryId === story.id && (
+
+                    <div className="line-block">
+
+                      {dialogues.map((dialogue) => (
+
+                        <div key={dialogue.id}>
+
+                          <strong>
+                            {dialogue.talkerName}
+                          </strong>
+
+                          <p>
+                            {dialogue.line}
+                          </p>
+
+                        </div>
+
+                      ))}
+
+                    </div>
+
+                  )
+                }
+
+              </div>
+
+            ))}
+
+
 
           </div>
 
