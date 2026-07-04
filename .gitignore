@@ -16,3 +16,7 @@ build/
 
 # logs
 *.log
+
+# draw.io backup files
+*.bkp
+.$*
