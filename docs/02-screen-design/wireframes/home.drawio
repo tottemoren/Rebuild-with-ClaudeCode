@@ -1,0 +1,43 @@
+<mxfile host="Electron">
+  <diagram name="ページ-1" id="hUSBeUB5QYbWnDHsD5Lf">
+    <mxGraphModel dx="2031" dy="767" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="T5DngAg2uOV8ZLSPyiYn-1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="" vertex="1">
+          <mxGeometry height="550" width="960" x="-66" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="T5DngAg2uOV8ZLSPyiYn-3" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="" vertex="1">
+          <mxGeometry height="90" width="930" x="-51" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="T5DngAg2uOV8ZLSPyiYn-2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="LOGO" vertex="1">
+          <mxGeometry height="40" width="120" x="-40" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="T5DngAg2uOV8ZLSPyiYn-4" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="" vertex="1">
+          <mxGeometry height="430" width="120" x="-51" y="220" as="geometry" />
+        </mxCell>
+        <mxCell id="T5DngAg2uOV8ZLSPyiYn-5" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="ホーム" vertex="1">
+          <mxGeometry height="30" width="100" x="-40" y="230" as="geometry" />
+        </mxCell>
+        <mxCell id="T5DngAg2uOV8ZLSPyiYn-6" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="メモ" vertex="1">
+          <mxGeometry height="30" width="100" x="-40" y="270" as="geometry" />
+        </mxCell>
+        <mxCell id="T5DngAg2uOV8ZLSPyiYn-7" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="ストーリー創作" vertex="1">
+          <mxGeometry height="30" width="100" x="-40" y="310" as="geometry" />
+        </mxCell>
+        <mxCell id="T5DngAg2uOV8ZLSPyiYn-8" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="漫画創作" vertex="1">
+          <mxGeometry height="30" width="100" x="-40" y="350" as="geometry" />
+        </mxCell>
+        <mxCell id="T5DngAg2uOV8ZLSPyiYn-12" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="" vertex="1">
+          <mxGeometry height="20" width="70" x="-40" y="180" as="geometry" />
+        </mxCell>
+        <mxCell id="T5DngAg2uOV8ZLSPyiYn-10" parent="1" style="triangle;whiteSpace=wrap;html=1;" value="" vertex="1">
+          <mxGeometry height="20" width="20" y="180" as="geometry" />
+        </mxCell>
+        <mxCell id="T5DngAg2uOV8ZLSPyiYn-11" parent="1" style="triangle;whiteSpace=wrap;html=1;flipH=1;legacyAnchorPoints=0;" value="" vertex="1">
+          <mxGeometry height="20" width="20" x="-30" y="180" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
