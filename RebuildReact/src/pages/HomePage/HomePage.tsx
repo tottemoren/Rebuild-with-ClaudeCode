@@ -1,13 +1,13 @@
 import "./HomePage.css";
-import Layout from "../../components/layout/Layout";
+import MainLayout from "../../components/layout/PageLayouts/MainLayout";
 
 function HomePage() {
 
   return (
 
-    <Layout>
+    <MainLayout>
       <h1></h1>
-    </Layout>
+    </MainLayout>
 
   );
 }

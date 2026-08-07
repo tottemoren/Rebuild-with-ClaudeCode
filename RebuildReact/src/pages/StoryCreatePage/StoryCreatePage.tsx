@@ -2,7 +2,7 @@ import "./StoryCreatePage.css";
 
 import { useEffect, useState } from "react";
 import type { Story } from "../../types/Story";
-import LayoutAdvertisementSimple from "../../components/layout/LayoutAdvertisementSimple";
+import LayoutAdvertisementSimple from "../../components/layout/PageLayouts/NoRightMenu/NoRightMenu";
 import useLoginUser from "../../hooks/useLoginUser";
 import type { Dialogue } from "../../types/Dialogue";
 

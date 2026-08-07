@@ -1,9 +1,12 @@
 <mxfile host="Electron">
   <diagram name="ページ-1" id="hUSBeUB5QYbWnDHsD5Lf">
-    <mxGraphModel dx="2028" dy="691" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="2260" dy="995" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
+        <mxCell id="yUNcC6QfpGa8Vp12p0gn-1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="" vertex="1">
+          <mxGeometry height="720" width="1370" x="-400" y="20" as="geometry" />
+        </mxCell>
         <mxCell id="UDOyzNRhDcCCcvm8b4m3-4" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="" vertex="1">
           <mxGeometry height="450" width="120" x="-210" y="220" as="geometry" />
         </mxCell>
@@ -92,10 +95,10 @@
           <mxGeometry height="140" width="91" x="759" y="520" as="geometry" />
         </mxCell>
         <mxCell id="UDOyzNRhDcCCcvm8b4m3-26" parent="1" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" value="&lt;font style=&quot;font-size: 10px;&quot;&gt;アイコン&lt;/font&gt;" vertex="1">
-          <mxGeometry height="30" width="30" x="820" y="130" as="geometry" />
+          <mxGeometry height="30" width="30" x="784.5" y="130" as="geometry" />
         </mxCell>
         <mxCell id="UDOyzNRhDcCCcvm8b4m3-27" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="設定" vertex="1">
-          <mxGeometry height="30" width="40" x="770" y="130" as="geometry" />
+          <mxGeometry height="30" width="40" x="730" y="130" as="geometry" />
         </mxCell>
         <mxCell id="UDOyzNRhDcCCcvm8b4m3-28" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="1" vertex="1">
           <mxGeometry height="30" width="60" x="-70" y="220" as="geometry" />
@@ -126,6 +129,27 @@
         </mxCell>
         <mxCell id="UDOyzNRhDcCCcvm8b4m3-34" parent="1" style="text;html=1;whiteSpace=wrap;overflow=hidden;rounded=0;" value="&lt;h1 style=&quot;margin-top: 0px;&quot;&gt;&lt;font style=&quot;font-size: 14px;&quot;&gt;サイドバー切り替えボタン&lt;/font&gt;&lt;/h1&gt;&lt;p&gt;ボタンを押すと左に流れて右にスライドしてくることでサイドバーが切り替わる。このページではサイドバーなしの状態でUIは存在しない.&lt;/p&gt;" vertex="1">
           <mxGeometry height="120" width="180" x="-360" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="O7fxGyCYfD92pj2PqG9h-1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="ログアウト" vertex="1">
+          <mxGeometry height="32.5" width="40" x="827" y="127.5" as="geometry" />
+        </mxCell>
+        <mxCell id="F9lYf1cW2c7EaUobqEHR-1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="&lt;font style=&quot;font-size: 10px;&quot;&gt;フォルダ&lt;/font&gt;" vertex="1">
+          <mxGeometry height="55" width="60" x="450" y="135" as="geometry" />
+        </mxCell>
+        <mxCell id="F9lYf1cW2c7EaUobqEHR-3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="&lt;font style=&quot;font-size: 10px;&quot;&gt;フォルダ&lt;/font&gt;" vertex="1">
+          <mxGeometry height="55" width="60" x="520" y="135" as="geometry" />
+        </mxCell>
+        <mxCell id="F9lYf1cW2c7EaUobqEHR-4" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="&lt;font style=&quot;font-size: 10px;&quot;&gt;フォルダ&lt;/font&gt;" vertex="1">
+          <mxGeometry height="55" width="60" x="590" y="135" as="geometry" />
+        </mxCell>
+        <mxCell id="thLd_CZ3ppvFjjWVJm-m-1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#E8E8E8;rotation=-90;" value="" vertex="1">
+          <mxGeometry height="240" width="5" x="570" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="thLd_CZ3ppvFjjWVJm-m-2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#636363;rotation=-90;" value="" vertex="1">
+          <mxGeometry height="47.5" width="5" x="540" y="176.25" as="geometry" />
+        </mxCell>
+        <mxCell id="thLd_CZ3ppvFjjWVJm-m-3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="&lt;font style=&quot;font-size: 10px;&quot;&gt;フォ&lt;/font&gt;" vertex="1">
+          <mxGeometry height="55" width="30" x="660" y="135" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

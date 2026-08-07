@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import './MemoPage.css'
 import MemoItem from '../../components/MemoItem'
-import Layout from "../../components/layout/Layout";
+import MainLayout from "../../components/layout/PageLayouts/MainLayout";
 
 
 function Memo() {
@@ -87,7 +87,7 @@ function Memo() {
 
   return (
 
-    <Layout>
+    <MainLayout>
 
 
       <div className="app">
@@ -128,7 +128,7 @@ function Memo() {
 
       </div>
 
-    </Layout>
+    </MainLayout>
 
   )
 }

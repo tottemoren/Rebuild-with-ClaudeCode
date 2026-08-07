@@ -19,7 +19,7 @@ function LeftMenu() {
                   }
                 >
                   Home <br />
-                  - ホーム🏠 -
+                  - ホーム -
                 </button>
 
                 <button
@@ -30,9 +30,6 @@ function LeftMenu() {
                   memo <br />
                   - メモ -
                 </button>
-
-                <button><br /><br /></button>
-
 
                 <button
                   onClick={() =>

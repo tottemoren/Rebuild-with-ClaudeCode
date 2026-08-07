@@ -1,0 +1,46 @@
+<mxfile host="Electron">
+  <diagram name="ページ-1" id="hUSBeUB5QYbWnDHsD5Lf">
+    <mxGraphModel dx="2176" dy="760" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="XfrF6AXwW5X4sgB6TT_l-1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="" vertex="1">
+          <mxGeometry height="700" width="1140" x="-160" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="T5DngAg2uOV8ZLSPyiYn-1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="" vertex="1">
+          <mxGeometry height="580" width="960" x="-70" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="XfrF6AXwW5X4sgB6TT_l-8" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="" vertex="1">
+          <mxGeometry height="400" width="280" x="280" y="210" as="geometry" />
+        </mxCell>
+        <mxCell id="0-oNtf_rjjJkaBe-nBs0-1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=left;" value="ユーザー名" vertex="1">
+          <mxGeometry height="30" width="210" x="315" y="330" as="geometry" />
+        </mxCell>
+        <mxCell id="0-oNtf_rjjJkaBe-nBs0-2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=left;" value="パスワード" vertex="1">
+          <mxGeometry height="30" width="210" x="315" y="375" as="geometry" />
+        </mxCell>
+        <mxCell id="0-oNtf_rjjJkaBe-nBs0-3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#99CCFF;" value="登録" vertex="1">
+          <mxGeometry height="30" width="230" x="305" y="470" as="geometry" />
+        </mxCell>
+        <mxCell id="0-oNtf_rjjJkaBe-nBs0-4" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;entryX=0.607;entryY=0.824;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.107;exitY=0.824;exitDx=0;exitDy=0;exitPerimeter=0;fontSize=21;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="304.96000000000004" y="520" as="sourcePoint" />
+            <mxPoint x="535" y="520" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="0-oNtf_rjjJkaBe-nBs0-5" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontSize=14;" value="新規登録" vertex="1">
+          <mxGeometry height="30" width="190" x="325" y="290" as="geometry" />
+        </mxCell>
+        <mxCell id="0-oNtf_rjjJkaBe-nBs0-6" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="ログイン画面へ戻る" vertex="1">
+          <mxGeometry height="40" width="120" x="360" y="540" as="geometry" />
+        </mxCell>
+        <mxCell id="0-oNtf_rjjJkaBe-nBs0-7" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;fontSize=45;fontStyle=1" value="Rebuild" vertex="1">
+          <mxGeometry height="50" width="152" x="344" y="240" as="geometry" />
+        </mxCell>
+        <mxCell id="rZZI94aOpGuiZ9-_X115-1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=left;" value="招待コード" vertex="1">
+          <mxGeometry height="30" width="210" x="315" y="420" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

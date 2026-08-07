@@ -1,14 +1,14 @@
-import "./Layout.css";
+import "../MainLayout.css";
 
-import Header from "./Header/Header";
-import LeftMenu from "./LeftMenu/LeftMenu";
-import Advertisement from "./Advertisement/Advertisement";
+import LeftMenu from "../../LeftMenu/LeftMenu";
+import HeaderSimple from "../../Header/SimpleHeader";
 
 type Props = {
   children: React.ReactNode;
+  headerContent?: React.ReactNode;
 };
 
-function Layout({ children }: Props) {
+function LayoutHeaderSimple({ children,headerContent }: Props) {
 
   return (
 
@@ -18,7 +18,9 @@ function Layout({ children }: Props) {
         <div className="home-page">
 
           {/* TOP */}
-          <Header/>
+          <HeaderSimple
+            centerContent={headerContent}
+          />
 
           {/* MAIN */}
           <div className="container">
@@ -27,15 +29,9 @@ function Layout({ children }: Props) {
             <LeftMenu/>
 
             {/* CENTER */}
-            <div
-              className="main-contents"
-            >
+            <div className="main-contents">
                 {children}
-
             </div>
-
-            {/* RIGHT */}
-            <Advertisement/>
 
           </div>
 
@@ -47,4 +43,4 @@ function Layout({ children }: Props) {
   );
 }
 
-export default Layout;
+export default LayoutHeaderSimple;

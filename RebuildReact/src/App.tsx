@@ -27,17 +27,17 @@ function App() {
 
           <Route path="/home" element={<HomePage />} />
 
-          <Route path="/TopicChoice" element={<TopicChoice />} />
-
           <Route path="/MemoPage" element={<MemoPage />} />
-
-          <Route path="/CreateMangaPage" element={<CreateMangaPage />} />
 
           <Route path="/StoryCreatePage" element={ <StoryCreatePage />} />
 
+          <Route path="/TopicChoice" element={<TopicChoice />} />
+
+          <Route path="/CreateMangaPage" element={<CreateMangaPage />} />
+
         </Route>
         
-
+        
       </Routes>
 
     </BrowserRouter>

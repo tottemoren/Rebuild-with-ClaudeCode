@@ -1,6 +1,6 @@
 import "./CreateMangaPage.css";
 
-import LayoutHeaderSimple from "../../components/layout/LayoutHeaderSimple";
+import LayoutHeaderSimple from "../../components/layout/PageLayouts/NoRightMenu/NoRightAndSimpleHeader";
 
 
 export default function CreateMangaPage() {
