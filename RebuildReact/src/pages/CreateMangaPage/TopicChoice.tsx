@@ -1,47 +1,35 @@
 import "./TopicChoice.css";
 
 import { useNavigate } from "react-router-dom";
-// import { useState } from "react";
+
+import LayoutHeaderSimple from "../../components/layout/PageLayouts/NoRightMenu/NoRightAndSimpleHeader";
 
 function TopicChoice() {
 
   const navigate = useNavigate();
 
-  // const [] = useState(false);
-
   return (
 
-    <div className="topic-choice-page">
+    <LayoutHeaderSimple
 
-      {/* TOP */}
-      <div className="topic-choice-top">
+      headerContent={
 
-        <div className="LogomarkSpace">
-          <img
-            className="Logomark"
-            src="/images/settingimages/ActarStoryRogo1.png"
-            alt="logo"
-          />
-        </div>
+        <div className="TopicChoice-top">
 
-        <div className="explanation">
-          <h2>TopicChoice & CharacterChoice</h2>
-        </div>
+          <div className="explanation">
+            <h2>TopicChoice & CharacterChoice</h2>
+          </div>
 
-        <div className="space1"></div>
+          <div className="space1"></div>
 
+          <button className="set">
+            - artist -
+          </button>
 
-        <button className="set">
-          - artist -
-        </button>
-
-
-
-        <div className="space2"></div>
-
-        <div className="RankMatchScreenMove">
+          <div className="space2"></div>
 
           <button
+            className="TopicChoice-next"
             onClick={() =>
               navigate("/CreateMangaPage")
             }
@@ -51,23 +39,10 @@ function TopicChoice() {
           </button>
 
         </div>
+      }
+    >
 
-      </div>
-
-      {/* MAIN */}
-      <div className="topic-choice-container">
-
-        {/* LEFT */}
-        <div className="left-menu">
-
-          <button
-            onClick={() => navigate("/home")}
-          >
-            UserHome <br />
-            - ユーザーホーム -
-          </button>
-
-        </div>
+      <div className="TopicChoice-body">
 
         {/* CENTER */}
         <div className="topic-choice-main">
@@ -111,7 +86,7 @@ function TopicChoice() {
 
           </div>
 
-          <div className="thema">
+          <div className="topic-choice-thema">
 
             <h3>【特別な映画】</h3>
 
@@ -129,7 +104,7 @@ function TopicChoice() {
 
           </div>
 
-          <div className="thema">
+          <div className="topic-choice-thema">
 
             <h3>【3人で海に！】</h3>
 
@@ -165,7 +140,7 @@ function TopicChoice() {
           <button className="artist">
 
             <img
-              src="/images/ArtistImages/0_AkutamiGege.jpg"
+              src="/images/ArtistName_UsazakiShiro/ArtistImages/0_AkutamiGege.jpg"
               alt="artist"
             />
 
@@ -174,7 +149,7 @@ function TopicChoice() {
           <button className="artist">
 
             <img
-              src="/images/ArtistImages/0_YamagutiTubasa.jpg"
+              src="/images/ArtistName_UsazakiShiro/ArtistImages/0_YamagutiTubasa.jpg"
               alt="artist"
             />
 
@@ -184,7 +159,7 @@ function TopicChoice() {
 
       </div>
 
-    </div>
+    </LayoutHeaderSimple>
   );
 }
 

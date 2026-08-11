@@ -1,6 +1,6 @@
 import "../MainLayout.css";
 
-import Header from "../../Header/Header";
+import HeaderSimple from "../../Header/SimpleHeader";
 import LeftMenu from "../../LeftMenu/LeftMenu";
 
 type Props = {
@@ -18,7 +18,7 @@ function LayoutAdvertisementSimple({ children,headerContent }: Props) {
         <div className="home-page">
 
           {/* TOP */}
-          <Header
+          <HeaderSimple
             centerContent={headerContent}
           />
 

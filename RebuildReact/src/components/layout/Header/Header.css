@@ -23,13 +23,17 @@
 .Logomark {
     width: 95%;
     height: auto;
-    
+
 }
 
 .header-center {
     width: 55%;
+    height: 100%;
     background-color: rgb(255, 255, 255);
-    border: 1px solid black;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .header-center h1,
@@ -46,14 +50,24 @@
 
 .space {
     width: 35%;
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+
+    padding-right: 12px;
+    box-sizing: border-box;
 }
 
 .search-input {
-    width: 220px;
+    width: 100%;
+    max-width: 420px;
     height: 42px;
     padding: 0 14px;
     border: none;
-    border-radius: 14px;
+    border-radius: 14px 0 0 14px;
     background: #f1f5f9;
     font-size: 14px;
     outline: none;
@@ -64,15 +78,68 @@
 .search-button {
     height: 42px;
     padding: 0 16px;
+    border: none;
+    border-radius: 0 14px 14px 0;
+    background: #e2e8f0;
+    cursor: pointer;
 }
+
+.search-button:hover {
+    background: #cbd5e1;
+}
+
+/* ======================================
+   右側：設定・アイコン・ログアウト
+====================================== */
 
 .icon-button {
     width: 42px;
     height: 42px;
+    flex-shrink: 0;
+
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 18px;
 
-    margin-left: auto;
+    border: none;
+    border-radius: 50%;
+    background: #f1f5f9;
+    cursor: pointer;
+
+    transition: background 0.2s ease;
+}
+
+.icon-button:hover {
+    background: #e2e8f0;
+}
+
+.profile-button {
+    padding: 0;
+    overflow: hidden;
+}
+
+.profile-avatar {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.logout-button {
+    height: 42px;
+    flex-shrink: 0;
+    padding: 0 18px;
+
+    border: none;
+    border-radius: 100px;
+    background: #f1f5f9;
+    font-size: 14px;
+    cursor: pointer;
+
+    transition: background 0.2s ease;
+}
+
+.logout-button:hover {
+    background: #e2e8f0;
 }

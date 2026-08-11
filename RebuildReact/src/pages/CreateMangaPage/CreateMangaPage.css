@@ -29,20 +29,143 @@
     margin: 5px;
 }
 
+.CreateMangaPage-character button {
+    border: 3px solid transparent;
+    background: none;
+    padding: 0;
+    cursor: pointer;
+    border-radius: 8px;
+}
+
+.CreateMangaPage-character button.active {
+    border-color: #4d90fe;
+}
+
 /*=======================================================*/
-/*  ↓↓  中央画面  ↓↓                                 */
+/*  ↓↓  全体（中央キャンバス + 右メニュー）  ↓↓        */
+/*=======================================================*/
+
+.CreateMangaPage-body {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    gap: 8px;
+    min-height: 0;
+}
+
+.CreateMangaPage-canvas-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    overflow: auto;
+    flex: 1;
+    min-width: 0;
+}
+
+/*=======================================================*/
+/*  ↓↓  中央画面（固定枠キャンバス）  ↓↓                */
 /*=======================================================*/
 
 .CreateMangaPage-left {
-    height: 99.5%;
-    width: auto;
-    padding: 5px;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
     background-color: rgb(78, 78, 78);
 }
 
 
 .blankpaper{
-    height: 99.5%;
-    width: auto;
-    padding: 5px;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+    user-select: none;
+}
+
+.placed-koma {
+    position: absolute;
+    cursor: grab;
+    touch-action: none;
+    user-select: none;
+    object-fit: contain;
+}
+
+.placed-koma.selected {
+    outline: 3px solid #4d90fe;
+    outline-offset: 2px;
+}
+
+.delete-koma-button {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: none;
+    background: #e53935;
+    color: white;
+    font-size: 14px;
+    line-height: 24px;
+    text-align: center;
+    padding: 0;
+    cursor: pointer;
+    z-index: 9999;
+}
+
+/*=======================================================*/
+/*  ↓↓  ツールバー  ↓↓                                 */
+/*=======================================================*/
+
+.CreateMangaPage-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.CreateMangaPage-toolbar button {
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: 1px solid rgb(198, 186, 186);
+    background: white;
+    cursor: pointer;
+}
+
+.CreateMangaPage-toolbar button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.status-message {
+    font-size: 13px;
+    color: #444;
+}
+
+/*=======================================================*/
+/*  ↓↓  右メニュー（コマ素材）  ↓↓                     */
+/*=======================================================*/
+
+.CreateMangaPage-right {
+    width: 180px;
+    flex-shrink: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    gap: 8px;
+    padding: 8px;
+    overflow-y: auto;
+    background-color: rgb(245, 245, 245);
+    box-sizing: border-box;
+}
+
+.CreateMangaPage-right img {
+    width: 70px;
+    height: 70px;
+    object-fit: contain;
+    cursor: grab;
+    background: white;
+    border: 1px solid rgb(220, 220, 220);
+    border-radius: 6px;
 }

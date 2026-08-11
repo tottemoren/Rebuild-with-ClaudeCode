@@ -11,6 +11,9 @@ build/
 .classpath
 .settings/
 
+# Eclipse local server settings
+Servers/
+
 # Mac
 .DS_Store
 
@@ -20,3 +23,13 @@ build/
 # draw.io backup files
 *.bkp
 .$*
+/.metadata/
+
+# Docker
+mysql_data/
+
+# Uploaded files
+RebuildJava/uploads/
+
+# Environment variables
+.env

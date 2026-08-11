@@ -1,5 +1,7 @@
 package com.example.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -18,11 +20,17 @@ public class User {
     @Column(nullable = false, unique = true)
     private String username;
 
+    // ハッシュ化したパスワードを保存する列。フロントエンドへは絶対に返さない。
+    @JsonIgnore
     @Column(nullable = false)
     private String password;
 
     @Column(nullable = false)
     private String role;
+
+    // プロフィール画像のURL（例: /uploads/profile-images/xxxx.png）。未設定の場合は null。
+    @Column(name = "profile_image_url")
+    private String profileImageUrl;
 
     public User() {
     }
@@ -57,5 +65,13 @@ public class User {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getProfileImageUrl() {
+        return profileImageUrl;
+    }
+
+    public void setProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
     }
 }

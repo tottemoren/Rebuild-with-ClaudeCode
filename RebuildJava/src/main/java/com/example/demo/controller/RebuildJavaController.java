@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,16 +32,19 @@ public class RebuildJavaController {
     
 	private final MemoRepository memoRepository;
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public RebuildJavaController(
             MemoRepository memoRepository,
-            UserRepository userRepository
+            UserRepository userRepository,
+            PasswordEncoder passwordEncoder
     ) {
 
         this.memoRepository = memoRepository;
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
-    
+
 
     @PostMapping("/login")
     public ResponseEntity<?> login(
@@ -55,9 +59,11 @@ public class RebuildJavaController {
 
             User user = userOptional.get();
 
+            // ハッシュ化されたパスワードと、入力された生パスワードを照合する
             if (
-                user.getPassword().equals(
-                        request.getPassword())
+                passwordEncoder.matches(
+                        request.getPassword(),
+                        user.getPassword())
             ) {
 
                 return ResponseEntity.ok(
@@ -67,7 +73,7 @@ public class RebuildJavaController {
 
         return ResponseEntity.status(401)
                 .body("fail");
-    }    
+    }
       
 
 	@GetMapping("/api/memos")

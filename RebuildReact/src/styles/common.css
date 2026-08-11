@@ -63,3 +63,18 @@ body,
     box-shadow:
         0 8px 20px rgba(0,0,0,0.12);
 }
+
+/* ======================================
+   検索：完全一致した要素のハイライト
+   （mainContents内の要素に付与される）
+====================================== */
+
+.search-highlight {
+
+    background-color: #fff176;
+
+    border-radius: 4px;
+
+    outline: 2px solid #fbc02d;
+    outline-offset: 1px;
+}

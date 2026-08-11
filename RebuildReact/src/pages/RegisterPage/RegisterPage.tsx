@@ -100,8 +100,6 @@ function RegisterPage() {
           登録
         </button>
 
-        <p>DBから見られても大丈夫なようにパスワードを暗号化する(後回し)</p>
-
       <button
         className="back-login-button"
         onClick={() => navigate("/")}

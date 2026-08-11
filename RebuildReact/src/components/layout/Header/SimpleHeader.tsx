@@ -14,7 +14,7 @@ function HeaderSimple({
             <div className="LogomarkSpace">
               <img
                 className="Logomark"
-                src="/images/settingimages/ActarStoryRogo1.png"
+                src="/images/settingimages/RebuildRogo1.png"
                 alt="logo"
               />
             </div>
