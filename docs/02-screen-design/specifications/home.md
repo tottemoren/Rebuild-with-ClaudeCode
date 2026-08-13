@@ -1,6 +1,6 @@
 # ホーム画面
 
-![ホーム画面](../wireframes/home.drawio.png)
+![ホーム画面](../wireframes/Home.drawio.png)
 
 ---
 
