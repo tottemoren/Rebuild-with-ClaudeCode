@@ -1,6 +1,6 @@
 # メモ管理画面
 
-![メモ管理画面](../wireframes/memo.png)
+![メモ管理画面](../wireframes/Memo.drawio.pngpng)
 
 ---
 
