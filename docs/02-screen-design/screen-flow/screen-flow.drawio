@@ -1,9 +1,12 @@
 <mxfile host="Electron">
   <diagram name="ページ-1" id="GuEDiB_Twfnsn49gfYwP">
-    <mxGraphModel dx="1244" dy="767" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1618" dy="760" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
+        <mxCell id="vm7zQJNqzSYIEdvaEnJk-1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="" vertex="1">
+          <mxGeometry height="720" width="800" x="50" y="70" as="geometry" />
+        </mxCell>
         <mxCell id="kCQp68QPIQbmdtmneTC5-2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="ユーザー登録画面" vertex="1">
           <mxGeometry height="60" width="120" x="510" y="230" as="geometry" />
         </mxCell>
@@ -100,6 +103,9 @@
             <mxPoint x="619.5" y="660" as="sourcePoint" />
             <mxPoint x="619.5" y="610" as="targetPoint" />
           </mxGeometry>
+        </mxCell>
+        <mxCell id="vm7zQJNqzSYIEdvaEnJk-2" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="ユーザーからのスタート位置" vertex="1">
+          <mxGeometry height="30" width="170" x="205" y="110" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
