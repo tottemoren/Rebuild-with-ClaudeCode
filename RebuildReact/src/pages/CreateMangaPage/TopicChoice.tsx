@@ -1,12 +1,171 @@
 import "./TopicChoice.css";
 
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import LayoutHeaderSimple from "../../components/layout/PageLayouts/NoRightMenu/NoRightAndSimpleHeader";
+import useLoginUser from "../../hooks/useLoginUser";
+import type { Folder } from "../../types/Folder";
+import type { Material } from "../../types/Material";
+import type { Story } from "../../types/Story";
+import type { Dialogue } from "../../types/Dialogue";
 
 function TopicChoice() {
 
   const navigate = useNavigate();
+  const loginUser = useLoginUser();
+
+  const [folders, setFolders] = useState<Folder[]>([]);
+  const [newFolderName, setNewFolderName] = useState("");
+
+  const [selectedFolderId, setSelectedFolderId] = useState<number | null>(null);
+  const [materials, setMaterials] = useState<Material[]>([]);
+  const [isUploading, setIsUploading] = useState(false);
+
+  const [stories, setStories] = useState<Story[]>([]);
+  const [selectedStoryId, setSelectedStoryId] = useState<number | null>(null);
+  const [hoveredStoryId, setHoveredStoryId] = useState<number | null>(null);
+  const [hoveredDialogues, setHoveredDialogues] = useState<Dialogue[]>([]);
+
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  useEffect(() => {
+    fetchFolders();
+    fetchStories();
+  }, []);
+
+  const fetchStories = () => {
+    fetch("http://localhost:8080/stories")
+      .then((response) => response.json())
+      .then((data) => setStories(data));
+  };
+
+  const handleStoryHover = (storyId: number) => {
+
+    setHoveredStoryId(storyId);
+
+    fetch(`http://localhost:8080/dialogues?storyId=${storyId}`)
+      .then((response) => response.json())
+      .then((data) => setHoveredDialogues(data));
+  };
+
+  const handleNext = () => {
+
+    if (selectedStoryId === null) {
+      return;
+    }
+
+    const params = new URLSearchParams();
+    params.set("storyId", String(selectedStoryId));
+
+    if (selectedFolderId !== null) {
+      params.set("folderId", String(selectedFolderId));
+    }
+
+    navigate(`/CreateMangaPage?${params.toString()}`);
+  };
+
+  const fetchFolders = () => {
+    fetch(`http://localhost:8080/api/folders?userId=${loginUser.id}`)
+      .then((response) => response.json())
+      .then((data) => setFolders(data));
+  };
+
+  const fetchMaterials = (folderId: number) => {
+    fetch(`http://localhost:8080/api/folders/${folderId}/materials`)
+      .then((response) => response.json())
+      .then((data) => setMaterials(data));
+  };
+
+  const createFolder = () => {
+
+    if (!newFolderName.trim()) {
+      return;
+    }
+
+    fetch("http://localhost:8080/api/folders", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: newFolderName,
+        userId: loginUser.id,
+      }),
+    })
+      .then(() => {
+        setNewFolderName("");
+        fetchFolders();
+      });
+  };
+
+  const deleteFolder = (id: number) => {
+
+    fetch(`http://localhost:8080/api/folders/${id}`, {
+      method: "DELETE",
+    }).then((response) => {
+
+      if (response.status === 409) {
+        alert("フォルダ内に素材が残っているため削除できません。先に中の素材を削除してください。");
+        return;
+      }
+
+      if (selectedFolderId === id) {
+        setSelectedFolderId(null);
+        setMaterials([]);
+      }
+
+      fetchFolders();
+    });
+  };
+
+  const selectFolder = (id: number) => {
+
+    if (selectedFolderId === id) {
+      setSelectedFolderId(null);
+      setMaterials([]);
+      return;
+    }
+
+    setSelectedFolderId(id);
+    fetchMaterials(id);
+  };
+
+  const openUploadPicker = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+
+    const file = event.target.files?.[0];
+    event.target.value = "";
+
+    if (!file || selectedFolderId === null) {
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    setIsUploading(true);
+
+    fetch(`http://localhost:8080/api/folders/${selectedFolderId}/materials`, {
+      method: "POST",
+      body: formData,
+    })
+      .then(() => fetchMaterials(selectedFolderId))
+      .finally(() => setIsUploading(false));
+  };
+
+  const deleteMaterial = (id: number) => {
+
+    fetch(`http://localhost:8080/api/materials/${id}`, {
+      method: "DELETE",
+    }).then(() => {
+
+      if (selectedFolderId !== null) {
+        fetchMaterials(selectedFolderId);
+      }
+    });
+  };
 
   return (
 
@@ -30,9 +189,8 @@ function TopicChoice() {
 
           <button
             className="TopicChoice-next"
-            onClick={() =>
-              navigate("/CreateMangaPage")
-            }
+            onClick={handleNext}
+            disabled={selectedStoryId === null}
           >
             Next <br />
             - 次へ -
@@ -47,113 +205,168 @@ function TopicChoice() {
         {/* CENTER */}
         <div className="topic-choice-main">
 
-          <div className="topic-choice-thema">
-
-            <h3>【プロを名乗るなら】</h3>
-
-            <p>
-              俳優として成長していく主人公。
-              しかしそこには立ちはだかる壁が
+          {stories.length === 0 && (
+            <p className="topic-choice-empty">
+              ストーリーがありません。先にストーリー創作画面で作成してください。
             </p>
+          )}
 
-            <p>
-              ------------------------------------------------------------
-            </p>
+          {stories.map((story) => (
 
-            <p>
-              ジャンル 「職業」「天才」「葛藤」
-            </p>
+            <div key={story.id}>
 
-          </div>
+              <div
+                className={
+                  "topic-choice-thema" +
+                  (selectedStoryId === story.id ? " selected" : "")
+                }
+                onClick={() => setSelectedStoryId(story.id)}
+                onMouseEnter={() => handleStoryHover(story.id)}
+                onMouseLeave={() => setHoveredStoryId(null)}
+              >
 
-          <div className="topic-choice-Reference-image-lines">
+                <h3>{story.title || "（無題）"}</h3>
 
-            <b>アリサ</b>
+                <p>
+                  {story.summary}
+                </p>
 
-            <p>
-              今の芝居は完璧とは言えないわね
-            </p>
+                <p>
+                  ------------------------------------------------------------
+                </p>
 
-            <p>
-              あなたにプロを名乗る資格はない
-            </p><br/>
+                <p>
+                  ジャンル {story.genre}
+                </p>
 
-            <b>夜凪景</b>
+              </div>
 
-            <p>
-              もう一度やらせてください
-            </p>
+              {hoveredStoryId === story.id && (
 
-          </div>
+                <div className="topic-choice-Reference-image-lines">
 
-          <div className="topic-choice-thema">
+                  {hoveredDialogues.length === 0 && (
+                    <p>セリフがありません</p>
+                  )}
 
-            <h3>【特別な映画】</h3>
+                  {hoveredDialogues.map((dialogue) => (
+                    <div key={dialogue.id}>
 
-            <p>
-              ひょんなことから２人で映画を見に行くことに,,,
-            </p>
+                      <b>{dialogue.talkerName}</b>
 
-            <p>
-              ------------------------------------------------------------
-            </p>
+                      <p>{dialogue.line}</p>
 
-            <p>
-              ジャンル 「恋愛」「緊張」「会話」
-            </p>
+                    </div>
+                  ))}
 
-          </div>
+                </div>
 
-          <div className="topic-choice-thema">
+              )}
 
-            <h3>【3人で海に！】</h3>
+            </div>
 
-            <p>
-              仲良しの３人が久々の海に。
-              そこで繰り広げられる会話とは！？
-            </p>
-
-            <p>
-              ------------------------------------------------------------
-            </p>
-
-            <p>
-              ジャンル 「海」「友人」「会話」
-            </p>
-
-          </div>
+          ))}
 
         </div>
 
-        {/* RIGHT */}
+        {/* RIGHT：素材フォルダ */}
         <div className="topic-choice-right-menu">
 
-          <button className="artist">
-
-            <img
-              src="/images/ArtistName_UsazakiShiro/ArtistImages/0_UsazakiShiro.jpg"
-              alt="artist"
+          <div className="folder-new-row">
+            <input
+              type="text"
+              className="folder-new-input"
+              placeholder="新規フォルダ名"
+              value={newFolderName}
+              onChange={(e) => setNewFolderName(e.target.value)}
             />
+            <button
+              type="button"
+              className="folder-new-button"
+              onClick={createFolder}
+            >
+              追加
+            </button>
+          </div>
 
-          </button>
+          <div className="folder-list">
+            {folders.map((folder) => (
+              <div
+                key={folder.id}
+                className={
+                  "folder-card" +
+                  (selectedFolderId === folder.id ? " selected" : "")
+                }
+              >
+                <button
+                  type="button"
+                  className="folder-card-name"
+                  onClick={() => selectFolder(folder.id)}
+                >
+                  📁 {folder.name}
+                </button>
 
-          <button className="artist">
+                <button
+                  type="button"
+                  className="folder-card-delete"
+                  onClick={() => deleteFolder(folder.id)}
+                >
+                  削除
+                </button>
+              </div>
+            ))}
+          </div>
 
-            <img
-              src="/images/ArtistName_UsazakiShiro/ArtistImages/0_AkutamiGege.jpg"
-              alt="artist"
-            />
+          {selectedFolderId !== null && (
 
-          </button>
+            <div className="material-panel">
 
-          <button className="artist">
+              <div className="material-panel-header">
+                <span>素材一覧</span>
 
-            <img
-              src="/images/ArtistName_UsazakiShiro/ArtistImages/0_YamagutiTubasa.jpg"
-              alt="artist"
-            />
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  style={{ display: "none" }}
+                  onChange={handleUpload}
+                />
 
-          </button>
+                <button
+                  type="button"
+                  className="material-upload-button"
+                  onClick={openUploadPicker}
+                  disabled={isUploading}
+                >
+                  {isUploading ? "アップロード中..." : "＋ 追加"}
+                </button>
+              </div>
+
+              <div className="material-grid">
+                {materials.length === 0 && (
+                  <div className="material-empty">素材がありません</div>
+                )}
+
+                {materials.map((material) => (
+                  <div key={material.id} className="material-thumb">
+                    <img
+                      src={`http://localhost:8080${material.url}`}
+                      alt={material.fileName}
+                    />
+                    <button
+                      type="button"
+                      className="material-thumb-delete"
+                      onClick={() => deleteMaterial(material.id)}
+                    >
+                      ×
+                    </button>
+                  </div>
+                ))}
+              </div>
+
+            </div>
+
+          )}
 
         </div>
 

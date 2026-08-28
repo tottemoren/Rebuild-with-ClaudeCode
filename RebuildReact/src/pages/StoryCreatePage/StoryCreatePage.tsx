@@ -5,12 +5,15 @@ import type { Story } from "../../types/Story";
 import LayoutAdvertisementSimple from "../../components/layout/PageLayouts/NoRightMenu/NoRightMenu";
 import useLoginUser from "../../hooks/useLoginUser";
 import type { Dialogue } from "../../types/Dialogue";
+import type { Memo } from "../../types/Memo";
 
 
 type Line = {
   talkerName: string;
   linky: string;
 };
+
+type ReferenceView = "memo" | "story";
 
 function StoryCreatePage() {
 
@@ -23,8 +26,12 @@ function StoryCreatePage() {
 
   const [lines, setLines] = useState<Line[]>([]);
   const [stories, setStories] = useState<Story[]>([]);
+  const [memos, setMemos] = useState<Memo[]>([]);
   const [dialogues, setDialogues] = useState<Dialogue[]>([]);
   const [selectedStoryId, setSelectedStoryId] = useState<number | null>(null);
+
+  // 参照エリア：自分のメモ／自分の過去のストーリーを切り替えて参考にする
+  const [referenceView, setReferenceView] = useState<ReferenceView>("story");
 
   const loginUser = useLoginUser();
 
@@ -43,6 +50,7 @@ function StoryCreatePage() {
   useEffect(() => {
 
     fetchStories();
+    fetchMemos();
 
   }, []);
 
@@ -57,6 +65,20 @@ function StoryCreatePage() {
       await response.json();
 
     setStories(data);
+
+  };
+
+  const fetchMemos = async () => {
+
+    const response =
+      await fetch(
+        "http://localhost:8080/api/memos"
+      );
+
+    const data =
+      await response.json();
+
+    setMemos(data);
 
   };
 
@@ -199,7 +221,7 @@ function StoryCreatePage() {
           </h3>
 
           <p>
-            左側がストーリー作成画面、右側が既存ストーリー閲覧画面
+            左側がストーリー作成画面、右側が参照エリア（メモ／自分の過去のストーリー）
           </p>
 
         </div>
@@ -373,72 +395,125 @@ function StoryCreatePage() {
 
           </div>
 
-          {/* 右側 */}
+          {/* 右側：参照エリア */}
 
           <div className="menu2">
 
-            <h2>
-              作成済みストーリー
-            </h2>
-
-            {stories.map((story) => (
-
-              <div
-                key={story.id}
-                className="story-block"
+            <div className="menu2-toggle">
+              <button
+                className={
+                  "menu2-toggle-button" +
+                  (referenceView === "memo" ? " active" : "")
+                }
+                onClick={() => setReferenceView("memo")}
               >
+                メモ
+              </button>
 
-                <h3>
-                  {story.title}
-                </h3>
+              <button
+                className={
+                  "menu2-toggle-button" +
+                  (referenceView === "story" ? " active" : "")
+                }
+                onClick={() => setReferenceView("story")}
+              >
+                過去のストーリー
+              </button>
+            </div>
 
-                <p>
-                  {story.summary}
-                </p>
+            {referenceView === "story" && (
 
-                <p>
-                  {story.genre}
-                </p>
+              <>
+                <h2>
+                  作成済みストーリー
+                </h2>
 
-                <button onClick={() => handleStoryClick(story.id)} >
-                  {
-                    selectedStoryId === story.id
-                      ? "閉じる"
-                      : "詳細を見る"
-                  }
-                </button>
+                {stories.map((story) => (
 
-                {
-                  selectedStoryId === story.id && (
+                  <div
+                    key={story.id}
+                    className="story-block"
+                  >
 
-                    <div className="line-block">
+                    <h3>
+                      {story.title}
+                    </h3>
 
-                      {dialogues.map((dialogue) => (
+                    <p>
+                      {story.summary}
+                    </p>
 
-                        <div key={dialogue.id}>
+                    <p>
+                      {story.genre}
+                    </p>
 
-                          <strong>
-                            {dialogue.talkerName}
-                          </strong>
+                    <button onClick={() => handleStoryClick(story.id)} >
+                      {
+                        selectedStoryId === story.id
+                          ? "閉じる"
+                          : "詳細を見る"
+                      }
+                    </button>
 
-                          <p>
-                            {dialogue.line}
-                          </p>
+                    {
+                      selectedStoryId === story.id && (
+
+                        <div className="line-block">
+
+                          {dialogues.map((dialogue) => (
+
+                            <div key={dialogue.id}>
+
+                              <strong>
+                                {dialogue.talkerName}
+                              </strong>
+
+                              <p>
+                                {dialogue.line}
+                              </p>
+
+                            </div>
+
+                          ))}
 
                         </div>
 
-                      ))}
+                      )
+                    }
 
-                    </div>
+                  </div>
 
-                  )
-                }
+                ))}
+              </>
+            )}
 
-              </div>
+            {referenceView === "memo" && (
 
-            ))}
+              <>
+                <h2>
+                  自分のメモ
+                </h2>
 
+                {memos.map((memo) => (
 
+                  <div
+                    key={memo.id}
+                    className="memo-block"
+                  >
+
+                    <h3>
+                      {memo.title || "（無題）"}
+                    </h3>
+
+                    <p>
+                      {memo.content}
+                    </p>
+
+                  </div>
+
+                ))}
+              </>
+            )}
 
           </div>
 

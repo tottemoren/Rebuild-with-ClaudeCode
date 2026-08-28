@@ -1,5 +1,4 @@
 import "./LeftMenu.css"
-
 import { useNavigate } from "react-router-dom";
 
 
@@ -9,49 +8,33 @@ function LeftMenu() {
 
     return (
 
-        <div className="left-menu">
+      <div className="left-menu">
 
-              <nav>
+        <nav>
 
-                <button
-                  onClick={() =>
-                    navigate("/home")
-                  }
-                >
-                  Home <br />
-                  - ホーム -
-                </button>
+          <button onClick={() => navigate("/home")} >
+            Home <br />
+            - ホーム -
+          </button>
 
-                <button
-                  onClick={() =>
-                    navigate("/MemoPage")
-                  }
-                >
-                  memo <br />
-                  - メモ -
-                </button>
+          <button onClick={() => navigate("/MemoPage") } >
+            memo <br />
+            - メモ -
+          </button>
 
-                <button
-                  onClick={() =>
-                    navigate("/TopicChoice")
-                  }
-                >
-                  CreateManga <br />
-                  - マンガ創作 -
-                </button>
+          <button onClick={() => navigate("/StoryCreatePage") } >
+            StoryCreate <br />
+            - ストーリー創作 -
+          </button>
 
-                <button
-                  onClick={() =>
-                    navigate("/StoryCreatePage")
-                  }
-                >
-                  StoryCreate <br />
-                  - ストーリー創作 -
-                </button>
+          <button onClick={() => navigate("/TopicChoice")} >
+            CreateManga <br />
+            - マンガ創作 -
+          </button>
 
-              </nav>
+        </nav>
 
-            </div>
+      </div>
 
     );
 }

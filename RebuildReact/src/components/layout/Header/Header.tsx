@@ -118,6 +118,7 @@ function Header() {
                 className="Logomark"
                 src="/images/settingimages/RebuildRogo1.png"
                 alt="logo"
+                onClick={() => window.location.reload()}
               />
             </div>
 

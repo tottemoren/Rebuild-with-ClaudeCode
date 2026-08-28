@@ -23,7 +23,12 @@
 .Logomark {
     width: 95%;
     height: auto;
+    cursor: pointer;
+    transition: opacity 0.15s ease;
+}
 
+.Logomark:hover {
+    opacity: 0.8;
 }
 
 .header-center {

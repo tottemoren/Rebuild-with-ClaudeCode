@@ -1,45 +1,56 @@
 import { useEffect, useState } from 'react'
 import './MemoPage.css'
 import MemoItem from '../../components/MemoItem'
-import MainLayout from "../../components/layout/PageLayouts/MainLayout";
+import MainLayout from "../../components/layout/PageLayouts/MainLayout"
+import type { Memo, WritingDirection } from '../../types/Memo'
 
+function MemoPage() {
 
-function Memo() {
-  const [text, setText] = useState('')
-  // const [memos, setMemos] = useState<string[]>([])
+  const [title, setTitle] = useState('')
+  const [horizontalContent, setHorizontalContent] = useState('')
+  const [verticalContent, setVerticalContent] = useState('')
+
   const [memos, setMemos] = useState<Memo[]>([])
-  const [editingId, setEditingId] = useState<number | null>(null)
 
-  type Memo = {
-    id: number
-    text: string
-  }
+  const [editingId, setEditingId] = useState<number | null>(null)
+  const [editingDirection, setEditingDirection] =
+    useState<WritingDirection | null>(null)
 
   useEffect(() => {
+    fetchMemos()
+  }, [])
+
+  const fetchMemos = () => {
     fetch('http://localhost:8080/api/memos')
       .then((response) => response.json())
       .then((data) => setMemos(data))
-  }, [])
+  }
 
-  // useEffect(() => {
-  //   const savedMemos = localStorage.getItem('memos')
+  const resetForm = () => {
+    setTitle('')
+    setHorizontalContent('')
+    setVerticalContent('')
+    setEditingId(null)
+    setEditingDirection(null)
+  }
 
-  //   if (savedMemos) {
-  //     setMemos(JSON.parse(savedMemos))
-  //   }
-  // }, [])　　localstorageに保存する機能
+  const saveMemo = (direction: WritingDirection) => {
 
-  const addMemo = () => {
+    const content =
+      direction === 'horizontal' ? horizontalContent : verticalContent
 
-    const url = 
-      editingId === null
-        ? 'http://localhost:8080/api/memos'
-        : `http://localhost:8080/api/memos/${editingId}`
+    if (!title.trim() || !content.trim()) {
+      return
+    }
 
-    const method = 
-      editingId === null
-        ? 'post'
-        : 'put'
+    const isUpdating =
+      editingId !== null && editingDirection === direction
+
+    const url = isUpdating
+      ? `http://localhost:8080/api/memos/${editingId}`
+      : 'http://localhost:8080/api/memos'
+
+    const method = isUpdating ? 'put' : 'post'
 
     fetch(url, {
       method: method,
@@ -47,81 +58,111 @@ function Memo() {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        text: text
+        title: title,
+        content: content,
+        writingDirection: direction,
       })
     })
-      .then(() =>
-        fetch('http://localhost:8080/api/memos')
-      )
-      .then((response) => response.json())
-      .then((data) => {
-        setMemos(data)
-        setText('')
-        setEditingId(null)
-      })
+      .then(() => fetchMemos())
+      .then(() => resetForm())
   }
 
   const startEdit = (memo: Memo) => {
-    setText(memo.text)
+    setTitle(memo.title)
+
+    if (memo.writingDirection === 'vertical') {
+      setVerticalContent(memo.content)
+      setHorizontalContent('')
+    } else {
+      setHorizontalContent(memo.content)
+      setVerticalContent('')
+    }
+
     setEditingId(memo.id)
+    setEditingDirection(memo.writingDirection)
   }
 
-  // const deleteMemo = (index: number) => {
-  //   const newMemos = memos.filter((_, i) => i !== index)
-  //   setMemos(newMemos)
-  // }
   const deleteMemo = (id: number) => {
     fetch(`http://localhost:8080/api/memos/${id}`, {
       method: 'DELETE',
     })
-      .then(() =>
-        fetch('http://localhost:8080/api/memos')
-      )
-      .then((response) => response.json())
-      .then((data) => setMemos(data))
+      .then(() => fetchMemos())
+      .then(() => {
+        if (editingId === id) {
+          resetForm()
+        }
+      })
   }
-
-  // useEffect(() => {
-  //   localStorage.setItem('memos', JSON.stringify(memos))
-  // }, [memos])　　localstorageに保存する機能
 
   return (
 
     <MainLayout>
 
+      <div className="memo-page">
 
-      <div className="app">
-        <h1>メモアプリ</h1>
+        <h1 className="memo-page-heading">メモ</h1>
 
-        <div className="input-area">
+        <div className="memo-page-title-row">
           <input
+            className="memo-page-title-input"
             type="text"
-            value={text}
-            onChange={(e) => setText(e.target.value)}
+            placeholder="タイトル"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
           />
-          <button onClick={addMemo}>追加</button>
         </div>
 
-        <ul>
-          {/* {memos.map((memo, index) => ( 
-            <li key={index}>
-              {memo.text}
-              <button onClick={() => startEdit(memo)}>
-                編集
-              </button>
+        <div className="memo-page-composer-row">
 
-              <button onClick={() => deleteMemo(index)}>  
-              <button onClick={() => deleteMemo(memo.id)}>
-                削除
-              </button>
-            </li>  */}
+          <div className="memo-page-composer">
+            <div className="memo-page-composer-heading">横書きメモ</div>
+
+            <textarea
+              className="memo-page-textarea memo-page-textarea-horizontal"
+              placeholder="横書きで入力"
+              value={horizontalContent}
+              onChange={(e) => setHorizontalContent(e.target.value)}
+            />
+
+            <button
+              className="memo-page-save-button"
+              onClick={() => saveMemo('horizontal')}
+            >
+              {editingId !== null && editingDirection === 'horizontal'
+                ? '更新'
+                : '保存'}
+            </button>
+          </div>
+
+          <div className="memo-page-composer">
+            <div className="memo-page-composer-heading">縦書きメモ</div>
+
+            <textarea
+              className="memo-page-textarea memo-page-textarea-vertical"
+              placeholder="縦書きで入力"
+              value={verticalContent}
+              onChange={(e) => setVerticalContent(e.target.value)}
+            />
+
+            <button
+              className="memo-page-save-button"
+              onClick={() => saveMemo('vertical')}
+            >
+              {editingId !== null && editingDirection === 'vertical'
+                ? '更新'
+                : '保存'}
+            </button>
+          </div>
+
+        </div>
+
+        <ul className="memo-page-list">
           {memos.map((memo) => (
             <MemoItem
-            key={memo.id}
-            id={memo.id}
-            text={memo.text}
-            onDelete={deleteMemo}
-            onEdit={startEdit}
+              key={memo.id}
+              memo={memo}
+              onDelete={deleteMemo}
+              onEdit={startEdit}
             />
           ))}
         </ul>
@@ -133,4 +174,4 @@ function Memo() {
   )
 }
 
-export default Memo
+export default MemoPage

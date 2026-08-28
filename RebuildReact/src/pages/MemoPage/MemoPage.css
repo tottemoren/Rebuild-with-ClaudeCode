@@ -1,0 +1,196 @@
+.memo-page {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 12px;
+    gap: 12px;
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+
+.memo-page-heading {
+    font-size: 20px;
+    font-weight: bold;
+    color: #222;
+}
+
+.memo-page-title-row {
+    display: flex;
+}
+
+.memo-page-title-input {
+    flex: 1;
+    padding: 8px 10px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+.memo-page-title-input:focus {
+    outline: none;
+    border-color: #94a3b8;
+}
+
+/* =======================================
+   COMPOSER
+======================================= */
+
+.memo-page-composer-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.memo-page-composer {
+    flex: 1;
+    min-width: 200px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px;
+    background: #fafafa;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    box-sizing: border-box;
+}
+
+.memo-page-composer-heading {
+    font-size: 13px;
+    font-weight: bold;
+    color: #555;
+}
+
+.memo-page-textarea {
+    width: 100%;
+    resize: vertical;
+    padding: 8px;
+    font-size: 14px;
+    font-family: inherit;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+.memo-page-textarea:focus {
+    outline: none;
+    border-color: #94a3b8;
+}
+
+.memo-page-textarea-horizontal {
+    height: 100px;
+}
+
+.memo-page-textarea-vertical {
+    height: 160px;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+}
+
+.memo-page-save-button {
+    align-self: flex-end;
+    border: none;
+    border-radius: 18px;
+    padding: 6px 18px;
+    background: linear-gradient(135deg, #ffffff, #f1f5f9);
+    color: #222;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: all 0.2s ease;
+}
+
+.memo-page-save-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+/* =======================================
+   LIST
+======================================= */
+
+.memo-page-list {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 10px;
+    padding: 0;
+    margin: 0;
+}
+
+.memo-item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 10px;
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.memo-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 6px;
+}
+
+.memo-item-title {
+    font-weight: bold;
+    font-size: 14px;
+    color: #222;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.memo-item-direction {
+    font-size: 11px;
+    color: #888;
+    flex-shrink: 0;
+}
+
+.memo-item-body {
+    font-size: 13px;
+    color: #444;
+    white-space: pre-wrap;
+    max-height: 120px;
+    overflow-y: auto;
+}
+
+.memo-item-body-vertical {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    height: 140px;
+    max-height: none;
+    margin: 0 auto;
+}
+
+.memo-buttons {
+    display: flex;
+    gap: 6px;
+    justify-content: flex-end;
+}
+
+.memo-buttons button {
+    border: none;
+    border-radius: 14px;
+    padding: 4px 12px;
+    background: #f1f5f9;
+    color: #333;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.memo-buttons button:hover {
+    background: #e2e8f0;
+}
+
+@media screen and (max-width: 700px) {
+    .memo-page-composer-row {
+        flex-direction: column;
+    }
+}

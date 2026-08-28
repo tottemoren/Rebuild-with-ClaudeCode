@@ -3,7 +3,7 @@
 // どのキャラクターを表示するか（selectedCharacter）と
 // ドラッグ開始時の処理（onDragStart）は親（CreateMangaPage）から受け取る。
 
-export type CharacterKey = "yonagi" | "arisa" | "nagisa";
+export type CharacterKey = "hiiragi" | "amano" | "kisaragi";
 
 type RightMenuKomaProps = {
   selectedCharacter: CharacterKey;
@@ -14,24 +14,33 @@ type RightMenuKomaProps = {
 };
 
 const characterImages: Record<CharacterKey, string[]> = {
-  yonagi: [
-    "/images/ArtistName_UsazakiShiro/CharacterAndKomaImages/YonagiKei_1/1.png",
-    "/images/ArtistName_UsazakiShiro/CharacterAndKomaImages/YonagiKei_1/2.png",
-    "/images/ArtistName_UsazakiShiro/CharacterAndKomaImages/YonagiKei_1/3.png",
-    "/images/ArtistName_UsazakiShiro/CharacterAndKomaImages/YonagiKei_1/4.png",
+  hiiragi: [
+    "/images/ArtistName_TsukishiroKaede/CharacterAndKomaImages/HiiragiRen_1/1.png",
+    "/images/ArtistName_TsukishiroKaede/CharacterAndKomaImages/HiiragiRen_1/2.png",
+    "/images/ArtistName_TsukishiroKaede/CharacterAndKomaImages/HiiragiRen_1/3.png",
+    "/images/ArtistName_TsukishiroKaede/CharacterAndKomaImages/HiiragiRen_1/4.png",
   ],
 
-  arisa: [
-    "/images/ArtistName_UsazakiShiro/CharacterAndKomaImages/HosiArisa_1/1.png",
-    "/images/ArtistName_UsazakiShiro/CharacterAndKomaImages/HosiArisa_1/2.png",
-    "/images/ArtistName_UsazakiShiro/CharacterAndKomaImages/HosiArisa_1/3.png",
-    "/images/ArtistName_UsazakiShiro/CharacterAndKomaImages/HosiArisa_1/4.png",
-    "/images/ArtistName_UsazakiShiro/CharacterAndKomaImages/HosiArisa_1/5.png",
+  amano: [
+    "/images/ArtistName_TsukishiroKaede/CharacterAndKomaImages/AmanoYui_1/1.png",
+    "/images/ArtistName_TsukishiroKaede/CharacterAndKomaImages/AmanoYui_1/2.png",
+    "/images/ArtistName_TsukishiroKaede/CharacterAndKomaImages/AmanoYui_1/3.png",
+    "/images/ArtistName_TsukishiroKaede/CharacterAndKomaImages/AmanoYui_1/4.png",
+    "/images/ArtistName_TsukishiroKaede/CharacterAndKomaImages/AmanoYui_1/5.png",
   ],
 
-  nagisa: [
-    "/images/ArtistName_UsazakiShiro/CharacterAndKomaImages/SatukiNagisa_1/0_SatsukiNagisa.png",
-    "/images/ArtistName_UsazakiShiro/CharacterAndKomaImages/SatukiNagisa_1/1.png",
+  kisaragi: [
+    "/images/ArtistName_TsukishiroKaede/CharacterAndKomaImages/KisaragiMioko_1/1.png",
+    "/images/ArtistName_TsukishiroKaede/CharacterAndKomaImages/KisaragiMioko_1/2.png",
+    "/images/ArtistName_TsukishiroKaede/CharacterAndKomaImages/KisaragiMioko_1/3.png",
+    "/images/ArtistName_TsukishiroKaede/CharacterAndKomaImages/KisaragiMioko_1/4.png",
+    "/images/ArtistName_TsukishiroKaede/CharacterAndKomaImages/KisaragiMioko_1/5.png",
+    "/images/ArtistName_TsukishiroKaede/CharacterAndKomaImages/KisaragiMioko_1/6.png",
+    "/images/ArtistName_TsukishiroKaede/CharacterAndKomaImages/KisaragiMioko_1/7.png",
+    "/images/ArtistName_TsukishiroKaede/CharacterAndKomaImages/KisaragiMioko_1/8.png",
+    "/images/ArtistName_TsukishiroKaede/CharacterAndKomaImages/KisaragiMioko_1/9.png",
+    "/images/ArtistName_TsukishiroKaede/CharacterAndKomaImages/KisaragiMioko_1/10.png",
+    "/images/ArtistName_TsukishiroKaede/CharacterAndKomaImages/KisaragiMioko_1/11.png",
   ],
 };
 

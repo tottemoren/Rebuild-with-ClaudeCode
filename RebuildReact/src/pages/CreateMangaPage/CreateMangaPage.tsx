@@ -20,23 +20,23 @@ const CANVAS_HEIGHT = 900;
 const BLANK_PAPER_SRC = "/images/settingimages/blankpaper.png";
 
 const CHARACTER_THUMBNAILS: Record<CharacterKey, { src: string; alt: string }> = {
-  yonagi: {
-    src: "/images/ArtistName_UsazakiShiro/CharacterAndKomaImages/YonagiKei_1/0_YonagiKei.png",
-    alt: "Yonagi",
+  hiiragi: {
+    src: "/images/ArtistName_TsukishiroKaede/CharacterAndKomaImages/HiiragiRen_1/0_HiiragiRen.png",
+    alt: "Hiiragi",
   },
-  arisa: {
-    src: "/images/ArtistName_UsazakiShiro/CharacterAndKomaImages/HosiArisa_1/0_HosiArisa.png",
-    alt: "Arisa",
+  amano: {
+    src: "/images/ArtistName_TsukishiroKaede/CharacterAndKomaImages/AmanoYui_1/0_AmanoYui.png",
+    alt: "Amano",
   },
-  nagisa: {
-    src: "/images/ArtistName_UsazakiShiro/CharacterAndKomaImages/SatukiNagisa_1/0_SatsukiNagisa.png",
-    alt: "Nagisa",
+  kisaragi: {
+    src: "/images/ArtistName_TsukishiroKaede/CharacterAndKomaImages/KisaragiMioko_1/0_KisaragiMioko.png",
+    alt: "Kisaragi",
   },
 };
 
 export default function CreateMangaPage() {
   const [selectedCharacter, setSelectedCharacter] =
-    useState<CharacterKey>("yonagi");
+    useState<CharacterKey>("hiiragi");
 
   const [isSaving, setIsSaving] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
