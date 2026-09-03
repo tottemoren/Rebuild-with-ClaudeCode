@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "rebuild-react-dev",
+      "runtimeExecutable": "bash",
+      "runtimeArgs": ["-c", "cd RebuildReact && npm run dev -- --host"],
+      "port": 5173
+    }
+  ]
+}

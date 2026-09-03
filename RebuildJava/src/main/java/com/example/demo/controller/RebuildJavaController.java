@@ -97,9 +97,11 @@ public class RebuildJavaController {
 			@PathVariable Long id,
 			@RequestBody Memo memo) {
 		Memo updateMemo = memoRepository.findById(id).orElseThrow();
-		
-		updateMemo.setText(memo.getText());
-		
+
+		updateMemo.setTitle(memo.getTitle());
+		updateMemo.setContent(memo.getContent());
+		updateMemo.setWritingDirection(memo.getWritingDirection());
+
 		memoRepository.save(updateMemo);
 	}
 	

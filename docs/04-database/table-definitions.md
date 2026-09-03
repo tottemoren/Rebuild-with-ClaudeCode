@@ -58,10 +58,11 @@
 | user_id | BIGINT | | users.id | ○ | 所有ユーザー |
 | title | VARCHAR(255) | | | ○ | |
 | summary | TEXT | | | | あらすじ |
+| visibility | VARCHAR(20) | | | ○ | 公開範囲。`PRIVATE`固定で運用（v1では公開機能自体を提供しない） |
 | created_at | DATETIME | | | ○ | |
 | updated_at | DATETIME | | | ○ | |
 
-現行実装からの変更：`genre`カラムを廃止し、`genres` / `story_genres`で正規化。`user_id`にFK制約を追加。`updated_at`を追加。
+現行実装からの変更：`genre`カラムを廃止し、`genres` / `story_genres`で正規化。`user_id`にFK制約を追加。`visibility`・`updated_at`を追加。
 
 ---
 
@@ -131,10 +132,11 @@
 | id | BIGINT | ○ | | ○ | |
 | user_id | BIGINT | | users.id | ○ | 所有ユーザー |
 | name | VARCHAR(255) | | | ○ | フォルダ名 |
+| visibility | VARCHAR(20) | | | ○ | 公開範囲。`PRIVATE`固定で運用（v1では公開機能自体を提供しない） |
 | created_at | DATETIME | | | ○ | |
 | updated_at | DATETIME | | | ○ | |
 
-新規テーブル。[02-screen-design TopicChoice](../02-screen-design/specifications/TopicChoice.md)のフォルダ追加・削除機能に対応。
+新規テーブル。[02-screen-design TopicChoice](../02-screen-design/specifications/TopicChoice.md)のフォルダ追加・削除機能に対応。`visibility`は`stories`と同様、将来の拡張に備えたカラム。
 
 ---
 

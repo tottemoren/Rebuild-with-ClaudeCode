@@ -43,6 +43,7 @@ erDiagram
         bigint user_id FK
         varchar title
         text summary
+        varchar visibility
     }
 
     genres {
@@ -79,6 +80,7 @@ erDiagram
         bigint id PK
         bigint user_id FK
         varchar name
+        varchar visibility
     }
 
     materials {
@@ -116,6 +118,7 @@ erDiagram
 - `dialogues`は、ストーリー作成段階（[StoryCreate](../02-screen-design/specifications/StoryCreate.md)）では台本として`story_id`のみに紐づき、漫画編集段階（[CreateManga](../02-screen-design/specifications/CreateManga.md)）で`page_id`と座標が確定する2段階の運用を想定している。同一セリフの使い回しは想定しないため、イラスト素材のような「マスタ＋配置」分離はせず、座標カラムを直接持たせている。
 - `folder_shares`は現時点でUI・APIが存在しない将来拡張用のテーブル。03-system-designでの合意（将来的な素材の共有・コラボ機能を見据える）を受けて、フォルダ単位での共有を表現できるように用意した。
 - `manga_panels.material_id`は`materials`への外部キー。現行実装（`image_src`に文字列パスを直接持つ方式）からの変更点であり、詳細は[table-definitions.md](../table-definitions.md#現行実装との差分マイグレーション時の申し送り)を参照。
+- `stories` / `folders`の`visibility`は、将来の拡張時にカラム追加なしで対応できるよう先に用意したもの。v1では常に`PRIVATE`で登録し、公開に関するAPI・画面は提供しない。
 
 ---
 

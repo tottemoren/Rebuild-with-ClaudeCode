@@ -26,6 +26,7 @@
 | イラスト素材の保存 | 未実装（静的ファイル参照のみ） | Amazon S3（署名付きURLによる直接アップロード） |
 | 招待コード | バックエンドにハードコードされた文字列1つ | 開発段階限定の暫定措置。正式リリース時に廃止 |
 | 本番環境 | 未構築（開発はDocker Composeのみ） | AWS（S3 + CloudFront + ALB + ECS + RDS）を目標構成とする |
+| CI/CD | なし（本番未構築・手動デプロイ前提） | 最終的に導入する方針で決定。GitHub Actionsを有力候補とし、詳細は本番構築時に設計 |
 
 詳細は[system-design.md](system-design.md)、構成図は[system-architecture.md](system-architecture/system-architecture.md)、技術要素の一覧は[tech-stack.md](tech-stack.md)を参照。
 
@@ -44,5 +45,5 @@
 | 項目 | 内容 |
 |------|------|
 | 工程名 | システム設計 |
-| 最終更新日 | 2026-08-18 |
+| 最終更新日 | 2026-08-28 |
 | 更新者 | Ren Nakamoto |

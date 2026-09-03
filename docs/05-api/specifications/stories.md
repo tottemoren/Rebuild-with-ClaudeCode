@@ -38,6 +38,7 @@
       { "id": 1, "name": "恋愛" },
       { "id": 4, "name": "緊張" }
     ],
+    "visibility": "PRIVATE",
     "createdAt": "2026-08-18T10:00:00",
     "updatedAt": "2026-08-18T10:00:00"
   }
@@ -109,6 +110,8 @@
 
 - 現行実装の`GET /stories`は全ユーザーのストーリーを無条件で返しており、`userId`による絞り込みが無い。目標設計ではJWTから取得した`user_id`で必ず絞り込む。
 - 現行実装は`genre`が単一の文字列カラムだったが、04-databaseでの正規化にあわせてAPIも配列（`genreIds` / `genres`）に変更する。
+- `visibility`は常に`"PRIVATE"`で登録・返却する。v1では値を選択するUI・公開範囲を変更するAPIは提供しない（[04-database](../../04-database/README.md)参照）。
+- [StoryCreate画面](../../02-screen-design/specifications/StoryCreate.md)の参照エリア（自分の過去のストーリー一覧）は、本APIの`GET /api/stories`をそのまま利用する。専用のAPIは不要。
 
 ---
 

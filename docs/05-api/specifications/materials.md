@@ -12,7 +12,7 @@
 
 ```json
 [
-  { "id": 3, "name": "主人公", "createdAt": "2026-08-18T10:00:00" }
+  { "id": 3, "name": "主人公", "visibility": "PRIVATE", "createdAt": "2026-08-18T10:00:00" }
 ]
 ```
 
@@ -141,6 +141,7 @@ S3への直接アップロード完了後、素材のメタデータを登録す
 
 - アップロードは「①`/api/materials/upload-url`で署名付きURLを取得 → ②ブラウザからS3へ直接PUT → ③`/api/materials`で完了通知」という3ステップ構成（presigned URL方式）。バックエンド（ECS）を経由せず大容量ファイルでもサーバー負荷を抑えられる（[system-design.md 3章](../../03-system-design/system-design.md#3-イラスト素材のアップロード保存設計)参照）。
 - `folder_shares`（フォルダ共有）に対応するAPIは未設計。UI・利用開始のタイミングが未定のため（[04-database README](../../04-database/README.md)参照）。
+- `visibility`は常に`"PRIVATE"`で登録・返却する。v1では値を選択するUI・公開範囲を変更するAPIは提供しない。
 
 ---
 

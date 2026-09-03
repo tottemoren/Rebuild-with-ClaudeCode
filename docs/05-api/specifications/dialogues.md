@@ -19,7 +19,7 @@
     "storyId": 10,
     "pageId": null,
     "orderNo": 1,
-    "talkerName": "夜凪",
+    "talkerName": "主人公",
     "line": "え、映画...一緒に行く?",
     "x": null,
     "y": null,
