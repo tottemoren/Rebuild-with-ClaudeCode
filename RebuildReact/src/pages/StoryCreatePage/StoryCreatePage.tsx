@@ -46,14 +46,6 @@ function StoryCreatePage() {
     ]);
   };
 
-
-  useEffect(() => {
-
-    fetchStories();
-    fetchMemos();
-
-  }, []);
-
   const fetchStories = async () => {
 
     const response =
@@ -81,6 +73,15 @@ function StoryCreatePage() {
     setMemos(data);
 
   };
+
+  useEffect(() => {
+
+    // ストーリー一覧・メモ一覧を初期表示のために取得する（意図的な非同期処理の起動）
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    fetchStories();
+    fetchMemos();
+
+  }, []);
 
   const fetchDialogues = async (storyId: number) => {
 

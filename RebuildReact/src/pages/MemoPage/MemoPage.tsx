@@ -16,15 +16,17 @@ function MemoPage() {
   const [editingDirection, setEditingDirection] =
     useState<WritingDirection | null>(null)
 
-  useEffect(() => {
-    fetchMemos()
-  }, [])
+
 
   const fetchMemos = () => {
     fetch('http://localhost:8080/api/memos')
       .then((response) => response.json())
       .then((data) => setMemos(data))
   }
+
+  useEffect(() => {
+    fetchMemos()
+  }, [])
 
   const resetForm = () => {
     setTitle('')

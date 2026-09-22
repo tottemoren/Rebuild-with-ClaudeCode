@@ -66,6 +66,8 @@ export default function CreateMangaPage() {
   useEffect(() => {
     if (!storyId) return;
 
+    // storyId が変わるたびに読み込み中フラグを立てるため、意図的に同期的にsetStateしている
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsLoading(true);
 
     fetch(`http://localhost:8080/api/manga-panels?storyId=${storyId}`)

@@ -29,11 +29,6 @@ function TopicChoice() {
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  useEffect(() => {
-    fetchFolders();
-    fetchStories();
-  }, []);
-
   const fetchStories = () => {
     fetch("http://localhost:8080/stories")
       .then((response) => response.json())
@@ -70,6 +65,11 @@ function TopicChoice() {
       .then((response) => response.json())
       .then((data) => setFolders(data));
   };
+
+  useEffect(() => {
+    fetchFolders();
+    fetchStories();
+  }, []);
 
   const fetchMaterials = (folderId: number) => {
     fetch(`http://localhost:8080/api/folders/${folderId}/materials`)
