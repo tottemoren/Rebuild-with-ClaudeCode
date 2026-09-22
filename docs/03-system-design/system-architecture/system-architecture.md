@@ -41,6 +41,7 @@ graph TB
 ```mermaid
 graph TB
     User["ユーザー"]
+    GHA["GitHub Actions<br/>(CI/CD・有力候補)"]
 
     subgraph AWS["AWS"]
         R53["Route 53<br/>(DNS)"]
@@ -74,6 +75,8 @@ graph TB
     ECS -->|"署名付きURL発行/検証"| S3Asset
     User -->|"署名付きURLで直接アップロード/取得"| S3Asset
     ECS -.->|"シークレット取得"| SM
+    GHA -.->|"Dockerイメージ build/push"| ECR
+    GHA -.->|"フロントビルド成果物 deploy"| S3Front
 ```
 
 ### 構成のポイント
@@ -87,6 +90,7 @@ graph TB
 | イラスト素材アップロード | バックエンドが発行するS3署名付きURL（presigned URL）を使い、ブラウザからS3へ直接アップロードする方式を想定（バックエンドを経由しないため大容量ファイルでもサーバー負荷が小さい） |
 | ネットワーク | ECS・RDSはプライベートサブネットに配置し、インターネットからの直接アクセスを避ける（ALB経由のみ） |
 | シークレット管理 | DB接続情報・JWT署名鍵はSecrets Managerで管理し、環境変数や設定ファイルへの平文記載を避ける |
+| CI/CD | 最終的に導入する方針で決定済み。GitHub連携済みのため GitHub Actions を有力候補とし、mainマージを起点にビルド・テスト・ECRへのイメージpush・ECS更新・フロントのS3デプロイ・CloudFrontキャッシュ無効化を自動化する想定（ツールの最終選定・パイプライン構成は本番構築時に確定） |
 
 ---
 
@@ -118,5 +122,5 @@ sequenceDiagram
 | 項目 | 内容 |
 |------|------|
 | 工程名 | システム設計 |
-| 最終更新日 | 2026-08-18 |
+| 最終更新日 | 2026-08-28 |
 | 更新者 | Ren Nakamoto |

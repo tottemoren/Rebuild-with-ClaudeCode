@@ -30,6 +30,7 @@
 | 漫画の「ページ」管理 | テーブル自体が存在しない（`manga_panels`が`story_id`に直接紐づくのみ） | `manga_pages`テーブルを新設。`manga_panels`・`dialogues`はともに`page_id`で特定のページに紐づける |
 | セリフの座標管理 | カラムなし（台本としての順序のみ） | `dialogues`に`page_id` / `x` / `y` / `width` / `height` / `z_index`を追加。素材のような「マスタ＋配置」分離はせず直接カラムを持たせる |
 | テーブル間の整合性 | 外部キー制約が一切無い | 全ての関連カラムにFK制約を追加 |
+| ストーリー・フォルダの公開範囲 | カラムなし | `stories` / `folders`に`visibility`を追加。v1では常に`PRIVATE`で運用し、将来の拡張時にカラム追加なしで対応できるようにする |
 
 全体像は[er-diagram.md](er-diagram/er-diagram.md)、各テーブルの詳細は[table-definitions.md](table-definitions.md)を参照。
 
