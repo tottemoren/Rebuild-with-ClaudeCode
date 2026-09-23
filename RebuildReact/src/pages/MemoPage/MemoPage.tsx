@@ -19,7 +19,7 @@ function MemoPage() {
 
 
   const fetchMemos = () => {
-    fetch('http://localhost:8080/api/memos')
+    fetch(`${import.meta.env.VITE_API_BASE_URL}/api/memos`)
       .then((response) => response.json())
       .then((data) => setMemos(data))
   }
@@ -49,8 +49,8 @@ function MemoPage() {
       editingId !== null && editingDirection === direction
 
     const url = isUpdating
-      ? `http://localhost:8080/api/memos/${editingId}`
-      : 'http://localhost:8080/api/memos'
+      ? `${import.meta.env.VITE_API_BASE_URL}/api/memos/${editingId}`
+      : `${import.meta.env.VITE_API_BASE_URL}/api/memos`
 
     const method = isUpdating ? 'put' : 'post'
 
@@ -85,7 +85,7 @@ function MemoPage() {
   }
 
   const deleteMemo = (id: number) => {
-    fetch(`http://localhost:8080/api/memos/${id}`, {
+    fetch(`${import.meta.env.VITE_API_BASE_URL}/api/memos/${id}`, {
       method: 'DELETE',
     })
       .then(() => fetchMemos())

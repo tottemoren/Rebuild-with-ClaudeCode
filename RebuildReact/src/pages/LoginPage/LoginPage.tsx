@@ -14,7 +14,7 @@ function LoginPage() {
   const login = async (): Promise<void> => {
 
     const response = await fetch(
-      "http://localhost:8080/login",
+      `${import.meta.env.VITE_API_BASE_URL}/login`,
       {
         method: "POST",
 

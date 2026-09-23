@@ -19,7 +19,7 @@ function RegisterPage() {
   const register = async (): Promise<void> => {
 
   const response = await fetch(
-    "http://localhost:8080/api/users/register",
+    `${import.meta.env.VITE_API_BASE_URL}/api/users/register`,
     {
       method: "POST",
 

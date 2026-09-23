@@ -30,7 +30,7 @@ function TopicChoice() {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const fetchStories = () => {
-    fetch("http://localhost:8080/stories")
+    fetch(`${import.meta.env.VITE_API_BASE_URL}/stories`)
       .then((response) => response.json())
       .then((data) => setStories(data));
   };
@@ -39,7 +39,7 @@ function TopicChoice() {
 
     setHoveredStoryId(storyId);
 
-    fetch(`http://localhost:8080/dialogues?storyId=${storyId}`)
+    fetch(`${import.meta.env.VITE_API_BASE_URL}/dialogues?storyId=${storyId}`)
       .then((response) => response.json())
       .then((data) => setHoveredDialogues(data));
   };
@@ -61,7 +61,7 @@ function TopicChoice() {
   };
 
   const fetchFolders = () => {
-    fetch(`http://localhost:8080/api/folders?userId=${loginUser.id}`)
+    fetch(`${import.meta.env.VITE_API_BASE_URL}/api/folders?userId=${loginUser.id}`)
       .then((response) => response.json())
       .then((data) => setFolders(data));
   };
@@ -72,7 +72,7 @@ function TopicChoice() {
   }, []);
 
   const fetchMaterials = (folderId: number) => {
-    fetch(`http://localhost:8080/api/folders/${folderId}/materials`)
+    fetch(`${import.meta.env.VITE_API_BASE_URL}/api/folders/${folderId}/materials`)
       .then((response) => response.json())
       .then((data) => setMaterials(data));
   };
@@ -83,7 +83,7 @@ function TopicChoice() {
       return;
     }
 
-    fetch("http://localhost:8080/api/folders", {
+    fetch(`${import.meta.env.VITE_API_BASE_URL}/api/folders`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -99,7 +99,7 @@ function TopicChoice() {
 
   const deleteFolder = (id: number) => {
 
-    fetch(`http://localhost:8080/api/folders/${id}`, {
+    fetch(`${import.meta.env.VITE_API_BASE_URL}/api/folders/${id}`, {
       method: "DELETE",
     }).then((response) => {
 
@@ -147,7 +147,7 @@ function TopicChoice() {
 
     setIsUploading(true);
 
-    fetch(`http://localhost:8080/api/folders/${selectedFolderId}/materials`, {
+    fetch(`${import.meta.env.VITE_API_BASE_URL}/api/folders/${selectedFolderId}/materials`, {
       method: "POST",
       body: formData,
     })
@@ -157,7 +157,7 @@ function TopicChoice() {
 
   const deleteMaterial = (id: number) => {
 
-    fetch(`http://localhost:8080/api/materials/${id}`, {
+    fetch(`${import.meta.env.VITE_API_BASE_URL}/api/materials/${id}`, {
       method: "DELETE",
     }).then(() => {
 
@@ -350,7 +350,7 @@ function TopicChoice() {
                 {materials.map((material) => (
                   <div key={material.id} className="material-thumb">
                     <img
-                      src={`http://localhost:8080${material.url}`}
+                      src={`${import.meta.env.VITE_API_BASE_URL}${material.url}`}
                       alt={material.fileName}
                     />
                     <button

@@ -50,7 +50,7 @@ function StoryCreatePage() {
 
     const response =
       await fetch(
-        "http://localhost:8080/stories"
+        `${import.meta.env.VITE_API_BASE_URL}/stories`
       );
 
     const data =
@@ -64,7 +64,7 @@ function StoryCreatePage() {
 
     const response =
       await fetch(
-        "http://localhost:8080/api/memos"
+        `${import.meta.env.VITE_API_BASE_URL}/api/memos`
       );
 
     const data =
@@ -87,7 +87,7 @@ function StoryCreatePage() {
 
     const response =
       await fetch(
-        "http://localhost:8080/dialogues?storyId="
+        `${import.meta.env.VITE_API_BASE_URL}/dialogues?storyId=`
         + storyId
       );
 
@@ -128,7 +128,7 @@ function StoryCreatePage() {
 
     const response =
       await fetch(
-        "http://localhost:8080/stories",
+        `${import.meta.env.VITE_API_BASE_URL}/stories`,
         {
           method: "POST",
 
@@ -163,7 +163,7 @@ function StoryCreatePage() {
         const line = lines[index];
 
         await fetch(
-          "http://localhost:8080/dialogues",
+          `${import.meta.env.VITE_API_BASE_URL}/dialogues`,
           {
 
             method: "POST",

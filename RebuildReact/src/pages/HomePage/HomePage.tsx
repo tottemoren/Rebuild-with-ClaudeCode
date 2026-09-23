@@ -13,11 +13,11 @@ function HomePage() {
   const [stories, setStories] = useState<Story[]>([])
 
   useEffect(() => {
-    fetch("http://localhost:8080/api/memos")
+    fetch(`${import.meta.env.VITE_API_BASE_URL}/api/memos`)
       .then((response) => response.json())
       .then((data) => setMemos(data))
 
-    fetch("http://localhost:8080/stories")
+    fetch(`${import.meta.env.VITE_API_BASE_URL}/stories`)
       .then((response) => response.json())
       .then((data) => setStories(data))
   }, [])

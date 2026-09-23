@@ -77,7 +77,7 @@ function Header() {
 
     try {
       const response = await fetch(
-        `http://localhost:8080/api/users/${user.id}/profile-image`,
+        `${import.meta.env.VITE_API_BASE_URL}/api/users/${user.id}/profile-image`,
         {
           method: "POST",
           body: formData,
@@ -164,7 +164,7 @@ function Header() {
                 {user?.profileImageUrl ? (
                   <img
                     className="profile-avatar"
-                    src={`http://localhost:8080${user.profileImageUrl}`}
+                    src={`${import.meta.env.VITE_API_BASE_URL}${user.profileImageUrl}`}
                     alt="プロフィール画像"
                   />
                 ) : (

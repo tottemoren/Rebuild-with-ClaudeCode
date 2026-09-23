@@ -70,7 +70,7 @@ export default function CreateMangaPage() {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsLoading(true);
 
-    fetch(`http://localhost:8080/api/manga-panels?storyId=${storyId}`)
+    fetch(`${import.meta.env.VITE_API_BASE_URL}/api/manga-panels?storyId=${storyId}`)
       .then((response) => response.json())
       .then((data: MangaPanelDto[]) => {
         const loaded: PlacedKoma[] = data.map((item) => ({
@@ -106,7 +106,7 @@ export default function CreateMangaPage() {
 
     try {
       const response = await fetch(
-        `http://localhost:8080/api/manga-panels?storyId=${storyId}`,
+        `${import.meta.env.VITE_API_BASE_URL}/api/manga-panels?storyId=${storyId}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
