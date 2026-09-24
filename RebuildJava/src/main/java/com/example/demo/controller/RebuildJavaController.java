@@ -21,7 +21,7 @@ import com.example.demo.repository.MemoRepository;
 import com.example.demo.repository.UserRepository;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = {"http://localhost:5173", "https://d7a89hxno1ipb.cloudfront.net"})
 public class RebuildJavaController {
 
     @GetMapping("/")
