@@ -1,0 +1,54 @@
+name: Deploy Frontend
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'RebuildReact/**'
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: RebuildReact
+
+    steps:
+      - name: リポジトリをチェックアウト
+        uses: actions/checkout@v4
+
+      - name: Node.jsをセットアップ
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: RebuildReact/package-lock.json
+
+      - name: 依存関係をインストール
+        run: npm ci
+
+      - name: Lintを実行
+        run: npm run lint
+
+      - name: テストを実行
+        run: npm run test
+
+      - name: 本番ビルド
+        run: npm run build
+
+      - name: AWSの認証情報を取得（OIDC）
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::392038041979:role/github-actions-rebuild-frontend
+          aws-region: ap-northeast-1
+
+      - name: S3にアップロード
+        run: aws s3 sync ./dist s3://rebuild-frontend-first --delete
+
+      - name: CloudFrontのキャッシュを削除
+        run: aws cloudfront create-invalidation --distribution-id E3BARBGUB8CC8Y --paths "/*"
