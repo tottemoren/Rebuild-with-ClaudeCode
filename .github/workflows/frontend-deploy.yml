@@ -8,7 +8,6 @@ on:
       - 'RebuildReact/**'
 
 permissions:
-  id-token: write
   contents: read
 
 jobs:
@@ -44,7 +43,8 @@ jobs:
       - name: AWSの認証情報を取得（OIDC）
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::392038041979:role/github-actions-rebuild-frontend
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-northeast-1
 
       - name: S3にアップロード
