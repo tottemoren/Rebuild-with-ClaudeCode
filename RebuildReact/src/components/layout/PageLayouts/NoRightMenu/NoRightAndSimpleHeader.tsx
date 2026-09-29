@@ -18,10 +18,8 @@ function LayoutHeaderSimple({ children,headerContent }: Props) {
         <div className="home-page">
 
           {/* TOP */}
-          {/* この画面群（TopicChoice/CreateMangaPage）では検索・アカウントメニューは不要なため非表示にする */}
           <Header
             centerContent={headerContent}
-            showAccountMenu={false}
           />
 
           {/* MAIN */}

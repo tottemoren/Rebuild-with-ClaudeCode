@@ -28,14 +28,12 @@ function HomePage() {
 
   return (
 
-    <MainLayout>
-
-      <div className="home-page-content">
-
-        <div className="home-page-toggle">
+    <MainLayout
+      headerSecondaryContent={
+        <div className="header-toggle">
           <button
             className={
-              "home-page-toggle-button" +
+              "header-toggle-button" +
               (view === "memo" ? " active" : "")
             }
             onClick={() => setView("memo")}
@@ -45,7 +43,7 @@ function HomePage() {
 
           <button
             className={
-              "home-page-toggle-button" +
+              "header-toggle-button" +
               (view === "story" ? " active" : "")
             }
             onClick={() => setView("story")}
@@ -53,6 +51,10 @@ function HomePage() {
             ストーリー
           </button>
         </div>
+      }
+    >
+
+      <div className="home-page-content">
 
         {view === "memo" && (
           <ul className="home-page-card-list">

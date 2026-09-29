@@ -6,9 +6,11 @@ import Advertisement from "../RightMenu/Advertisement";
 
 type Props = {
   children: React.ReactNode;
+  headerContent?: React.ReactNode;
+  headerSecondaryContent?: React.ReactNode;
 };
 
-function MainLayout({ children }: Props) {
+function MainLayout({ children, headerContent, headerSecondaryContent }: Props) {
 
   return (
 
@@ -18,7 +20,10 @@ function MainLayout({ children }: Props) {
         <div className="home-page">
 
           {/* TOP */}
-          <Header/>
+          <Header
+            centerContent={headerContent}
+            secondaryRow={headerSecondaryContent}
+          />
 
           {/* MAIN */}
           <div className="container">

@@ -9,10 +9,10 @@ import { highlightExactMatches } from "../../../utils/searchHighlight";
 
 type HeaderProps = {
   centerContent?: React.ReactNode
-  showAccountMenu?: boolean
+  secondaryRow?: React.ReactNode
 }
 
-function Header({ centerContent, showAccountMenu = true }: HeaderProps) {
+function Header({ centerContent, secondaryRow }: HeaderProps) {
 
   const navigate = useNavigate();
 
@@ -114,7 +114,7 @@ function Header({ centerContent, showAccountMenu = true }: HeaderProps) {
   );
 
   return (
-    <div className="HomePagetop">
+    <div className={"HomePagetop" + (secondaryRow ? " HomePagetop-tall" : "")}>
 
       <div className="LogomarkSpace">
         <img
@@ -126,47 +126,56 @@ function Header({ centerContent, showAccountMenu = true }: HeaderProps) {
       </div>
 
       <div className="header-center">
-        {centerContent || defaultCenterContent}
+
+        <div className="header-center-main">
+          {centerContent || defaultCenterContent}
+        </div>
+
+        {/* 画面設計上、検索バーの下にもう1段（次へボタンや表示切り替えボタンなど）が必要な画面だけが渡してくる */}
+        {secondaryRow && (
+          <div className="header-center-secondary">
+            {secondaryRow}
+          </div>
+        )}
+
       </div>
 
-      {showAccountMenu && (
-        <div className="space">
+      <div className="space">
 
-          <button className="icon-button" title="設定">
-            ⚙
-          </button>
+        <button className="icon-button" title="設定">
+          ⚙
+        </button>
 
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept="image/*"
-            style={{ display: "none" }}
-            onChange={handleProfileImageChange}
-          />
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          style={{ display: "none" }}
+          onChange={handleProfileImageChange}
+        />
 
-          <button
-            className="icon-button profile-button"
-            onClick={openProfileImagePicker}
-            disabled={isUploading}
-            title="プロフィール画像を変更"
-          >
-            {user?.profileImageUrl ? (
-              <img
-                className="profile-avatar"
-                src={`${import.meta.env.VITE_API_BASE_URL}${user.profileImageUrl}`}
-                alt="プロフィール画像"
-              />
-            ) : (
-              "👤"
-            )}
-          </button>
+        <button
+          className="icon-button profile-button"
+          onClick={openProfileImagePicker}
+          disabled={isUploading}
+          title="プロフィール画像を変更"
+        >
+          {user?.profileImageUrl ? (
+            <img
+              className="profile-avatar"
+              src={`${import.meta.env.VITE_API_BASE_URL}${user.profileImageUrl}`}
+              alt="プロフィール画像"
+            />
+          ) : (
+            "👤"
+          )}
+        </button>
 
-          <button className="logout-button" onClick={logout}>
-            ログアウト
-          </button>
+        <button className="logout-button" onClick={logout}>
+          ログアウト
+        </button>
 
-        </div>
-      )}
+      </div>
 
     </div>
   );

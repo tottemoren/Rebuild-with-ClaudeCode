@@ -9,6 +9,15 @@
     border-bottom: 0.5px solid rgb(156, 156, 156);
 }
 
+/* secondaryRow（次へボタン等）を渡した画面だけ、Header自体の高さを中身に合わせて自動で決める。
+   固定の%だと「追加した分だけ余計に広がる／逆に窮屈になる」ため、autoにして
+   実際に必要な高さ（元の1段分 + 追加した1段分）だけ広がるようにする */
+.HomePagetop-tall {
+    height: auto;
+    min-height: 19%;
+    padding: 8px 0;
+}
+
 .LogomarkSpace {
     width: 10%;
     height: 100%;
@@ -37,8 +46,25 @@
     background-color: rgb(255, 255, 255);
 
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+    gap: 6px;
+}
+
+.header-center-main {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.header-center-secondary {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
 }
 
 .header-center h1,
@@ -147,4 +173,36 @@
 
 .logout-button:hover {
     background: #e2e8f0;
+}
+
+/* ======================================
+   Headerの2段目に置く、切り替えボタン共通スタイル
+   （HomePage・StoryCreatePageなど、複数画面で使い回す）
+====================================== */
+
+.header-toggle {
+    display: flex;
+    gap: 8px;
+}
+
+.header-toggle-button {
+    border: none;
+    border-radius: 18px;
+    padding: 8px 20px;
+    background: #f1f5f9;
+    color: #555;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.header-toggle-button:hover {
+    background: #e2e8f0;
+}
+
+.header-toggle-button.active {
+    background: linear-gradient(135deg, #ffffff, #f1f5f9);
+    color: #222;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }

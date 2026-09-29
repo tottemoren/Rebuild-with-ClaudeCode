@@ -8,12 +8,6 @@
     box-sizing: border-box;
 }
 
-.memo-page-heading {
-    font-size: 20px;
-    font-weight: bold;
-    color: #222;
-}
-
 .memo-page-title-row {
     display: flex;
 }

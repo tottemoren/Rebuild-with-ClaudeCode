@@ -1,59 +1,5 @@
 /* ======================================
-   TOP（HeaderSimpleのcenterContentに入る部分）
-====================================== */
-
-.TopicChoice-top {
-
-    display: flex;
-    align-items: center;
-
-    width: 100%;
-    height: 100%;
-
-    gap: 10px;
-
-    box-sizing: border-box;
-}
-
-
-/* ======================================
-   EXPLANATION
-====================================== */
-
-.explanation {
-
-    padding: 12px;
-
-    box-sizing: border-box;
-}
-
-.explanation h1,
-.explanation h2,
-.explanation h3,
-.explanation p {
-
-    margin: 0;
-    padding: 0;
-}
-
-
-/* ======================================
-   SPACE
-====================================== */
-
-.space1 {
-
-    flex: 1;
-}
-
-.space2 {
-
-    width: 20px;
-}
-
-
-/* ======================================
-   NEXTボタン
+   NEXTボタン（Headerの2段目 secondaryRow に入る）
 ====================================== */
 
 .TopicChoice-next {
@@ -500,11 +446,5 @@
     .topic-choice-right-menu {
 
         width: 100%;
-    }
-
-    .TopicChoice-top {
-
-        flex-wrap: wrap;
-        height: auto;
     }
 }

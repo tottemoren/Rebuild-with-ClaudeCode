@@ -2,7 +2,7 @@ import "./StoryCreatePage.css";
 
 import { useEffect, useState } from "react";
 import type { Story } from "../../types/Story";
-import LayoutHeaderSimple from "../../components/layout/PageLayouts/NoRightMenu/NoRightAndSimpleHeader";
+import MainLayout from "../../components/layout/PageLayouts/MainLayout";
 import useLoginUser from "../../hooks/useLoginUser";
 import type { Dialogue } from "../../types/Dialogue";
 import type { Memo } from "../../types/Memo";
@@ -212,23 +212,32 @@ function StoryCreatePage() {
 
   return (
 
-    <LayoutHeaderSimple
+    <MainLayout
 
-      headerContent={
-        <div className="explanation-StoryCreatePage">
+      headerSecondaryContent={
+        <div className="header-toggle">
+          <button
+            className={
+              "header-toggle-button" +
+              (referenceView === "memo" ? " active" : "")
+            }
+            onClick={() => setReferenceView("memo")}
+          >
+            メモ
+          </button>
 
-          <h3>
-            あなたの好きなように物語を作成できます<br/>
-          </h3>
-
-          <p>
-            左側がストーリー作成画面、右側が参照エリア（メモ／自分の過去のストーリー）
-          </p>
-
+          <button
+            className={
+              "header-toggle-button" +
+              (referenceView === "story" ? " active" : "")
+            }
+            onClick={() => setReferenceView("story")}
+          >
+            過去のストーリー
+          </button>
         </div>
       }
     >
-
 
       <div className="story-create-page">
 
@@ -400,28 +409,6 @@ function StoryCreatePage() {
 
           <div className="menu2">
 
-            <div className="menu2-toggle">
-              <button
-                className={
-                  "menu2-toggle-button" +
-                  (referenceView === "memo" ? " active" : "")
-                }
-                onClick={() => setReferenceView("memo")}
-              >
-                メモ
-              </button>
-
-              <button
-                className={
-                  "menu2-toggle-button" +
-                  (referenceView === "story" ? " active" : "")
-                }
-                onClick={() => setReferenceView("story")}
-              >
-                過去のストーリー
-              </button>
-            </div>
-
             {referenceView === "story" && (
 
               <>
@@ -522,7 +509,7 @@ function StoryCreatePage() {
 
       </div>
 
-    </LayoutHeaderSimple>
+    </MainLayout>
 
   );
 }

@@ -3,7 +3,7 @@ import "./TopicChoice.css";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import LayoutHeaderSimple from "../../components/layout/PageLayouts/NoRightMenu/NoRightAndSimpleHeader";
+import MainLayout from "../../components/layout/PageLayouts/MainLayout";
 import useLoginUser from "../../hooks/useLoginUser";
 import type { Folder } from "../../types/Folder";
 import type { Material } from "../../types/Material";
@@ -169,34 +169,17 @@ function TopicChoice() {
 
   return (
 
-    <LayoutHeaderSimple
+    <MainLayout
 
-      headerContent={
-
-        <div className="TopicChoice-top">
-
-          <div className="explanation">
-            <h2>TopicChoice & CharacterChoice</h2>
-          </div>
-
-          <div className="space1"></div>
-
-          <button className="set">
-            - artist -
-          </button>
-
-          <div className="space2"></div>
-
-          <button
-            className="TopicChoice-next"
-            onClick={handleNext}
-            disabled={selectedStoryId === null}
-          >
-            Next <br />
-            - 次へ -
-          </button>
-
-        </div>
+      headerSecondaryContent={
+        <button
+          className="TopicChoice-next"
+          onClick={handleNext}
+          disabled={selectedStoryId === null}
+        >
+          Next <br />
+          - 次へ -
+        </button>
       }
     >
 
@@ -372,7 +355,7 @@ function TopicChoice() {
 
       </div>
 
-    </LayoutHeaderSimple>
+    </MainLayout>
   );
 }
 

@@ -102,8 +102,6 @@ function MemoPage() {
 
       <div className="memo-page">
 
-        <h1 className="memo-page-heading">メモ</h1>
-
         <div className="memo-page-title-row">
           <input
             className="memo-page-title-input"
