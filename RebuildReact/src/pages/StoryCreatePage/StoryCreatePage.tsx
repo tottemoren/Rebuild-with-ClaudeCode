@@ -2,7 +2,7 @@ import "./StoryCreatePage.css";
 
 import { useEffect, useState } from "react";
 import type { Story } from "../../types/Story";
-import LayoutAdvertisementSimple from "../../components/layout/PageLayouts/NoRightMenu/NoRightMenu";
+import LayoutHeaderSimple from "../../components/layout/PageLayouts/NoRightMenu/NoRightAndSimpleHeader";
 import useLoginUser from "../../hooks/useLoginUser";
 import type { Dialogue } from "../../types/Dialogue";
 import type { Memo } from "../../types/Memo";
@@ -212,7 +212,7 @@ function StoryCreatePage() {
 
   return (
 
-    <LayoutAdvertisementSimple
+    <LayoutHeaderSimple
 
       headerContent={
         <div className="explanation-StoryCreatePage">
@@ -522,7 +522,7 @@ function StoryCreatePage() {
 
       </div>
 
-    </LayoutAdvertisementSimple>
+    </LayoutHeaderSimple>
 
   );
 }

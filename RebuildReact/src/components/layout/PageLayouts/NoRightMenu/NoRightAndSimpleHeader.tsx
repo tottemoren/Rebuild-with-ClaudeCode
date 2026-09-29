@@ -1,7 +1,7 @@
 import "../MainLayout.css";
 
 import LeftMenu from "../../LeftMenu/LeftMenu";
-import HeaderSimple from "../../Header/SimpleHeader";
+import Header from "../../Header/Header";
 
 type Props = {
   children: React.ReactNode;
@@ -18,8 +18,10 @@ function LayoutHeaderSimple({ children,headerContent }: Props) {
         <div className="home-page">
 
           {/* TOP */}
-          <HeaderSimple
+          {/* この画面群（TopicChoice/CreateMangaPage）では検索・アカウントメニューは不要なため非表示にする */}
+          <Header
             centerContent={headerContent}
+            showAccountMenu={false}
           />
 
           {/* MAIN */}
