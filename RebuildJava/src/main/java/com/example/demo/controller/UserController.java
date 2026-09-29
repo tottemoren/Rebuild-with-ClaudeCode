@@ -27,7 +27,12 @@ import com.example.demo.service.UserService;
 
 @RestController
 @RequestMapping("/api/users")
-@CrossOrigin(origins = {"http://localhost:5173", "https://d7a89hxno1ipb.cloudfront.net"})
+@CrossOrigin(origins = {
+		"http://localhost:5173", 
+		"https://d7a89hxno1ipb.cloudfront.net",
+	    "https://mangarebuild.com",
+	    "https://www.mangarebuild.com"
+})
 public class UserController {
 
     private final UserService userService;
