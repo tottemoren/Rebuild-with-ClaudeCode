@@ -6,27 +6,84 @@
 }
 
 .CreateMangaPage-thema {
-    width: 55%;
+    width: 65%;
     max-height: 95%;
     margin: 2px;
+    padding: 2px 8px;
+    box-sizing: border-box;
+    overflow-y: auto;
     h3,p{
         margin: 0;
         padding: 0;
+        font-size: 11px;
+        line-height: 1.15;
+    }
+    h3 {
+        /* タイトルは1行に収め、はみ出す分は … で省略する */
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
     background-color: rgb(250, 250, 250);
-	border: 3px solid black; 
+	border: 3px solid black;
+}
+
+/* あらすじは長さが不定なので、2行を超えたら … で省略し、縦に伸びすぎないようにする */
+.CreateMangaPage-thema-summary {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+}
+
+/* 以前は「---...---」という文字列（2行分の高さ）だったが、
+   本物の罫線に置き換えて高さを詰めた */
+.CreateMangaPage-thema-divider {
+    margin: 3px 0;
+    border: none;
+    border-top: 1px solid rgb(180, 180, 180);
+}
+
+.CreateMangaPage-dialogue-toggle {
+    margin-top: 2px;
+    padding: 1px 10px;
+    font-size: 11px;
+    border: 1px solid rgb(180, 180, 180);
+    border-radius: 100px;
+    background-color: white;
+    cursor: pointer;
+}
+
+.CreateMangaPage-dialogue-toggle:hover {
+    background-color: rgb(240, 240, 240);
+}
+
+.CreateMangaPage-dialogue-list {
+    margin-top: 2px;
+    max-height: 60px;
+    overflow-y: auto;
+    font-size: 11px;
+}
+
+.CreateMangaPage-dialogue-list p {
+    margin: 1px 0 !important;
 }
 
 .CreateMangaPage-character {
-    width: 45%;
-    height: 100%;
+    width: 35%;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
 
 }
 
 .CreateMangaPage-character img {
     width: auto;
-    height: 90%;
-    margin: 5px;
+    /* 以前は90%（親の高さ基準）だったが、Header統合で親の高さの基準が
+       曖昧になり、画像が本来の大きさのまま表示されてしまっていた。
+       ヘッダー内に1段で収まる固定サイズに変更 */
+    height: 42px;
+    margin: 3px;
 }
 
 .CreateMangaPage-character button {

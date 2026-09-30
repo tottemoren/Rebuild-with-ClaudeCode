@@ -171,6 +171,8 @@ function TopicChoice() {
 
     <MainLayout
 
+      showAdvertisement={false}
+
       headerSecondaryContent={
         <button
           className="TopicChoice-next"
@@ -350,6 +352,11 @@ function TopicChoice() {
             </div>
 
           )}
+
+        </div>
+
+        {/* RIGHT：新規追加エリア（幅は元の広告枠と同じ22%） */}
+        <div className="topic-choice-extra-menu">
 
         </div>
 

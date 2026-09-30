@@ -3,7 +3,7 @@ import "./CreateMangaPage.css";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
-import LayoutHeaderSimple from "../../components/layout/PageLayouts/NoRightMenu/NoRightAndSimpleHeader";
+import MainLayout from "../../components/layout/PageLayouts/MainLayout";
 import RightMenuKoma, { type CharacterKey } from "./layout/RightMenuKoma";
 import {
   useMangaCanvas,
@@ -12,6 +12,8 @@ import {
   type PlacedKoma,
 } from "../../utils/DragAndDrop";
 import type { MangaPanelDto } from "../../types/MangaPanel";
+import type { Story } from "../../types/Story";
+import type { Dialogue } from "../../types/Dialogue";
 
 // 固定のキャンバス枠のサイズ（このサイズのまま画像として書き出す）
 const CANVAS_WIDTH = 640;
@@ -41,6 +43,10 @@ export default function CreateMangaPage() {
   const [isSaving, setIsSaving] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
+
+  const [story, setStory] = useState<Story | null>(null);
+  const [dialogues, setDialogues] = useState<Dialogue[]>([]);
+  const [showDialogues, setShowDialogues] = useState(false);
 
   const [searchParams] = useSearchParams();
   const storyIdParam = searchParams.get("storyId");
@@ -91,6 +97,23 @@ export default function CreateMangaPage() {
       .finally(() => setIsLoading(false));
     // setPanels は useMangaCanvas から返る安定した関数なので依存配列には含めない
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [storyId]);
+
+  // storyId に対応するストーリー情報・セリフを取得する
+  // （個別取得APIが無いため、一覧を取得してidで絞り込む。TopicChoice画面と同じ方式）
+  useEffect(() => {
+    if (!storyId) return;
+
+    fetch(`${import.meta.env.VITE_API_BASE_URL}/stories`)
+      .then((response) => response.json())
+      .then((data: Story[]) => {
+        const found = data.find((item) => item.id === storyId);
+        setStory(found ?? null);
+      });
+
+    fetch(`${import.meta.env.VITE_API_BASE_URL}/dialogues?storyId=${storyId}`)
+      .then((response) => response.json())
+      .then((data: Dialogue[]) => setDialogues(data));
   }, [storyId]);
 
   const handleSave = async () => {
@@ -153,16 +176,35 @@ export default function CreateMangaPage() {
   };
 
   return (
-    <LayoutHeaderSimple
+    <MainLayout
+      showAdvertisement={false}
       headerContent={
         <div className="CreateMangaPage-top">
           <div className="CreateMangaPage-thema">
-            <h3>【プロを名乗るなら】</h3>
-            <p>俳優として成長していく主人公。しかしそこには立ちはだかる壁が</p>
-            <p>
-              ------------------------------------------------------------
-            </p>
-            <p>ジャンル 「職業」「天才」「葛藤」</p>
+            <h3>{story?.title || "（無題）"}</h3>
+            <p className="CreateMangaPage-thema-summary">{story?.summary}</p>
+            <hr className="CreateMangaPage-thema-divider" />
+            <p>ジャンル {story?.genre}</p>
+
+            <button
+              type="button"
+              className="CreateMangaPage-dialogue-toggle"
+              onClick={() => setShowDialogues((prev) => !prev)}
+            >
+              {showDialogues ? "セリフを閉じる" : "セリフを見る"}
+            </button>
+
+            {showDialogues && (
+              <div className="CreateMangaPage-dialogue-list">
+                {dialogues.length === 0 && <p>セリフがありません</p>}
+
+                {dialogues.map((dialogue) => (
+                  <p key={dialogue.id}>
+                    <strong>{dialogue.talkerName}</strong>：{dialogue.line}
+                  </p>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* キャラ選択 */}
@@ -267,6 +309,6 @@ export default function CreateMangaPage() {
       />
 
       </div>
-    </LayoutHeaderSimple>
+    </MainLayout>
   );
 }

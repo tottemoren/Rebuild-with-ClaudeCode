@@ -153,6 +153,15 @@
     gap: 12px;
 }
 
+/* 素材フォルダのさらに右に追加したエリア（幅は以前の広告枠と同じ22%） */
+.topic-choice-extra-menu {
+
+    width: 22%;
+    flex-shrink: 0;
+
+    overflow-y: auto;
+}
+
 
 /* ======================================
    FOLDER：新規作成

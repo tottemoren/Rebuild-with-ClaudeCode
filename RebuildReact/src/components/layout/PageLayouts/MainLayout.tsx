@@ -8,9 +8,15 @@ type Props = {
   children: React.ReactNode;
   headerContent?: React.ReactNode;
   headerSecondaryContent?: React.ReactNode;
+  showAdvertisement?: boolean;
 };
 
-function MainLayout({ children, headerContent, headerSecondaryContent }: Props) {
+function MainLayout({
+  children,
+  headerContent,
+  headerSecondaryContent,
+  showAdvertisement = true,
+}: Props) {
 
   return (
 
@@ -32,17 +38,22 @@ function MainLayout({ children, headerContent, headerSecondaryContent }: Props) 
             <LeftMenu/>
 
             {/* CENTER */}
-            <div className="main-contents">
+            <div
+              className={
+                "main-contents" +
+                (showAdvertisement ? "" : " main-contents-full")
+              }
+            >
                 {children}
             </div>
 
-            {/* RIGHT MENU*/}
-            <Advertisement/>
+            {/* RIGHT MENU（広告が不要な画面はshowAdvertisement={false}で非表示にできる） */}
+            {showAdvertisement && <Advertisement/>}
 
           </div>
 
         </div>
-      
+
       </div>
     </div>
 

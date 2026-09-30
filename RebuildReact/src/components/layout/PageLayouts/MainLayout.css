@@ -87,6 +87,11 @@
     border-right: 1px solid rgb(220, 220, 220);
 }
 
+/* showAdvertisement={false}の画面（広告枠が無い）は、中央エリアが右まで広がる */
+.main-contents-full {
+    width: 90%;
+}
+
 /* =======================================
    RIGHT MENU
 ======================================= */
@@ -99,16 +104,6 @@
 
 
 
-
-/* ===============================================
-   LayoutAdvertisementSimple  CENTER•RIGHT MENU
-=============================================== */
-
-.LayoutAdvertisementSimple-maincontents {
-    width: 90%;
-    height: 100%;
-    padding: 5px;
-}
 
 /* =======================================
    RESPONSIVE

@@ -214,6 +214,8 @@ function StoryCreatePage() {
 
     <MainLayout
 
+      showAdvertisement={false}
+
       headerSecondaryContent={
         <div className="header-toggle">
           <button
