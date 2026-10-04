@@ -1,0 +1,65 @@
+name: Backend CI
+
+on:
+  push:
+    branches:
+      - main
+      - 'feature/**'
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: RebuildJava
+
+    # テスト中だけ使い捨てのMySQLを一緒に起動する（アプリが起動時にDBへ接続するため）
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: RebuildDB_CloudCode
+          MYSQL_USER: RebuildDB_CloudCode
+          MYSQL_PASSWORD: RebuildDB_CloudCode
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -uroot -proot"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+
+    steps:
+      - name: リポジトリをチェックアウト
+        uses: actions/checkout@v4
+
+      - name: Javaをセットアップ
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: gradle
+
+      - name: gradlewに実行権限を付与
+        run: chmod +x ./gradlew
+
+      # application.propertiesの接続先はDocker内でしか通じない「mysql」なので、
+      # 環境変数でCI用（localhost）に上書きする
+      - name: テストを実行
+        run: ./gradlew test --console=plain
+        env:
+          SPRING_DATASOURCE_URL: jdbc:mysql://127.0.0.1:3306/RebuildDB_CloudCode
+          SPRING_DATASOURCE_USERNAME: RebuildDB_CloudCode
+          SPRING_DATASOURCE_PASSWORD: RebuildDB_CloudCode
+
+      # テストが失敗したときだけ、詳しい結果レポートを保存して後から見られるようにする
+      - name: テストレポートを保存（失敗時のみ）
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-test-report
+          path: RebuildJava/build/reports/tests/test/
