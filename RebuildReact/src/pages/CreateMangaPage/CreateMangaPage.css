@@ -1,4 +1,35 @@
 
+/* ヘッダー2段目：作業するフォルダを選ぶタブ */
+.CreateMangaPage-folder-tabs {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    max-width: 100%;
+}
+
+.CreateMangaPage-folder-tab {
+    flex-shrink: 0;
+    border: none;
+    border-radius: 100px;
+    padding: 4px 14px;
+    font-size: 12px;
+    background: #f1f5f9;
+    color: #555;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.CreateMangaPage-folder-tab:hover {
+    background: #e2e8f0;
+}
+
+.CreateMangaPage-folder-tab.active {
+    background: #e2e8f0;
+    color: #222;
+    font-weight: bold;
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.18);
+}
+
 .CreateMangaPage-top {
     display:flex;
     width: 100%;
@@ -118,6 +149,23 @@
     overflow: auto;
     flex: 1;
     min-width: 0;
+    min-height: 0;
+}
+
+/* ツールバー分を除いた、キャンバスが使える領域。この要素の実際のサイズを
+   スケール計算の基準にすることで、ツールバーの高さ分を正しく差し引ける */
+.CreateMangaPage-canvas-measure {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    flex: 1;
+    min-height: 0;
+}
+
+/* 縮小表示中のキャンバスが、実際に占める見た目のサイズ分だけ場所を確保する箱 */
+.CreateMangaPage-canvas-scale-wrapper {
+    flex-shrink: 0;
 }
 
 /*=======================================================*/
@@ -137,7 +185,11 @@
     inset: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    /* 以前は cover（画像を切り取って枠いっぱいに広げる）だったが、
+       画像本来の縦横比とキャンバス（640×900）の比率が大きく違うため
+       見た目が歪んでいた。contain（縦横比を保ったまま枠内に収める）に変更 */
+    object-fit: contain;
+    background-color: rgb(78, 78, 78);
     pointer-events: none;
     user-select: none;
 }

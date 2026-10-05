@@ -22,7 +22,13 @@ export type PlacedKoma = {
 
 const DEFAULT_KOMA_SIZE = 140;
 
-export function useMangaCanvas(initialPanels: PlacedKoma[] = []) {
+export function useMangaCanvas(
+  initialPanels: PlacedKoma[] = [],
+  // 画面に収まるようキャンバスを縮小表示している場合の倍率（例: 0.4なら40%表示）。
+  // 座標はあくまで「実寸（640×900）」で保存したいので、
+  // 画面上のマウス座標をこの倍率で割って実寸に変換してから扱う
+  scale: number = 1
+) {
   const canvasRef = useRef<HTMLDivElement | null>(null);
 
   const [panels, setPanels] = useState<PlacedKoma[]>(initialPanels);
@@ -79,14 +85,18 @@ export function useMangaCanvas(initialPanels: PlacedKoma[] = []) {
 
       const rect = canvasRef.current.getBoundingClientRect();
 
-      const x = event.clientX - rect.left - DEFAULT_KOMA_SIZE / 2;
-      const y = event.clientY - rect.top - DEFAULT_KOMA_SIZE / 2;
+      // rect は画面上の見た目（縮小後）のサイズなので、scaleで割って実寸に戻す
+      const canvasWidth = rect.width / scale;
+      const canvasHeight = rect.height / scale;
+
+      const x = (event.clientX - rect.left) / scale - DEFAULT_KOMA_SIZE / 2;
+      const y = (event.clientY - rect.top) / scale - DEFAULT_KOMA_SIZE / 2;
 
       const newPanel: PlacedKoma = {
         id: `panel-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
         imageSrc,
-        x: Math.min(Math.max(0, x), rect.width - DEFAULT_KOMA_SIZE),
-        y: Math.min(Math.max(0, y), rect.height - DEFAULT_KOMA_SIZE),
+        x: Math.min(Math.max(0, x), canvasWidth - DEFAULT_KOMA_SIZE),
+        y: Math.min(Math.max(0, y), canvasHeight - DEFAULT_KOMA_SIZE),
         width: DEFAULT_KOMA_SIZE,
         height: DEFAULT_KOMA_SIZE,
         zIndex: nextZIndex.current++,
@@ -95,7 +105,7 @@ export function useMangaCanvas(initialPanels: PlacedKoma[] = []) {
       setPanels((prev) => [...prev, newPanel]);
       setSelectedId(newPanel.id);
     },
-    []
+    [scale]
   );
 
   // 配置済みコマ画像のドラッグ移動（ポインタでの掴んで動かす）
@@ -130,17 +140,18 @@ export function useMangaCanvas(initialPanels: PlacedKoma[] = []) {
       const panel = panelsRef.current.find((p) => p.id === info.id);
       if (!panel) return;
 
-      const dx = event.clientX - info.startX;
-      const dy = event.clientY - info.startY;
+      // マウスの移動量（見た目上のpx）も、scaleで割って実寸の移動量に変換する
+      const dx = (event.clientX - info.startX) / scale;
+      const dy = (event.clientY - info.startY) / scale;
 
       const nextX = Math.min(
         Math.max(0, info.originX + dx),
-        rect.width - panel.width
+        rect.width / scale - panel.width
       );
 
       const nextY = Math.min(
         Math.max(0, info.originY + dy),
-        rect.height - panel.height
+        rect.height / scale - panel.height
       );
 
       setPanels((prev) =>
@@ -149,7 +160,7 @@ export function useMangaCanvas(initialPanels: PlacedKoma[] = []) {
         )
       );
     },
-    []
+    [scale]
   );
 
   const handlePanelPointerUp = useCallback(
