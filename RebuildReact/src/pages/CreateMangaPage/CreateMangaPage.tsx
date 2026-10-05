@@ -1,6 +1,6 @@
 import "./CreateMangaPage.css";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
 import MainLayout from "../../components/layout/PageLayouts/MainLayout";
@@ -14,10 +14,13 @@ import {
 import type { MangaPanelDto } from "../../types/MangaPanel";
 import type { Story } from "../../types/Story";
 import type { Dialogue } from "../../types/Dialogue";
+import type { Folder } from "../../types/Folder";
+import useLoginUser from "../../hooks/useLoginUser";
 
 // 固定のキャンバス枠のサイズ（このサイズのまま画像として書き出す）
-const CANVAS_WIDTH = 640;
-const CANVAS_HEIGHT = 900;
+// blankpaper.png の実寸（1057×748、横長）に合わせている
+const CANVAS_WIDTH = 1057;
+const CANVAS_HEIGHT = 748;
 
 const BLANK_PAPER_SRC = "/images/settingimages/blankpaper.png";
 
@@ -48,9 +51,47 @@ export default function CreateMangaPage() {
   const [dialogues, setDialogues] = useState<Dialogue[]>([]);
   const [showDialogues, setShowDialogues] = useState(false);
 
+  const loginUser = useLoginUser();
+
   const [searchParams] = useSearchParams();
   const storyIdParam = searchParams.get("storyId");
   const storyId = storyIdParam ? Number(storyIdParam) : null;
+
+  const folderIdParam = searchParams.get("folderId");
+
+  const [folders, setFolders] = useState<Folder[]>([]);
+  const [selectedFolderId, setSelectedFolderId] = useState<number | null>(
+    folderIdParam ? Number(folderIdParam) : null
+  );
+
+  // キャンバス（640×900固定）を、実際に表示できる領域に収まるよう縮小するための倍率
+  const canvasAreaRef = useRef<HTMLDivElement | null>(null);
+  const [canvasScale, setCanvasScale] = useState(1);
+
+  useEffect(() => {
+    const area = canvasAreaRef.current;
+    if (!area) return;
+
+    const updateScale = () => {
+      const availableWidth = area.clientWidth;
+      const availableHeight = area.clientHeight;
+
+      const scale = Math.min(
+        availableWidth / CANVAS_WIDTH,
+        availableHeight / CANVAS_HEIGHT,
+        1 // 表示領域が十分広い場合でも、実寸より拡大はしない
+      );
+
+      setCanvasScale(scale);
+    };
+
+    updateScale();
+
+    const observer = new ResizeObserver(updateScale);
+    observer.observe(area);
+
+    return () => observer.disconnect();
+  }, []);
 
   const {
     canvasRef,
@@ -66,7 +107,7 @@ export default function CreateMangaPage() {
     handlePanelPointerUp,
     bringToFront,
     deletePanel,
-  } = useMangaCanvas();
+  } = useMangaCanvas([], canvasScale);
 
   // storyId がURLに付いている場合は、保存済みのコマ配置を読み込む
   useEffect(() => {
@@ -115,6 +156,16 @@ export default function CreateMangaPage() {
       .then((response) => response.json())
       .then((data: Dialogue[]) => setDialogues(data));
   }, [storyId]);
+
+  // フォルダタブ表示用に、ユーザーの素材フォルダ一覧を取得する
+  // （TopicChoice画面のfetchFoldersと同じ方式）
+  useEffect(() => {
+    if (!loginUser.id) return;
+
+    fetch(`${import.meta.env.VITE_API_BASE_URL}/api/folders?userId=${loginUser.id}`)
+      .then((response) => response.json())
+      .then((data: Folder[]) => setFolders(data));
+  }, [loginUser.id]);
 
   const handleSave = async () => {
     if (!storyId) {
@@ -178,6 +229,25 @@ export default function CreateMangaPage() {
   return (
     <MainLayout
       showAdvertisement={false}
+      headerSecondaryContent={
+        folders.length > 0 && (
+          <div className="CreateMangaPage-folder-tabs">
+            {folders.map((folder) => (
+              <button
+                key={folder.id}
+                type="button"
+                className={
+                  "CreateMangaPage-folder-tab" +
+                  (selectedFolderId === folder.id ? " active" : "")
+                }
+                onClick={() => setSelectedFolderId(folder.id)}
+              >
+                {folder.name}
+              </button>
+            ))}
+          </div>
+        )
+      }
       headerContent={
         <div className="CreateMangaPage-top">
           <div className="CreateMangaPage-thema">
@@ -234,14 +304,29 @@ export default function CreateMangaPage() {
 
       {/* 中央：固定枠のキャンバス */}
       <div className="CreateMangaPage-canvas-area">
+        {/* ツールバー分の高さを除いた、キャンバスに使える領域を測るための箱 */}
+        <div className="CreateMangaPage-canvas-measure" ref={canvasAreaRef}>
+        {/* 表示領域の分だけ場所を確保するための箱（実寸 × 縮小率のサイズ） */}
         <div
-          ref={canvasRef}
-          className="CreateMangaPage-left"
-          style={{ width: CANVAS_WIDTH, height: CANVAS_HEIGHT }}
-          onDrop={handleCanvasDrop}
-          onDragOver={handleCanvasDragOver}
-          onClick={deselect}
+          className="CreateMangaPage-canvas-scale-wrapper"
+          style={{
+            width: CANVAS_WIDTH * canvasScale,
+            height: CANVAS_HEIGHT * canvasScale,
+          }}
         >
+          <div
+            ref={canvasRef}
+            className="CreateMangaPage-left"
+            style={{
+              width: CANVAS_WIDTH,
+              height: CANVAS_HEIGHT,
+              transform: `scale(${canvasScale})`,
+              transformOrigin: "top left",
+            }}
+            onDrop={handleCanvasDrop}
+            onDragOver={handleCanvasDragOver}
+            onClick={deselect}
+          >
           <img className="blankpaper" src={BLANK_PAPER_SRC} alt="blankpaper" />
 
           {panels.map((panel) => (
@@ -284,6 +369,8 @@ export default function CreateMangaPage() {
               ×
             </button>
           )}
+          </div>
+        </div>
         </div>
 
         <div className="CreateMangaPage-toolbar">
