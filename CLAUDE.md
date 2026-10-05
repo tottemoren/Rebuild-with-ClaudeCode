@@ -1,6 +1,45 @@
 # CLAUDE.md
 
-このファイルは、Claude Code がこのリポジトリで作業する際に毎回読み込む前提知識です。
+このファイルは、Claude Code がこのリポジトリで作業する際に毎回読み込む決まりごとです。
+リポジトリは公開されるため、鍵・個人情報・実際のアカウントIDは書かないこと。
+
+## 守ること（ガードレール）
+
+### 1. 作業の進め方
+
+- 変更を伴う作業（ファイル編集、コミット、push、設定変更、変更を伴うコマンド）の前に、初学者にも分かる言葉で次を説明し、ユーザーの了解を得てから実行する
+  1. 何のために（目的）
+  2. 考え方（なぜその方法か）
+  3. 作業予定（どのファイル・コマンドで何をするか）
+  4. 変更されるもの・されないもの
+  5. リスクと戻し方
+  6. 確認してほしいこと
+- 1ステップずつ進める。承認された範囲を超えて作業を広げない。必要になったら、再度説明して聞く
+- 読み取りだけの調査（ファイルを読む、状態を確認する）は、説明の準備として行ってよい。行う前に一言伝える
+- 不確かなことは推測で進めず、選択肢と推奨を示して聞く。決定権はユーザーにある
+
+### 2. 事前確認なしにやってはいけない操作
+
+- git：commit、push、ブランチの作成・削除、PR・マージ、force push、`reset --hard`など履歴を書き換える操作。mainへ直接pushしない（作業は `feature/` ブランチで行う）
+- 削除：複数ファイルの一括削除、DBのデータや `RebuildJava/uploads/` の削除
+- 外部サービスの設定変更：GitHub（ブランチ保護、Secretsなど）、AWS（S3、CloudFront、IAMなど）、本番環境への操作
+- 鍵・トークン・パスワードの取り扱い：`.env*` の中身を表示・出力・コミットしない。チャットに貼らせない
+- `.github/workflows/` の変更（mainへのマージが本番公開に直結するため）
+- 依存ライブラリの追加・バージョン変更
+- CORS・認証・DB接続の設定変更（本番のフロントエンドとの接続が切れる恐れがあるため）
+
+### 3. 検証の義務（「できた」と言う前に）
+
+- 変更後は、関連するテストとlintを実行し、結果（成功/失敗と件数）を報告する。実行していない場合は、していないと明記する
+- テストの削除・無効化・弱体化で通すことは禁止。失敗したら原因を説明して本体を直す（仕様変更ならユーザーに確認する）
+- 画面の変更は、ブラウザで実際に動作確認する。確認できなかった場合はその旨を伝える
+- 変更が本番に影響するかどうかを毎回説明する
+
+### 4. 範囲の守り方
+
+- 依頼されていない修正・整理・リファクタリングはしない。気づいた問題は直さず報告する
+- 1つのブランチ・PRは1つの目的に絞る
+- コミットには、その作業に関係するファイルだけを明示的に指定して含める（`git add -A` / `git add .` は使わない）。ユーザーが編集中の未コミットの変更を巻き込まない
 
 ## プロジェクト概要
 
@@ -8,44 +47,55 @@ Rebuild は、ユーザーが作画した同じイラストを使って何度で
 
 ## 技術スタック
 
-- フロントエンド: React 19 + TypeScript + Vite
-- バックエンド: Java 21 + Spring Boot 4 + Spring Data JPA + Spring Security
-- データベース: MySQL 8.4
-- 開発環境: macOS / Eclipse / VS Code / Docker
+- フロントエンド：React 19 + TypeScript + Vite（テスト：Vitest + Testing Library）
+- バックエンド：Java 21 + Spring Boot 4 + Spring Data JPA + Spring Security（テスト：JUnit + MockMvc。実際のMySQLに接続して検証）
+- データベース：MySQL 8.4
+- CI/CD：GitHub Actions（Frontend CI / Backend CI / Deploy Frontend）
+- 本番：フロントエンドは AWS（S3 + CloudFront）。バックエンドの本番デプロイは未構築
+- 開発環境：macOS / Eclipse / VS Code / Docker
 
 ## ディレクトリ構成
 
 ```
 Rebuild
-├── RebuildReact/        # フロントエンド (React + TypeScript)
-│   └── src/
-│       ├── pages/        # 画面単位のコンポーネント
-│       ├── components/   # 共通コンポーネント (auth, layout など)
-│       ├── hooks/
-│       ├── utils/
-│       ├── types/
-│       └── styles/
+├── RebuildReact/         # フロントエンド (React + TypeScript)
+│   └── src/ (pages / components / hooks / utils / types / styles)
 ├── RebuildJava/          # バックエンド (Spring Boot)
-│   └── src/main/java/com/example/demo/
+│   ├── src/main/java/com/example/demo/
+│   ├── src/test/java/com/example/demo/   # テスト
+│   └── uploads/          # アップロードされた画像の実データ（Dockerと共有）
 ├── database/             # init.sql (MySQLの初期化スクリプト)
-├── docs/                 # 要件・画面設計・API・DB設計・テストのドキュメント
-│   └── docs/ClaudeCode CHANGELOG/  # Claude Codeによる変更履歴（下記参照）
+├── docs/                 # ドキュメント（下記の地図を参照）
+├── .github/workflows/    # CI/CD
 └── compose.yml           # Docker Compose設定
 ```
 
+### ドキュメントの地図（`docs/`）
+
+- `01-requirements`：要件定義
+- `02-screen-design`：画面一覧・画面遷移図・ワイヤーフレーム・画面仕様書
+- `03-system-design`：システム設計・構成図・技術スタック
+- `04-database`：テーブル定義・ER図
+- `05-api`：API一覧・API詳細
+- `06-test`：未整備
+- `docs/ClaudeCode CHANGELOG/`：変更履歴
+
+注意：`01〜05` には「目標とする設計」が含まれ、現状の実装と異なる場合がある（例：JWT認証・S3保存は未実装）。食い違いを見つけたら実装が正。どちらに合わせるかは勝手に決めず、ユーザーに確認する。
+
 ## よく使うコマンド
 
-### フロントエンド (RebuildReact)
+### フロントエンド（RebuildReact）
 
 ```bash
 cd RebuildReact
 npm install       # 依存関係インストール
 npm run dev       # 開発サーバー起動 (localhost:5173)
-npm run build     # 本番ビルド
 npm run lint      # ESLint実行
+npm run test      # テスト実行 (Vitest)
+npm run build     # 本番ビルド
 ```
 
-### バックエンド (RebuildJava)
+### バックエンド（RebuildJava）
 
 ```bash
 cd RebuildJava
@@ -53,52 +103,54 @@ cd RebuildJava
 ./gradlew test      # テスト実行
 ```
 
+テストはアプリ起動時にMySQLへ接続する。`application.properties` の接続先はDocker内でしか通じない `mysql:3306` のため、ローカルでは使い捨てのMySQLを別ポート（例：3308）で起動し、環境変数 `SPRING_DATASOURCE_URL` / `SPRING_DATASOURCE_USERNAME` / `SPRING_DATASOURCE_PASSWORD` で接続先を上書きして実行する（値は `.github/workflows/backend-ci.yml` と同じ）。普段の開発用DB（ホスト側3307）には接続しない。
+
 ### Docker
 
 ```bash
-docker compose up -d      # frontend / backend / mysql をまとめて起動
-docker compose down       # 停止
-docker compose logs -f    # ログ確認
+docker compose up -d                 # frontend / backend / mysql をまとめて起動
+docker compose up -d --build backend # バックエンドの変更を反映（イメージの再ビルドが必要）
+docker compose down                  # 停止
+docker compose logs -f               # ログ確認
 ```
 
 ## コーディング規約
 
-<!-- 例: 好みに合わせて書き換えてください -->
 - コンポーネント名は PascalCase、関数・変数は camelCase
 - 1コンポーネント1ファイルを基本とする
 - コメントは「なぜそうしたか」が非自明な場合のみ書く。自明な処理説明は書かない
 - 未使用のimport・変数は残さない
+- 機能追加・修正には、対応するテストの追加を作業予定に含めて提案する
 
-## Git / コミット運用
+## Git / PR運用
 
-<!-- 例: 好みに合わせて書き換えてください -->
-- コミットメッセージは日本語、Conventional Commits的な接頭辞は使わず簡潔な要約でOK
-- Claude Code はユーザーから明示的に指示されない限り `git commit` / `git push` しない
-- 破壊的なgit操作（`reset --hard`, `force push` など）は事前に確認を取ってから実行する
+- ブランチ名は `feature/内容`（例：`feature/backend-ci`）。mainに直接commit・pushしない
+- PRの作成とマージは、ユーザーがGitHub上で行う。Claude Code は作成・マージしない（PR本文の下書きは提供してよい）
+- マージ前に Frontend CI / Backend CI が成功していること
+- mainへのマージで `RebuildReact/` 配下に変更があると、本番（S3 + CloudFront）へ自動デプロイされる。影響を必ず説明する
+- コミットメッセージは日本語で、簡潔な要約（必要なら説明を追記）
+- 破壊的なgit操作は事前に確認を取ってから実行する
 
 ## 変更履歴（Changelog）の運用
 
-Claude Code が何らかの修正・変更を行った場合、**指示がなくても毎回**以下に記録すること。
+Claude Code が承認を得て何らかの修正・変更を行った場合、**指示がなくても毎回**以下に記録すること。
 
-- 場所: `docs/docs/ClaudeCode CHANGELOG/YYYY/MM/YYYY-MM-DD.md`
+- 場所：`docs/docs/ClaudeCode CHANGELOG/YYYY/MM/YYYY-MM-DD.md`
 - 同じ日に複数回作業した場合は、新規ファイルを作らず同じ日付のファイルに追記する
-- フォーマットは既存ファイル（例: `2026-08-08.md`）に倣う:
-  ```
-  ## Claude によるアップデート（YYYY-MM-DD）
+- フォーマットは既存ファイルに倣う（`## Claude によるアップデート（YYYY-MM-DD）` → 概要 → `### 実施した内容`）
 
-  （概要）
+## プロジェクト固有の注意
 
-  ### 実施した内容
-  1. ...
-  2. ...
-  ```
-
-## 触ってはいけない・注意が必要な設定
-
-<!-- 例: 好みに合わせて書き換えてください -->
-- `compose.yml` / `RebuildJava/src/main/resources/application.properties` / `database/init.sql` のDB名・ユーザー名・パスワード（`RebuildDB_CloudCode` 等）は、Docker/アプリの動作に直結するため、必要がない限り変更しない
-- `.env` など環境変数ファイルの中身をログや出力に含めない
+- `compose.yml` / `RebuildJava/src/main/resources/application.properties` / `database/init.sql` のDB名・ユーザー名・パスワードは、動作に直結するため必要がない限り変更しない
+- `RebuildJava/uploads/` はユーザーの実データ。作業やテストで削除・上書きしない（テストの保存先は一時フォルダに差し替える）
+- 実在の人物・作品・キャラクターの名前や画像を、コード・素材・docs・テストデータに入れない（過去に混入があった）。新しい素材や固有名詞を追加するときは、実在のものと一致していないか確認する
+- docsは公開される前提で、現在のスコープ（v1）に沿って書く。範囲外の予定や構想は、ユーザーの明示的な指示がない限り書き込まない
 - 既存DBに平文パスワードで登録済みのユーザーがいる場合、パスワードハッシュ化の仕様変更でログインできなくなることがある（テスト用アカウントは再登録が必要）
+
+## 既知の課題（依頼がない限り直さず、気づいたら報告するだけ）
+
+[docs/05-api/api-list.md](docs/05-api/api-list.md) の「現行実装との主な差分」を参照（認証未実装などを含む）。
+バックエンドの本番デプロイ、DBマイグレーション管理、監視は未整備。
 
 ## 開発予定・今後の目標
 
