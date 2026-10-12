@@ -1,0 +1,119 @@
+/* name: ネーム帳 */
+/* fonts: https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Klee+One:wght@400;600&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap */
+/* B1 ネーム帳 — Home B1 と同じ: 原稿用紙の白 / Gペン墨 / ネーム水色 / 赤ペン、1.5px コマ枠 + 墨の版ズレ影ボタン、
+   スクリーントーンは「現在地（選択中のフォルダ・ページ）」だけ。 */
+:root{
+  --paper:#FFFFFF; --ink:#1A1D23; --ink-2:#464C56; --ink-3:#5F6670;
+  --tone:#C5CAD2; --tone-2:#E8EBEF; --tone-3:#F4F6F8;
+  --blue:#1767BE; --blue-dk:#0F4F96; --blue-tint:#E5EFFA;
+  --red:#C3271C;
+  --desk:#4E535B;           /* ワークスペース: 墨を薄めたクールグレー */
+  --line:1.5px;
+  --f-ui:"Zen Kaku Gothic New",system-ui,sans-serif;
+  --f-logo:"Dela Gothic One","Zen Kaku Gothic New",sans-serif;
+  --f-memo:"Klee One","Zen Kaku Gothic New",sans-serif;
+  --dots:radial-gradient(circle,rgba(23,103,190,.30) .9px,transparent 1.3px);
+}
+body{font-family:var(--f-ui);font-size:13.5px;line-height:1.5;color:var(--ink);background:var(--paper);-webkit-font-smoothing:antialiased;font-feature-settings:"palt" 1}
+.app{background:var(--paper)}
+svg{color:inherit}
+
+/* ---------- header ---------- */
+.hd{background:var(--paper);border-bottom:1px solid var(--tone-2)}
+.logo{color:var(--ink)}
+.logo-text{font-family:var(--f-logo);font-size:24px;line-height:1;letter-spacing:.01em}
+.logo:focus-visible{outline:2px solid var(--blue);outline-offset:4px;border-radius:2px}
+
+.story{background:var(--paper);border:var(--line) solid var(--ink);border-radius:3px}
+.story-title{font-weight:700;font-size:15px}
+.story-synopsis{font-family:var(--f-memo);font-size:13px;color:var(--ink);line-height:1.55}
+.story-genres{font-size:12px}
+.genre-label{color:var(--ink-3)}
+.genre{font-size:12px;font-weight:700;color:var(--blue-dk);background:var(--blue-tint);border-radius:2px;line-height:1.7}
+
+/* folder tabs: 現在地 = 墨のコマ枠 + 水色トーン (Home サイドメニューと同じ) */
+.folder{background:transparent;border:var(--line) solid transparent;border-radius:4px;color:var(--ink-2)}
+.folder-cover{border:1px solid var(--tone);border-radius:2px;background:#fff}
+.folder-name{font-weight:500}
+.folder:hover{background:var(--tone-2);color:var(--ink)}
+.folder.is-active{border-color:var(--ink);color:var(--ink);background-color:#fff;background-image:var(--dots);background-size:5px 5px}
+.folder.is-active .folder-cover{border-color:var(--ink)}
+.folder.is-active .folder-name{font-weight:700}
+.folder:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.folder-add.btn{border:var(--line) dashed var(--tone);box-shadow:none;background:var(--tone-3);color:var(--ink-2);font-size:12px;font-weight:500;border-radius:4px}
+.folder-add.btn:hover{border-color:var(--ink);color:var(--ink);background:#fff;transform:none;box-shadow:none}
+.folder-track{background:var(--tone-2);border-radius:3px}
+.folder-thumb{background:var(--ink-3);border-radius:3px}
+
+/* ---------- buttons (Home B1: 墨輪郭 + 2px 墨影) ---------- */
+.btn{font-family:var(--f-ui);font-size:13px;font-weight:700;color:var(--ink);background:#fff;border:var(--line) solid var(--ink);border-radius:4px;box-shadow:2px 2px 0 var(--ink);transition:transform .08s,box-shadow .08s,background-color .12s}
+.btn:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--ink);background:var(--blue-tint)}
+.btn:active{transform:translate(2px,2px);box-shadow:0 0 0 var(--ink)}
+.btn:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
+.btn svg{color:currentColor}
+.btn-ghost{border-color:transparent;box-shadow:none;color:var(--ink-2);font-weight:500;background:transparent}
+.btn-ghost:hover{background:var(--tone-2);color:var(--ink);box-shadow:none;transform:none}
+.btn-primary{background:var(--blue);color:#fff;font-size:13.5px}
+.btn-primary:hover{background:var(--blue-dk)}
+.sb-toggle{box-shadow:none;font-weight:500;font-size:12.5px}
+.sb-toggle:hover{box-shadow:2px 2px 0 var(--ink)}
+.avatar{border-radius:50%;background:var(--blue-tint);color:var(--blue-dk);font-family:var(--f-memo);font-weight:600;font-size:15px;box-shadow:none}
+.avatar:hover{box-shadow:none;transform:none;background:#D6E6F8}
+
+/* ---------- page list ---------- */
+.pages{background:var(--paper);border-right:1px solid var(--tone-2)}
+.pane-head h2{font-size:14px;font-weight:700}
+.count{font-size:12px;color:var(--ink-3)}
+.page{background:transparent;border:var(--line) solid transparent;border-radius:4px;color:var(--ink-2)}
+.page:hover{background:var(--tone-2)}
+.page-no{font-size:12px;font-weight:500}
+.page-thumb{background:var(--tone);border-radius:2px}
+.page-thumb i{background:#fff}
+.page.is-active{border-color:var(--ink);color:var(--ink);background-color:#fff;background-image:var(--dots);background-size:5px 5px}
+.page.is-active .page-no{font-weight:700;color:var(--ink)}
+.page.is-empty .page-thumb{background:var(--tone-3);outline:1px dashed var(--tone);outline-offset:-1px}
+.page.is-empty .page-thumb i{background:transparent;border:1px dashed var(--tone)}
+.page:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.page-add.btn{box-shadow:none;font-size:12.5px}
+.page-add.btn:hover{box-shadow:2px 2px 0 var(--ink)}
+
+/* ---------- stage ---------- */
+.workspace{background:var(--desk)}
+.paper{background:#FFFFFF;box-shadow:0 1px 0 rgba(0,0,0,.25),0 6px 18px rgba(0,0,0,.28)}
+.koma{border:2px solid #111;background:#fff}
+.koma.is-selected{outline:2px solid var(--blue);outline-offset:3px}
+.koma-handle{width:9px;height:9px;background:var(--blue);border:1.5px solid #fff;box-shadow:0 0 0 1px var(--blue)}
+.h-tl{top:1px;left:1px}.h-tr{top:1px;right:1px}.h-bl{bottom:1px;left:1px}.h-br{bottom:1px;right:1px}
+.page-label{color:#444;font-family:var(--f-ui)}
+.drop-hint{background:rgba(26,29,35,.78);color:#fff;font-size:12px;border-radius:3px;border:1px dashed rgba(255,255,255,.55)}
+
+.toolbar{background:var(--paper);border-top:1px solid var(--tone-2)}
+.toolbar .btn:not(.btn-primary):not(.btn-ghost){box-shadow:none}
+.toolbar .btn:not(.btn-primary):not(.btn-ghost):hover{box-shadow:2px 2px 0 var(--ink)}
+.zoom{border:var(--line) solid var(--ink);border-radius:4px}
+.zoom .btn{border-radius:2px}
+.zoom output{font-size:13px;font-weight:700}
+.save-state{font-size:12.5px;color:var(--ink-3)}
+.save-state svg{color:var(--blue)}
+
+/* ---------- materials ---------- */
+.materials{background:var(--paper);border-left:1px solid var(--tone-2)}
+.chip{font-family:var(--f-ui);font-size:12.5px;font-weight:500;color:var(--ink-2);background:#fff;border:var(--line) solid var(--ink);border-radius:4px}
+.chip:hover{background:var(--tone-2);color:var(--ink)}
+.chip.is-active{background:var(--ink);color:#fff;font-weight:700}
+.chip:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.mat{background:#fff;border:var(--line) solid var(--ink);border-radius:3px;overflow:hidden;color:var(--ink)}
+.mat svg{border-bottom:1px solid var(--tone-2)}
+.mat-name{font-family:var(--f-memo);font-size:12.5px;font-weight:600}
+.mat:hover{box-shadow:2px 2px 0 var(--ink)}
+.mat:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+
+/* ---------- slide-in menu ---------- */
+.sidebar{background:var(--paper);border-right:var(--line) solid var(--ink);box-shadow:6px 0 24px rgba(26,29,35,.18)}
+.sidebar a{color:var(--ink-2);font-size:14px;font-weight:500;border:var(--line) solid transparent;border-radius:4px}
+.sidebar a:hover{background:var(--tone-2);color:var(--ink)}
+.sidebar a[aria-current]{color:var(--ink);font-weight:700;border-color:var(--ink);background-color:#fff;background-image:var(--dots);background-size:5px 5px}
+.sidebar a[aria-current] svg{color:var(--blue)}
+.sidebar a:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.scrim{background:rgba(26,29,35,.32)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}

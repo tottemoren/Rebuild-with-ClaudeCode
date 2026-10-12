@@ -1,0 +1,104 @@
+/* name: クールグレー・ワークベンチ */
+/* fonts: https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=IBM+Plex+Sans+Condensed:wght@600;700&display=swap */
+
+/* A2 — cool-gray bench, white sheets, deep teal, squared 6px tools (same tokens as Home A2).
+   Workspace = Slate #4A545E: a darkened version of the blue-gray bench, so the "desk"
+   under the spread is literally the same material as the app background, just deeper. */
+:root{
+  --bench:#F2F4F6; --sheet:#FFFFFF; --steel:#E8ECF0; --steel-2:#DDE2E7; --rule:#DDE2E7; --rule-strong:#BCC4CC;
+  --ink:#1B1F24; --body:#353B42; --text-2:#56616C;
+  --accent:#0B7064; --accent-hover:#085A50; --accent-soft:#E1F1EE;
+  --desk:#4A545E; --manuscript-ink:#111111;
+}
+body{font-family:"IBM Plex Sans JP",system-ui,sans-serif;color:var(--ink);background:var(--bench);font-size:14px;-webkit-font-smoothing:antialiased}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* ---------- buttons (6px, outlined secondary) ---------- */
+.btn{border:1px solid var(--rule-strong);border-radius:6px;background:var(--sheet);color:var(--ink);font-size:13.5px;font-weight:600;line-height:1.2;transition:background-color .12s,border-color .12s}
+.btn:hover{background:var(--bench);border-color:#9AA4AE}
+.btn-ghost{background:transparent;border-color:transparent}
+.btn-ghost:hover{background:var(--steel);border-color:transparent}
+.btn-primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn-primary:hover{background:var(--accent-hover);border-color:var(--accent-hover)}
+
+/* ---------- header (white sheet on the bench) ---------- */
+.hd{background:var(--sheet);border-bottom:1px solid var(--rule)}
+.logo{color:var(--accent);border-radius:6px}
+.logo-text{font-family:"IBM Plex Sans Condensed",sans-serif;font-weight:700;font-size:22px;color:var(--ink)}
+.sb-toggle{background:transparent;border-color:transparent;color:var(--text-2);font-size:13px;font-weight:500}
+.sb-toggle:hover{background:var(--steel);color:var(--ink);border-color:transparent}
+.story{background:var(--bench);border:1px solid var(--rule);border-radius:8px}
+.story-title{font-weight:600;color:var(--ink)}
+.story-synopsis{color:var(--body)}
+.genre-label{font-size:12px;color:var(--text-2);margin-right:2px}
+.genre{font-size:12px;font-weight:500;background:var(--sheet);color:var(--body);border:1px solid var(--rule);border-radius:4px}
+
+/* folder tabs: Home toggle language — selected = white sheet, teal text, teal edge */
+.folder{border:1px solid transparent;background:transparent;border-radius:6px;color:var(--ink)}
+.folder:hover{background:var(--bench)}
+.folder-cover{border:1px solid var(--rule-strong);border-radius:4px;background:#fff}
+.folder-name{color:var(--text-2);font-size:11.5px!important;text-align:center;font-weight:500}
+.folder.is-active{background:var(--sheet);border-color:var(--rule-strong);box-shadow:inset 0 -3px 0 var(--accent)}
+.folder.is-active .folder-cover{border-color:var(--ink)}
+.folder.is-active .folder-name{color:var(--accent);font-weight:600}
+.folder-add{background:transparent;border:1px dashed var(--rule-strong);border-radius:6px;color:var(--text-2);font-size:12px;font-weight:500}
+.folder-add:hover{background:var(--bench)}
+.folder-track{background:var(--steel);border-radius:2px}
+.folder-thumb{background:var(--rule-strong);border-radius:2px}
+
+.avatar{background:var(--ink);border-color:var(--ink);color:#fff;border-radius:50%;font-weight:700}
+.avatar:hover{background:#353B42}
+
+/* ---------- page list: Home side-menu language — white + 3px teal left bar ---------- */
+.pages{background:var(--bench);border-right:1px solid var(--rule)}
+.pane-head h2{font-weight:600;color:var(--ink)}
+.count{font-family:"IBM Plex Sans Condensed",sans-serif;font-weight:600;font-size:12.5px;color:var(--text-2)}
+.page{border:1px solid transparent;background:transparent;border-radius:6px;color:var(--text-2)}
+.page:hover{background:var(--steel)}
+.page-no{font-family:"IBM Plex Sans Condensed",sans-serif;font-weight:600;font-size:12.5px}
+.page-thumb{background:var(--steel-2);border-radius:2px}
+.page-thumb i{background:#fff;box-shadow:inset 0 0 0 1px var(--rule-strong)}
+.page.is-active{background:var(--sheet);border-color:var(--rule);color:var(--accent);box-shadow:inset 3px 0 0 var(--accent)}
+.page.is-active .page-no{font-weight:700}
+.page.is-active .page-thumb{background:var(--accent)}
+.page.is-empty .page-thumb i{background:repeating-linear-gradient(-45deg,#fff 0 4px,var(--steel) 4px 8px)}
+.page-add{border-style:dashed;background:transparent;color:var(--text-2)}
+.page-add:hover{background:var(--steel);color:var(--ink)}
+
+/* ---------- stage ---------- */
+.workspace{background:var(--desk)}
+.paper{background:#FFFFFF;box-shadow:0 0 0 1px rgba(0,0,0,.25),0 4px 14px rgba(0,0,0,.22)}
+.koma{border:2px solid var(--manuscript-ink);background:#fff}
+.koma.is-selected{outline:2px solid var(--accent);outline-offset:3px}
+.koma-handle{width:9px;height:9px;background:#fff;border:2px solid var(--accent);border-radius:0}
+.page-label{color:#6B6B6B;font-family:"IBM Plex Sans Condensed",sans-serif;font-weight:600}
+.drop-hint{background:rgba(27,31,36,.86);color:#FFFFFF;border-radius:6px;font-weight:500}
+
+.toolbar{background:var(--sheet);border-top:1px solid var(--rule)}
+.zoom{background:var(--bench);border:1px solid var(--rule);border-radius:6px}
+.zoom .btn{border-color:transparent;background:transparent;border-radius:4px}
+.zoom .btn:hover{background:var(--steel)}
+.zoom output{font-family:"IBM Plex Sans Condensed",sans-serif;font-weight:600;font-size:13.5px;color:var(--ink)}
+.save-state{font-size:12.5px;color:var(--text-2)}
+.save-state svg{color:var(--accent)}
+
+/* ---------- materials ---------- */
+.materials{background:var(--bench);border-left:1px solid var(--rule)}
+/* chips: Home toggle language — tray of steel, selected = white + teal */
+.chip{border:1px solid var(--rule);border-radius:4px;background:var(--steel);color:var(--text-2);font-size:12.5px;font-weight:500}
+.chip:hover{color:var(--ink)}
+.chip.is-active{background:var(--sheet);color:var(--accent);border-color:var(--accent);font-weight:600}
+.mat{border:1px solid var(--rule);background:#fff;border-radius:6px;overflow:hidden}
+.mat:hover{border-color:var(--rule-strong)}
+.mat svg{border-bottom:1px solid var(--rule)}
+.mat-name{color:var(--body)}
+
+/* ---------- slide-in menu ---------- */
+.sidebar{background:var(--bench);border-right:1px solid var(--rule);box-shadow:8px 0 24px rgba(27,31,36,.16)}
+.sidebar a{border-radius:6px;color:var(--ink);font-size:14px;gap:16px}
+.sidebar a svg{color:var(--text-2)}
+.sidebar a:hover{background:var(--steel)}
+.sidebar a[aria-current]{background:var(--sheet);color:var(--accent);font-weight:600;box-shadow:inset 3px 0 0 var(--accent),0 0 0 1px var(--rule)}
+.sidebar a[aria-current] svg{color:var(--accent)}
+.scrim{background:rgba(27,31,36,.36)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}

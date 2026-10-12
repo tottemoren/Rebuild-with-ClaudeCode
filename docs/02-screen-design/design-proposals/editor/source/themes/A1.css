@@ -1,0 +1,104 @@
+/* name: ホワイト・キャンバス */
+/* fonts: https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Manrope:wght@600;800&display=swap */
+
+/* A1 — white chrome, one indigo accent, pill shapes (same tokens as Home A1).
+   Workspace = Graphite #5F6368: the same gray A1 uses for secondary text, so the
+   "desk" is still part of the palette, and it is mid-dark enough for white paper to pop. */
+:root{
+  --bg:#FFFFFF; --mist:#F1F3F4; --mist-2:#E3E5E8; --line:#E3E5E8; --line-strong:#C7CBD1;
+  --ink:#202124; --body:#3C4043; --text-2:#5F6368;
+  --accent:#2741B8; --accent-hover:#1F3596; --accent-soft:#E8ECFB;
+  --desk:#5F6368; --manuscript-ink:#111111;
+}
+body{font-family:"Zen Kaku Gothic New",system-ui,sans-serif;color:var(--ink);background:var(--bg);font-size:14px;font-feature-settings:"palt" 1;-webkit-font-smoothing:antialiased}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+svg{color:currentColor}
+
+/* ---------- buttons (pill) ---------- */
+.btn{border:0;border-radius:999px;background:var(--mist);color:var(--ink);font-size:13.5px;font-weight:500;line-height:1.2;transition:background-color .12s}
+.btn:hover{background:var(--mist-2)}
+.btn-ghost{background:transparent}
+.btn-ghost:hover{background:var(--mist)}
+.btn-primary{background:var(--accent);color:#fff;font-weight:700;padding-left:16px!important;padding-right:18px!important}
+.btn-primary:hover{background:var(--accent-hover)}
+
+/* ---------- header ---------- */
+.hd{background:var(--bg);border-bottom:1px solid var(--line)}
+.logo{color:var(--accent);border-radius:8px}
+.logo-text{font-family:"Manrope",sans-serif;font-weight:800;font-size:21px;letter-spacing:-.02em;color:var(--ink)}
+.sb-toggle{background:transparent;color:var(--text-2);font-size:13px}
+.sb-toggle:hover{background:var(--mist);color:var(--ink)}
+.story{background:var(--bg);border:1px solid var(--line);border-radius:12px}
+.story-title{font-weight:700;color:var(--ink)}
+.story-synopsis{color:var(--body)}
+.genre-label{font-size:12px;color:var(--text-2);margin-right:2px}
+.genre{font-size:12px;font-weight:500;background:var(--mist);color:var(--body);border-radius:999px;padding:1px 10px}
+
+/* folder tabs: same language as the Home メモ/ストーリー toggle — selected = ink pill */
+.folder{border:0;background:transparent;border-radius:12px;color:var(--ink)}
+.folder:hover{background:var(--mist)}
+.folder-cover{border:1px solid var(--line-strong);border-radius:8px;background:#fff}
+.folder-name{color:var(--body);border-radius:999px;padding:1px 0;text-align:center;font-size:11.5px!important;letter-spacing:-.02em}
+.folder.is-active .folder-cover{border:2px solid var(--ink)}
+.folder.is-active .folder-name{background:var(--ink);color:#fff;font-weight:700;padding:1px 6px}
+.folder-add{background:transparent;border:1.5px dashed var(--line-strong);border-radius:12px;color:var(--text-2);font-size:12px}
+.folder-add:hover{background:var(--mist);color:var(--ink)}
+.folder-track{background:var(--mist);border-radius:999px}
+.folder-thumb{background:var(--line-strong);border-radius:999px}
+
+.hd-actions .btn{font-size:13.5px}
+.avatar{background:var(--accent)!important;color:#fff!important;border-radius:50%!important;font-weight:700}
+
+/* ---------- page list: same language as Home side menu (indigo soft) ---------- */
+.pages{background:var(--bg);border-right:1px solid var(--line)}
+.pane-head h2{font-weight:700;color:var(--ink)}
+.count{font-size:12px;color:var(--text-2)}
+.page{border:0;background:transparent;border-radius:12px;color:var(--text-2)}
+.page:hover{background:var(--mist)}
+.page-no{font-family:"Manrope",sans-serif;font-weight:600;font-size:12px}
+.page-thumb{background:var(--mist-2);border-radius:4px}
+.page-thumb i{background:#fff;box-shadow:inset 0 0 0 1px var(--line-strong)}
+.page.is-active{background:var(--accent-soft);color:var(--accent)}
+.page.is-active .page-no{font-weight:800}
+.page.is-active .page-thumb{background:var(--accent)}
+.page.is-empty .page-thumb i{background:repeating-linear-gradient(-45deg,#fff 0 4px,var(--mist) 4px 8px)}
+.page-add{background:transparent;border:1.5px dashed var(--line-strong);color:var(--text-2)}
+.page-add:hover{background:var(--mist);color:var(--ink)}
+
+/* ---------- stage ---------- */
+.workspace{background:var(--desk)}
+.paper{background:#FFFFFF;box-shadow:0 1px 2px rgba(0,0,0,.25),0 6px 20px rgba(0,0,0,.18)}
+.koma{border:2px solid var(--manuscript-ink);background:#fff}
+.koma.is-selected{outline:2px solid var(--accent);outline-offset:3px}
+.koma-handle{width:9px;height:9px;background:var(--accent);border:1.5px solid #fff;border-radius:2px}
+.page-label{color:#6B6B6B;font-family:"Manrope",sans-serif;font-weight:600}
+.drop-hint{background:rgba(255,255,255,.94);color:var(--body);border-radius:999px;font-weight:500;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+
+.toolbar{background:var(--bg);border-top:1px solid var(--line)}
+.zoom{background:var(--mist);border-radius:999px}
+.zoom .btn{background:transparent}
+.zoom .btn:hover{background:var(--mist-2)}
+.zoom output{font-family:"Manrope",sans-serif;font-weight:600;font-size:13px;color:var(--ink)}
+.save-state{font-size:12.5px;color:var(--text-2)}
+.save-state svg{color:var(--accent)}
+
+/* ---------- materials ---------- */
+.materials{background:var(--bg);border-left:1px solid var(--line)}
+/* chips: same as Home toggle — selected = ink fill */
+.chip{border:0;border-radius:999px;background:var(--mist);color:var(--ink);font-size:12.5px;font-weight:500}
+.chip:hover{background:var(--mist-2)}
+.chip.is-active{background:var(--ink);color:#fff}
+.mat{border:1px solid var(--line);background:#fff;border-radius:10px;overflow:hidden;color:var(--body)}
+.mat:hover{border-color:var(--line-strong)}
+.mat svg{border-bottom:1px solid var(--line)}
+.mat-name{color:var(--body)}
+
+/* ---------- slide-in menu (Home side menu) ---------- */
+.sidebar{background:var(--bg);box-shadow:0 0 0 1px var(--line),0 12px 32px rgba(32,33,36,.18)}
+.sidebar a{border-radius:999px;color:var(--ink);font-size:14px;padding:10px 14px;gap:16px}
+.sidebar a svg{color:var(--text-2)}
+.sidebar a:hover{background:var(--mist)}
+.sidebar a[aria-current]{background:var(--accent-soft);color:var(--accent);font-weight:700}
+.sidebar a[aria-current] svg{color:var(--accent)}
+.scrim{background:rgba(32,33,36,.32)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
