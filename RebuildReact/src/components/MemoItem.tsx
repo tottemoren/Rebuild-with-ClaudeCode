@@ -35,11 +35,19 @@ function MemoItem({
       </div>
 
       <div className="memo-buttons">
-        <button onClick={() => onEdit(memo)}>
+        <button
+          type="button"
+          className="memo-button-edit"
+          onClick={() => onEdit(memo)}
+        >
           編集
         </button>
 
-        <button onClick={() => onDelete(memo.id)}>
+        <button
+          type="button"
+          className="memo-button-delete"
+          onClick={() => onDelete(memo.id)}
+        >
           削除
         </button>
       </div>

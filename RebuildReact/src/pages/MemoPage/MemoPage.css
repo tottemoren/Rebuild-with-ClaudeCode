@@ -2,28 +2,44 @@
     display: flex;
     flex-direction: column;
     height: 100%;
-    padding: 12px;
+    padding: 8px 0;
     gap: 12px;
     overflow-y: auto;
     box-sizing: border-box;
+    text-align: left;
 }
 
 .memo-page-title-row {
     display: flex;
 }
 
-.memo-page-title-input {
-    flex: 1;
-    padding: 8px 10px;
+.memo-page-title-input,
+.memo-page-textarea {
+    border: 1px solid var(--color-line-strong);
+    border-radius: 10px;
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-family: inherit;
     font-size: 14px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
     box-sizing: border-box;
 }
 
-.memo-page-title-input:focus {
+.memo-page-title-input {
+    flex: 1;
+    height: 40px;
+    padding: 0 14px;
+}
+
+.memo-page-title-input::placeholder,
+.memo-page-textarea::placeholder {
+    color: var(--color-text-sub);
+}
+
+.memo-page-title-input:focus,
+.memo-page-textarea:focus {
     outline: none;
-    border-color: #94a3b8;
+    border-color: var(--color-accent);
+    box-shadow: inset 0 0 0 1px var(--color-accent);
 }
 
 /* =======================================
@@ -42,33 +58,23 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
-    padding: 10px;
-    background: #fafafa;
-    border: 1px solid #eee;
-    border-radius: 10px;
+    padding: 12px;
+    background: var(--color-surface);
+    border-radius: var(--radius-panel);
     box-sizing: border-box;
 }
 
 .memo-page-composer-heading {
     font-size: 13px;
-    font-weight: bold;
-    color: #555;
+    font-weight: 700;
+    color: var(--color-text-sub);
 }
 
 .memo-page-textarea {
     width: 100%;
     resize: vertical;
-    padding: 8px;
-    font-size: 14px;
-    font-family: inherit;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-sizing: border-box;
-}
-
-.memo-page-textarea:focus {
-    outline: none;
-    border-color: #94a3b8;
+    padding: 10px 12px;
+    line-height: 1.7;
 }
 
 .memo-page-textarea-horizontal {
@@ -81,23 +87,24 @@
     text-orientation: mixed;
 }
 
+/* 入力欄ごとの主ボタン（保存／更新） */
 .memo-page-save-button {
     align-self: flex-end;
+    height: 36px;
+    padding: 0 20px;
     border: none;
-    border-radius: 18px;
-    padding: 6px 18px;
-    background: linear-gradient(135deg, #ffffff, #f1f5f9);
-    color: #222;
-    font-size: 13px;
-    font-weight: bold;
+    border-radius: var(--radius-pill);
+    background: var(--color-accent);
+    color: var(--color-on-accent);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
     cursor: pointer;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    transition: all 0.2s ease;
+    transition: background 0.12s ease;
 }
 
 .memo-page-save-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    background: var(--color-accent-hover);
 }
 
 /* =======================================
@@ -107,8 +114,8 @@
 .memo-page-list {
     list-style: none;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 10px;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 12px;
     padding: 0;
     margin: 0;
 }
@@ -116,39 +123,42 @@
 .memo-item {
     display: flex;
     flex-direction: column;
-    gap: 6px;
-    padding: 10px;
-    background: #fff;
-    border: 1px solid #eee;
-    border-radius: 10px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+    gap: 8px;
+    padding: 14px 16px 12px;
+    background: var(--color-bg);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-card);
 }
 
 .memo-item-header {
     display: flex;
     justify-content: space-between;
-    align-items: baseline;
-    gap: 6px;
+    align-items: center;
+    gap: 8px;
 }
 
 .memo-item-title {
-    font-weight: bold;
-    font-size: 14px;
-    color: #222;
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--color-text);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 
 .memo-item-direction {
-    font-size: 11px;
-    color: #888;
     flex-shrink: 0;
+    padding: 2px 8px;
+    border-radius: var(--radius-pill);
+    background: var(--color-surface-2);
+    color: var(--color-text-body);
+    font-size: 11px;
 }
 
 .memo-item-body {
     font-size: 13px;
-    color: #444;
+    line-height: 1.7;
+    color: var(--color-text-body);
     white-space: pre-wrap;
     max-height: 120px;
     overflow-y: auto;
@@ -164,23 +174,44 @@
 
 .memo-buttons {
     display: flex;
-    gap: 6px;
+    gap: 8px;
     justify-content: flex-end;
 }
 
 .memo-buttons button {
+    height: 30px;
+    padding: 0 14px;
     border: none;
-    border-radius: 14px;
-    padding: 4px 12px;
-    background: #f1f5f9;
-    color: #333;
-    font-size: 12px;
+    border-radius: var(--radius-pill);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
     cursor: pointer;
-    transition: all 0.15s ease;
+    transition: background 0.12s ease;
 }
 
-.memo-buttons button:hover {
-    background: #e2e8f0;
+.memo-buttons .memo-button-edit {
+    background: var(--color-surface-2);
+    color: var(--color-text);
+}
+
+.memo-buttons .memo-button-edit:hover {
+    background: var(--color-surface-3);
+}
+
+/* 取り消せない操作なので、普段は赤い文字だけにして目立たせすぎない */
+.memo-buttons .memo-button-delete {
+    background: transparent;
+    color: var(--color-danger);
+}
+
+.memo-buttons .memo-button-delete:hover {
+    background: var(--color-danger-soft);
+}
+
+.memo-page button:focus-visible {
+    outline: var(--focus-ring);
+    outline-offset: var(--focus-ring-offset);
 }
 
 @media screen and (max-width: 700px) {
