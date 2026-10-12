@@ -22,7 +22,6 @@ body,
 
 .set,
 .outside-button,
-.left-menu button,
 .RankMatchScreenMove button {
 
     border: none;
@@ -54,7 +53,6 @@ body,
 
 .set:hover,
 .outside-button:hover,
-.left-menu button:hover,
 .RankMatchScreenMove button:hover,
 .artist:hover {
 

@@ -1,55 +1,74 @@
-
 .HomePagetop {
     display: flex;
+    flex-shrink: 0;
     width: 100%;
-    height: 19%;
-    background-color: rgb(255, 255, 255);
-    gap: 10px;
+    min-height: 64px;
+    padding: 8px 16px 8px 0;
+    box-sizing: border-box;
+    background-color: var(--color-bg);
+    gap: 16px;
     align-items: center;
-    border-bottom: 0.5px solid rgb(156, 156, 156);
 }
 
-/* secondaryRow（次へボタン等）を渡した画面だけ、Header自体の高さを中身に合わせて自動で決める。
-   固定の%だと「追加した分だけ余計に広がる／逆に窮屈になる」ため、autoにして
-   実際に必要な高さ（元の1段分 + 追加した1段分）だけ広がるようにする */
-.HomePagetop-tall {
-    height: auto;
-    min-height: 19%;
-    padding: 8px 0;
-}
-
+/* 左メニューと同じ幅にして、ロゴとメニューの左端をそろえる */
 .LogomarkSpace {
-    width: 10%;
+    flex-shrink: 0;
+    width: 232px;
     height: 100%;
-    background-color: rgb(255, 255, 255);
+    padding-left: 12px;
     box-sizing: border-box;
 
     display: flex;
-    justify-content: center;
     align-items: center;
 }
 
 .Logomark {
-    width: 95%;
-    height: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 6px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--color-text);
     cursor: pointer;
-    transition: opacity 0.15s ease;
 }
 
 .Logomark:hover {
-    opacity: 0.8;
+    background: var(--color-surface-2);
+}
+
+.Logomark-mark {
+    width: 26px;
+    height: 26px;
+}
+
+.Logomark-mark rect {
+    fill: var(--color-accent);
+}
+
+.Logomark-mark path {
+    fill: var(--color-on-accent);
+}
+
+.Logomark-word {
+    font-family: var(--font-logo);
+    font-size: 21px;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.02em;
 }
 
 .header-center {
-    width: 55%;
+    flex: 1;
+    min-width: 0;
     height: 100%;
-    background-color: rgb(255, 255, 255);
 
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 6px;
+    gap: 8px;
 }
 
 .header-center-main {
@@ -80,74 +99,144 @@
 }
 
 .space {
-    width: 35%;
+    flex-shrink: 0;
     height: 100%;
 
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    gap: 12px;
-
-    padding-right: 12px;
-    box-sizing: border-box;
+    gap: 8px;
 }
+
+.header-icon {
+    width: 20px;
+    height: 20px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* ======================================
+   検索バー
+====================================== */
 
 .search-input {
     width: 100%;
-    max-width: 420px;
-    height: 42px;
-    padding: 0 14px;
-    border: none;
-    border-radius: 14px 0 0 14px;
-    background: #f1f5f9;
-    font-size: 14px;
+    max-width: 536px;
+    height: 40px;
+    padding: 0 16px;
+    box-sizing: border-box;
+    border: 1px solid var(--color-line-strong);
+    border-right: none;
+    border-radius: var(--radius-pill) 0 0 var(--radius-pill);
+    background: var(--color-bg);
+    color: var(--color-text);
+    font: inherit;
+    font-size: 15px;
     outline: none;
-    box-shadow:
-        inset 0 2px 4px rgba(0,0,0,0.04);
+}
+
+.search-input::placeholder {
+    color: var(--color-text-sub);
+}
+
+.search-input:focus {
+    border-color: var(--color-accent);
+    box-shadow: inset 0 0 0 1px var(--color-accent);
 }
 
 .search-button {
-    height: 42px;
-    padding: 0 16px;
-    border: none;
-    border-radius: 0 14px 14px 0;
-    background: #e2e8f0;
+    display: grid;
+    place-items: center;
+    width: 64px;
+    height: 40px;
+    border: 1px solid var(--color-line-strong);
+    border-radius: 0 var(--radius-pill) var(--radius-pill) 0;
+    background: var(--color-surface);
+    color: var(--color-text);
     cursor: pointer;
 }
 
 .search-button:hover {
-    background: #cbd5e1;
+    background: var(--color-surface-3);
 }
 
 /* ======================================
    右側：設定・アイコン・ログアウト
 ====================================== */
 
+.header-text-button,
+.logout-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 36px;
+    flex-shrink: 0;
+    padding: 0 16px;
+
+    border: none;
+    border-radius: var(--radius-pill);
+    color: var(--color-text);
+    font: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+
+    transition: background 0.12s ease;
+}
+
+.header-text-button {
+    padding: 0 12px;
+    background: transparent;
+}
+
+.header-text-button:hover {
+    background: var(--color-surface-2);
+}
+
+.logout-button {
+    background: var(--color-surface-2);
+}
+
+.logout-button:hover {
+    background: var(--color-surface-3);
+}
+
 .icon-button {
-    width: 42px;
-    height: 42px;
+    width: 36px;
+    height: 36px;
     flex-shrink: 0;
 
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 18px;
 
     border: none;
     border-radius: 50%;
-    background: #f1f5f9;
     cursor: pointer;
-
-    transition: background 0.2s ease;
-}
-
-.icon-button:hover {
-    background: #e2e8f0;
 }
 
 .profile-button {
     padding: 0;
     overflow: hidden;
+    background: var(--color-accent);
+    color: var(--color-on-accent);
+}
+
+.profile-button:hover {
+    background: var(--color-accent-hover);
+}
+
+.profile-button:disabled {
+    cursor: progress;
+    opacity: 0.6;
+}
+
+.profile-initial {
+    font-size: 14px;
+    font-weight: 700;
 }
 
 .profile-avatar {
@@ -157,22 +246,10 @@
     border-radius: 50%;
 }
 
-.logout-button {
-    height: 42px;
-    flex-shrink: 0;
-    padding: 0 18px;
-
-    border: none;
-    border-radius: 100px;
-    background: #f1f5f9;
-    font-size: 14px;
-    cursor: pointer;
-
-    transition: background 0.2s ease;
-}
-
-.logout-button:hover {
-    background: #e2e8f0;
+.HomePagetop button:focus-visible,
+.search-input:focus-visible {
+    outline: var(--focus-ring);
+    outline-offset: var(--focus-ring-offset);
 }
 
 /* ======================================
@@ -186,23 +263,29 @@
 }
 
 .header-toggle-button {
+    height: 32px;
+    padding: 0 16px;
     border: none;
-    border-radius: 18px;
-    padding: 8px 20px;
-    background: #f1f5f9;
-    color: #555;
+    border-radius: var(--radius-pill);
+    background: var(--color-surface-2);
+    color: var(--color-text);
+    font: inherit;
     font-size: 14px;
-    font-weight: bold;
+    font-weight: 500;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: background 0.12s ease;
 }
 
 .header-toggle-button:hover {
-    background: #e2e8f0;
+    background: var(--color-surface-3);
 }
 
+/* 選択中は藍の塗り（左メニューの現在地と同じ色で「選択中＝藍」にそろえる） */
 .header-toggle-button.active {
-    background: #e2e8f0;
-    color: #222;
-    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.18);
+    background: var(--color-accent);
+    color: var(--color-on-accent);
+}
+
+.header-toggle-button.active:hover {
+    background: var(--color-accent-hover);
 }

@@ -38,12 +38,7 @@ function MainLayout({
             <LeftMenu/>
 
             {/* CENTER */}
-            <div
-              className={
-                "main-contents" +
-                (showAdvertisement ? "" : " main-contents-full")
-              }
-            >
+            <div className="main-contents">
                 {children}
             </div>
 

@@ -5,16 +5,15 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #f5f3f3; /* 余白色 */
+  background: var(--color-bg);
   overflow: hidden;
 
 }
 
 .app-canvas {
-  aspect-ratio: 2 / 1;
-  width: min(100vw, calc(100vh * 2 / 1));
-  height: min(100vh, calc(100vw * 1 / 2));
-  background: white;
+  width: 100%;
+  height: 100%;
+  background: var(--color-bg);
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -49,8 +48,7 @@
 .container {
     display: flex;
     width: 100%;
-    padding-top: 10px;
-    background-color: white;
+    background-color: var(--color-bg);
     box-sizing: border-box;
 
     flex: 1;
@@ -77,19 +75,14 @@
    CENTER
 ======================================= */
 
+/* 左メニューと広告枠は固定幅なので、残りの幅をすべて使う（広告枠が無い画面は右端まで広がる） */
 .main-contents {
-    width: 68%;
+    flex: 1;
+    min-width: 0;
     height: 100%;
-    padding: 5px;
-    background-color: rgb(255, 255, 255);
+    padding: 8px 16px 16px;
+    background-color: var(--color-bg);
     box-sizing: border-box;
-    border-left: 1px solid rgb(220, 220, 220);
-    border-right: 1px solid rgb(220, 220, 220);
-}
-
-/* showAdvertisement={false}の画面（広告枠が無い）は、中央エリアが右まで広がる */
-.main-contents-full {
-    width: 90%;
 }
 
 /* =======================================
