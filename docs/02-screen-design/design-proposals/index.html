@@ -50,6 +50,13 @@ h1 { font-size: 1.5rem; margin: 0; text-wrap: balance }
 .vbar { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; justify-content: space-between; padding: 10px 14px; border-bottom: 1px solid var(--line) }
 .vbar strong { font-size: 1rem }
 .vbar a { color: var(--accent); font-size: .85rem }
+.vtools { display: flex; align-items: center; gap: 14px; flex-wrap: wrap }
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; padding: 2px; gap: 2px; background: var(--bg) }
+.seg button { font: inherit; font-size: .85rem; border: 0; border-radius: 6px; padding: 4px 12px; background: transparent; color: var(--muted); cursor: pointer }
+.seg button[aria-pressed="true"] { background: var(--surface); color: var(--fg); box-shadow: 0 0 0 1px var(--line) }
+.seg button:disabled { opacity: .45; cursor: not-allowed }
+.seg button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px }
+.group.is-dropped .cand { opacity: .7 }
 .frame-box { position: relative; width: 100%; overflow: hidden; background: #fff }
 .frame-box iframe { position: absolute; top: 0; left: 0; width: 1440px; border: 0; transform-origin: 0 0 }
 .note { color: var(--muted); font-size: .8rem; margin-top: 12px }
@@ -58,12 +65,12 @@ h1 { font-size: 1.5rem; margin: 0; text-wrap: balance }
 <div class="wrap">
   <header class="top">
     <h1>Rebuild デザイン案比較</h1>
-    <p class="lede">3方向 × 3案 = 9案。どれもホーム画面（メモ表示）とデザインシートです。左の一覧から選ぶと右に表示されます。</p>
+    <p class="lede">3方向 × 3案 = 9案。A・Bの6案は、同じ骨組みにテーマ（CSS）だけを差し替えた漫画作成画面も見られます。左で案を選び、上の切り替えで画面を変えます。</p>
   </header>
   <div class="layout">
     <nav class="rail" id="rail" aria-label="デザイン案一覧"></nav>
     <section class="viewer" aria-live="polite">
-      <div class="vbar"><strong id="vtitle"></strong><a id="vopen" href="#" target="_blank" rel="noopener">別タブで原寸表示</a></div>
+      <div class="vbar"><strong id="vtitle"></strong><div class="vtools"><div class="seg" role="group" aria-label="表示する画面"><button type="button" id="v-home" aria-pressed="true">ホーム</button><button type="button" id="v-editor" aria-pressed="false">漫画作成</button></div><a id="vopen" href="#" target="_blank" rel="noopener">別タブで原寸表示</a></div></div>
       <div class="frame-box" id="box"><iframe id="frame" title="デザイン案プレビュー"></iframe></div>
     </section>
   </div>
@@ -76,7 +83,7 @@ const GROUPS = [
     { id: "A1", name: "ホワイト・キャンバス", font: "Zen Kaku Gothic New ＋ Manrope／藍 #2741B8・ピル型" }, { id: "A2", name: "クールグレー・ワークベンチ", font: "IBM Plex Sans JP ＋ Plex Condensed／ティール #0B7064・角丸6px" }, { id: "A3", name: "ウォーム・アーカイブ", font: "Murecho ＋ Bricolage Grotesque／葡萄 #74306E・下線タブ" } ] },
   { id: "B", name: "B｜原稿・制作道具型", desc: "原稿用紙・インク・トーン・ネームの青鉛筆から語彙を借りた、明るい制作ツール", items: [
     { id: "B1", name: "ネーム帳", font: "Zen Kaku Gothic New ＋ Klee One／ネーム水色 #1767BE・墨影ボタン" }, { id: "B2", name: "入稿前の赤ペン", font: "Murecho ＋ Shippori Mincho B1／赤ペン #C42A22・トンボ付きカード" }, { id: "B3", name: "コマ割り定規", font: "BIZ UDPGothic ＋ Zen Old Mincho／製図藍 #3236A3・斜めボタン" } ] },
-  { id: "C", name: "C｜カラフル・アセット整理型", desc: "メモ・ストーリー・漫画を色で見分けられる、親しみやすいワークスペース", items: [
+  { id: "C", dropped: true, name: "C｜カラフル・アセット整理型", desc: "今回は見送り（ホーム画面のみ）", items: [
     { id: "C1", name: "ふせんボード", font: "Zen Maru Gothic ＋ Mochiy Pop One／パステル付箋・ピル型" }, { id: "C2", name: "カラーインデックス", font: "LINE Seed JP ＋ Outfit／山吹・青・紅・キーキャップ型" }, { id: "C3", name: "若葉トーン", font: "M PLUS Rounded 1c ＋ Kiwi Maru／緑の濃淡7段階・葉っぱ形" } ] },
 ];
 const rail = document.getElementById("rail");
@@ -85,7 +92,7 @@ const box = document.getElementById("box");
 const buttons = [];
 GROUPS.forEach(g => {
   const sec = document.createElement("div");
-  sec.className = "group";
+  sec.className = "group" + (g.dropped ? " is-dropped" : "");
   sec.innerHTML = `<h2>${g.name}</h2><p>${g.desc}</p>`;
   const list = document.createElement("div");
   list.className = "cands";
@@ -94,6 +101,7 @@ GROUPS.forEach(g => {
     b.type = "button"; b.className = "cand"; b.id = "cand-" + it.id;
     b.setAttribute("aria-pressed", "false");
     b.innerHTML = `<b>${it.id}</b><span>${it.name}<small>${it.font}</small></span>`;
+    it.editor = !g.dropped;
     b.addEventListener("click", () => show(it));
     list.appendChild(b); buttons.push([it.id, b]);
   });
@@ -102,15 +110,25 @@ GROUPS.forEach(g => {
 function fit() {
   const s = box.clientWidth / 1440;
   frame.style.transform = `scale(${s})`;
-  let h = 1500;
-  try { h = frame.contentDocument.documentElement.scrollHeight || h } catch (e) {}
+  let h = view === "editor" ? 900 : 1500;
+  if (view !== "editor") { try { h = frame.contentDocument.documentElement.scrollHeight || h } catch (e) {} }
   frame.style.height = h + "px";
   box.style.height = Math.ceil(h * s) + "px";
 }
+let view = "home", current = null;
+const vHome = document.getElementById("v-home"), vEd = document.getElementById("v-editor");
+vHome.addEventListener("click", () => { view = "home"; show(current) });
+vEd.addEventListener("click", () => { view = "editor"; show(current) });
 function show(it) {
-  frame.src = `designs/${it.id}.html`;
+  current = it;
+  if (!it.editor) view = "home";
+  const src = view === "editor" ? `editor/${it.id}.html` : `home/${it.id}.html`;
+  frame.src = src;
+  vHome.setAttribute("aria-pressed", String(view === "home"));
+  vEd.setAttribute("aria-pressed", String(view === "editor"));
+  vEd.disabled = !it.editor;
   document.getElementById("vtitle").textContent = `${it.id}　${it.name}`;
-  document.getElementById("vopen").href = `designs/${it.id}.html`;
+  document.getElementById("vopen").href = src;
   buttons.forEach(([id, b]) => b.setAttribute("aria-pressed", String(id === it.id)));
   try { localStorage.setItem("rebuild-design-pick", it.id) } catch (e) {}
 }

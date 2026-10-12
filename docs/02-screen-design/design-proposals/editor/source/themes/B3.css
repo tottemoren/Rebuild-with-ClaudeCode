@@ -1,0 +1,127 @@
+/* name: コマ割り定規 */
+/* fonts: https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=Rampart+One&family=Zen+Old+Mincho:wght@600;700&display=swap */
+/* B3 コマ割り定規 — Home B3 と同じ: 製図インクの墨と藍、-12° の斜め枠ボタン/チップ/タグ、
+   2px の太いコマ枠カード、現在地は蛍光マーカー、トーンは「選択中のチップ」1か所だけ。 */
+:root{
+  --paper:#FFFFFF; --ink:#1B1E2B; --ink-2:#444858; --ink-3:#5D6172;
+  --tone:#C9CCD7; --tone-2:#EAECF1; --tone-3:#F5F6F9;
+  --indigo:#3236A3; --indigo-dk:#232680; --indigo-tint:#ECEDFA;
+  --marker:#FFE14D; --red:#BF2430;
+  --desk:#41444F;          /* ワークスペース: 製図台のカッティングマット（墨寄りの青灰） */
+  --skew:-12deg;
+  --f-ui:"BIZ UDPGothic",system-ui,sans-serif;
+  --f-logo:"Rampart One","BIZ UDPGothic",sans-serif;
+  --f-title:"Zen Old Mincho","BIZ UDPGothic",serif;
+  --hl:linear-gradient(transparent 55%,var(--marker) 55%,var(--marker) 92%,transparent 92%);
+}
+body{font-family:var(--f-ui);font-size:13.5px;line-height:1.5;color:var(--ink);background:var(--paper);-webkit-font-smoothing:antialiased;font-feature-settings:"palt" 1}
+.app{background:var(--paper)}
+
+/* ---------- header ---------- */
+.hd{background:var(--paper);border-bottom:2px solid var(--ink)}
+.logo{color:var(--ink)}
+.logo svg{color:var(--indigo)}
+.logo-text{font-family:var(--f-logo);font-size:26px;line-height:1}
+.logo:focus-visible{outline:2px solid var(--indigo);outline-offset:4px}
+
+.story{background:#fff;border:2px solid var(--ink);border-radius:6px}
+.story-title{font-family:var(--f-title);font-weight:700;font-size:16px}
+.story-synopsis{font-size:12.5px;color:var(--ink-2)}
+.genre-label{font-size:12px;color:var(--ink-3)}
+.genre{position:relative;isolation:isolate;font-size:12px;font-weight:700;color:var(--indigo-dk);line-height:1.7;margin:0 3px}
+.genre::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--indigo-tint);transform:skewX(var(--skew))}
+
+/* folders: 現在地 = 2px 墨枠 + 名前に蛍光マーカー（Home サイドメニューと同じ） */
+.folder{background:transparent;border:2px solid transparent;border-radius:6px;color:var(--ink-2)}
+.folder-cover{border:1px solid var(--tone);border-radius:3px;background:#fff}
+.folder:hover{background:var(--tone-2);color:var(--ink)}
+.folder.is-active{border-color:var(--ink);color:var(--ink);background:#fff}
+.folder.is-active .folder-cover{border-color:var(--ink)}
+.folder.is-active .folder-name{font-weight:700;background:var(--hl);justify-self:start;max-width:100%}
+.folder:focus-visible{outline:2px solid var(--indigo);outline-offset:2px}
+.folder-add.btn{border:2px dashed var(--tone);border-radius:6px;background:var(--tone-3);color:var(--ink-2);font-size:12px;font-weight:400}
+.folder-add.btn::before{display:none}
+.folder-add.btn:hover{border-color:var(--ink);color:var(--ink);background:#fff}
+.folder-track{background:var(--tone-2);border-radius:3px}
+.folder-thumb{background:var(--indigo);border-radius:3px}
+
+/* ---------- buttons: 斜めの枠（コマ割りの斜線） ---------- */
+.btn{position:relative;isolation:isolate;font-family:var(--f-ui);font-size:13px;font-weight:700;color:var(--ink);background:none;border:0}
+.btn::before{content:"";position:absolute;inset:0 3px;z-index:-1;transform:skewX(var(--skew));border:2px solid var(--ink);border-radius:2px;background:#fff;transition:background-color .12s}
+.btn:hover::before{background:var(--indigo-tint)}
+.btn:active::before{transform:skewX(var(--skew)) translateY(1px)}
+.btn:focus-visible{outline:none}
+.btn:focus-visible::before{box-shadow:0 0 0 2px #fff,0 0 0 4px var(--indigo)}
+.btn-ghost{color:var(--ink-2);font-weight:400}
+.btn-ghost::before{border-color:transparent;background:transparent}
+.btn-ghost:hover::before{background:var(--tone-2)}
+.btn-primary{color:#fff;font-size:13.5px}
+.btn-primary::before{background:var(--indigo);border-color:var(--indigo)}
+.btn-primary:hover::before{background:var(--indigo-dk);border-color:var(--indigo-dk)}
+.hd-actions .btn,.toolbar .btn{padding:7px 16px}
+.sb-toggle{font-weight:400;font-size:12.5px;padding:6px 14px}
+.avatar{border:2px solid var(--ink);border-radius:50%;background:var(--indigo-tint);color:var(--indigo-dk);font-size:15px}
+.avatar::before{display:none}
+.avatar:hover{background:#DCDDF6}
+.avatar:focus-visible{outline:2px solid var(--indigo);outline-offset:2px}
+
+/* ---------- page list ---------- */
+.pages{background:var(--paper);border-right:1px solid var(--tone)}
+.pane-head h2{font-size:14px;font-weight:700}
+.count{font-size:12px;color:var(--ink-3)}
+.page{background:transparent;border:2px solid transparent;border-radius:6px;color:var(--ink-2)}
+.page:hover{background:var(--tone-2)}
+.page-no{font-size:12px}
+.page-thumb{background:var(--tone);border-radius:2px}
+.page-thumb i{background:#fff}
+.page.is-active{border-color:var(--ink);background:#fff;color:var(--ink)}
+.page.is-active .page-no{font-weight:700;background:var(--hl)}
+.page.is-empty .page-thumb{background:var(--tone-3);outline:1px dashed var(--tone);outline-offset:-1px}
+.page.is-empty .page-thumb i{background:transparent;border:1px dashed var(--tone)}
+.page:focus-visible{outline:2px solid var(--indigo);outline-offset:2px}
+.page-add.btn{font-size:12.5px;font-weight:400}
+
+/* ---------- stage ---------- */
+.workspace{background-color:var(--desk);
+  background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);
+  background-size:24px 24px}
+.paper{background:#FFFFFF;box-shadow:0 4px 16px rgba(0,0,0,.3)}
+.koma{border:2px solid #111;background:#fff}
+.koma.is-selected{outline:2px solid var(--indigo);outline-offset:3px}
+.koma-handle{width:10px;height:8px;background:var(--indigo);border:1.5px solid #fff;transform:skewX(var(--skew))}
+.h-tl{top:1px;left:2px}.h-tr{top:1px;right:2px}.h-bl{bottom:1px;left:2px}.h-br{bottom:1px;right:2px}
+.page-label{color:#444}
+.drop-hint{background:#fff;color:var(--ink);font-size:12px;border:2px dashed var(--ink);border-radius:6px}
+
+.toolbar{background:var(--paper);border-top:2px solid var(--ink)}
+.zoom{border:2px solid var(--ink);border-radius:6px}
+.zoom .btn{padding:5px 9px}
+.zoom output{font-size:13px;font-weight:700}
+.save-state{font-size:12.5px;color:var(--ink-3)}
+.save-state svg{color:var(--indigo)}
+
+/* ---------- materials ---------- */
+.materials{background:var(--paper);border-left:1px solid var(--tone)}
+
+.chip{position:relative;isolation:isolate;font-family:var(--f-ui);font-size:12.5px;color:var(--ink-3);background:none;border:0;margin-right:2px}
+.chip::before{content:"";position:absolute;inset:0 2px;z-index:-1;transform:skewX(var(--skew));border:2px solid var(--ink);background:#fff}
+.chip:hover::before{background:var(--tone-2)}
+.chip.is-active{color:var(--ink);font-weight:700;text-shadow:0 0 3px #fff,0 0 2px #fff}
+.chip.is-active::before{background-color:#fff;background-image:radial-gradient(circle,rgba(50,54,163,.30) .9px,transparent 1.3px);background-size:4px 4px;border-bottom-width:4px}
+.chip:focus-visible{outline:none}
+.chip:focus-visible::before{box-shadow:0 0 0 2px #fff,0 0 0 4px var(--indigo)}
+.mat{background:#fff;border:2px solid var(--ink);border-radius:6px;overflow:hidden;color:var(--ink)}
+.mat svg{border-bottom:1px solid var(--tone-2)}
+.mat-name{font-size:12px}
+.mat:hover{border-color:var(--indigo)}
+.mat:focus-visible{outline:2px solid var(--indigo);outline-offset:2px}
+
+/* ---------- slide-in menu ---------- */
+.sidebar{background:var(--paper);border-right:2px solid var(--ink);box-shadow:6px 0 24px rgba(27,30,43,.18)}
+.sidebar a{color:var(--ink-2);font-size:14px;border-radius:2px}
+.sidebar a:hover{background:var(--tone-2);color:var(--ink)}
+.sidebar a[aria-current]{color:var(--ink);font-weight:700;background-image:linear-gradient(transparent 56%,var(--marker) 56%,var(--marker) 84%,transparent 84%);background-size:calc(4em + 6px) 100%;background-position:37px 0;background-repeat:no-repeat}
+.sidebar a[aria-current] svg{color:var(--indigo)}
+.sidebar a:focus-visible{outline:2px solid var(--indigo);outline-offset:2px}
+.scrim{background:rgba(27,30,43,.32)}
+@media (prefers-reduced-motion:reduce){*,*::before{transition:none!important}}
