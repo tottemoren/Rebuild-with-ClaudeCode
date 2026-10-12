@@ -1,0 +1,467 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rebuild デザイン案 C2 — カラーインデックス</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=LINE+Seed+JP:wght@400;700;800&family=Outfit:wght@600;700&display=swap" rel="stylesheet">
+<style>
+/* C2 カラーインデックス — vivid category colours on white, index-tab cards, keycap buttons, LINE Seed JP + Outfit */
+:root{
+  --bg:#FFFFFF;
+  --wash:#F4F5F8;
+  --line:#E1E3E9;
+  --line-2:#C9CDD7;
+  --ink:#1D2433;
+  --ink-2:#465063;
+  --ink-3:#5C6577;
+
+  /* type identity — vivid, used as solid fills */
+  --memo:#FFB300;  --memo-on:#1A1300; --memo-tint:#FFF4D6; --memo-deep:#8A5A00;
+  --story:#2457F5; --story-on:#FFFFFF; --story-tint:#E6EDFF; --story-deep:#1A3FB8;
+  --manga:#D81E60; --manga-on:#FFFFFF; --manga-tint:#FDE6EE; --manga-deep:#A3124A;
+
+  --primary:#1D2433; --primary-hover:#323B4F; --primary-edge:#000814;
+  --danger:#C4122F; --danger-tint:#FFE8EB;
+  --focus:#2457F5;
+
+  --r:6px; --r-card:10px;
+  --f-body:"LINE Seed JP", system-ui, sans-serif;
+  --f-latin:"Outfit", "LINE Seed JP", sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--wash);color:var(--ink);font-family:var(--f-body);font-size:14px;line-height:1.7;-webkit-font-smoothing:antialiased}
+button,input{font:inherit;color:inherit}
+h1,h2,h3,.btn,.tab,.nav a,.seg button,.fchip,.genre{font-feature-settings:"palt"}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+svg.i{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+svg.i.s{width:16px;height:16px}
+
+.app{max-width:1440px;margin:0 auto;background:var(--bg);min-height:900px;display:grid;grid-template-rows:auto 1fr}
+/* the one bold move: a three-colour index stripe that names the three asset types */
+.stripe{display:grid;grid-template-columns:1fr 1fr 1fr;height:5px}
+.stripe i:nth-child(1){background:var(--memo)}
+.stripe i:nth-child(2){background:var(--story)}
+.stripe i:nth-child(3){background:var(--manga)}
+.hdr{background:var(--bg);display:grid;grid-template-columns:232px 1fr 300px;grid-template-rows:58px 46px;align-items:center;padding:0 20px;border-bottom:1px solid var(--line)}
+.logo{font-family:var(--f-latin);font-weight:700;font-size:24px;letter-spacing:-.01em;color:var(--ink);text-decoration:none;display:flex;align-items:center;gap:8px;width:max-content;border-radius:var(--r);padding:0 4px}
+.logo .bars{display:flex;gap:3px;align-items:flex-end;height:22px}
+.logo .bars i{width:6px;border-radius:2px}
+.logo .bars i:nth-child(1){height:12px;background:var(--memo)}
+.logo .bars i:nth-child(2){height:18px;background:var(--story)}
+.logo .bars i:nth-child(3){height:22px;background:var(--manga)}
+.search{grid-column:2;justify-self:center;display:flex;width:min(580px,100%);height:40px;border:1.5px solid var(--line-2);border-radius:var(--r);background:var(--bg);overflow:hidden}
+.search:focus-within,.search.is-focus{border-color:var(--story);box-shadow:0 0 0 3px var(--story-tint)}
+.search input{flex:1;border:0;padding:0 14px;outline:none;min-width:0;background:transparent}
+.search input::placeholder{color:var(--ink-3)}
+.search button{border:0;border-left:1.5px solid var(--line-2);background:var(--wash);width:60px;display:grid;place-items:center;cursor:pointer;color:var(--ink)}
+.search button:hover{background:#E8EAF0}
+.acts{grid-column:3;justify-self:end;display:flex;align-items:center;gap:8px}
+.avatar{width:36px;height:36px;border-radius:50%;border:2px solid var(--memo);background:var(--memo-tint);color:var(--memo-deep);font-weight:800;cursor:pointer}
+.sidetoggle{grid-row:2;grid-column:1;justify-self:start}
+
+.hdr .seg{grid-column:2;grid-row:2;justify-self:center}
+.seg{display:inline-flex;width:max-content;border:1.5px solid var(--line-2);border-radius:8px;overflow:hidden}
+.seg button{border:0;background:var(--bg);padding:3px 18px;font-weight:700;color:var(--ink-2);cursor:pointer;display:flex;align-items:center;gap:6px}
+.seg button + button{border-left:1.5px solid var(--line-2)}
+.seg button:hover{background:var(--wash)}
+.seg button[aria-pressed="true"][data-kind="memo"]{background:var(--memo);color:var(--memo-on)}
+.seg button[aria-pressed="true"][data-kind="story"]{background:var(--story);color:var(--story-on)}
+
+/* keycap buttons: squared 6px, solid 2px bottom edge, press-down on :active */
+.btn{display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 16px;border-radius:var(--r);border:1.5px solid transparent;font-weight:700;cursor:pointer;white-space:nowrap;font-size:14px;position:relative;top:0}
+.btn.sm{height:30px;padding:0 12px;font-size:13px}
+.btn-primary{background:var(--primary);color:#fff;box-shadow:0 2px 0 var(--primary-edge)}
+.btn-primary:hover,.btn-primary.is-hover{background:var(--primary-hover)}
+.btn-primary:active{top:2px;box-shadow:none}
+.btn-secondary{background:var(--bg);border-color:var(--line-2);color:var(--ink);box-shadow:0 2px 0 var(--line-2)}
+.btn-secondary:hover,.btn-secondary.is-hover{border-color:var(--ink);box-shadow:0 2px 0 var(--ink)}
+.btn-secondary:active{top:2px;box-shadow:none}
+.btn-ghost{background:transparent;color:var(--ink-2);font-weight:400}
+.btn-ghost:hover,.btn-ghost.is-hover{background:var(--wash);color:var(--ink)}
+.btn-danger{background:var(--bg);color:var(--danger);border-color:#F2B8C1}
+.btn-danger:hover,.btn-danger.is-hover{background:var(--danger-tint);border-color:var(--danger)}
+.btn.is-focus{outline:3px solid var(--focus);outline-offset:2px}
+.btn[disabled]{background:var(--wash);color:#8A91A0;border-color:var(--line);box-shadow:none;cursor:not-allowed}
+.iconbtn{width:40px;height:40px;padding:0;justify-content:center}
+
+.body{display:grid;grid-template-columns:232px 1fr 300px;transition:grid-template-columns .25s ease}
+.app.collapsed .body{grid-template-columns:0 1fr 300px}
+.side{padding:14px 0;overflow:hidden;border-right:1px solid var(--line)}
+.app.collapsed .side{padding:0;border:0}
+.nav{list-style:none;margin:0;padding:0}
+.nav a{display:flex;align-items:center;gap:14px;height:44px;padding:0 20px;color:var(--ink-2);text-decoration:none;white-space:nowrap;border-left:4px solid transparent}
+.nav a:hover{background:var(--wash);color:var(--ink)}
+.nav [data-k="home"] svg{color:var(--ink)}
+.nav [data-k="memo"] svg{color:var(--memo-deep)}
+.nav [data-k="story"] svg{color:var(--story)}
+.nav [data-k="manga"] svg{color:var(--manga)}
+.nav a[aria-current="page"]{background:var(--wash);color:var(--ink);font-weight:700;border-left-color:var(--ink)}
+.side h3{font-size:12px;font-weight:700;color:var(--ink-3);margin:22px 24px 8px}
+.counts{list-style:none;margin:0;padding:0 24px;display:grid;gap:10px}
+.counts li{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;font-size:13px;color:var(--ink-2);white-space:nowrap}
+.counts .sq{width:12px;height:12px;border-radius:3px}
+.counts b{font-family:var(--f-latin);font-size:15px;color:var(--ink)}
+
+.main{padding:20px 24px 40px;min-width:0;background:var(--wash)}
+.toolbar{display:flex;align-items:center;gap:10px;margin-bottom:22px;flex-wrap:wrap}
+.toolbar h1{margin:0;font-size:20px;font-weight:800;display:flex;align-items:center;gap:10px}
+.toolbar h1 .num{font-family:var(--f-latin);font-size:14px;font-weight:600;color:var(--ink-3)}
+.toolbar .kind{width:10px;height:22px;border-radius:2px;background:var(--memo)}
+.app.view-story .toolbar .kind{background:var(--story)}
+.fchips{display:flex;gap:6px;margin-left:10px}
+.fchip{height:30px;padding:0 12px;border-radius:var(--r);border:1.5px solid var(--line-2);background:var(--bg);font-size:13px;color:var(--ink-2);cursor:pointer}
+.fchip[aria-pressed="true"]{border-color:var(--memo-deep);background:var(--memo-tint);color:var(--memo-deep);font-weight:700}
+.toolbar .spacer{flex:1}
+
+/* index-tab memo cards */
+.masonry{columns:3 250px;column-gap:18px}
+.card{break-inside:avoid;display:inline-block;width:100%;margin:0 0 16px;position:relative;padding:38px 16px 10px}
+/* the box is drawn by ::before so the tab and its card can never be split across masonry columns */
+.card::before{content:"";position:absolute;inset:24px 0 0 0;background:var(--bg);border:1.5px solid var(--line);border-radius:0 var(--r-card) var(--r-card) var(--r-card)}
+.card > *{position:relative}
+.card > .tab{position:absolute;top:0;left:0}
+.tab{position:absolute;left:-1.5px;top:-24px;height:24px;padding:0 12px;display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;border-radius:8px 8px 0 0;background:var(--memo);color:var(--memo-on)}
+.card h2{font-size:16px;line-height:1.5;margin:4px 0 6px;font-weight:700}
+.card p{margin:0 0 8px;color:var(--ink-2)}
+.card ul{margin:0 0 8px;padding-left:1.2em;color:var(--ink-2)}
+.card .quote{font-size:17px;line-height:1.75;color:var(--ink);font-weight:700}
+.card .foot{display:flex;align-items:center;gap:6px;border-top:1px solid var(--line);margin-top:10px;padding-top:10px}
+.card time{font-size:12px;color:var(--ink-3);margin-right:auto}
+.card .btn{height:28px;padding:0 10px;font-size:12px;box-shadow:none}
+.card .btn-danger{border-color:transparent;color:var(--ink-3);font-weight:400}
+.card .btn-danger:hover{border-color:#F2B8C1;color:var(--danger);background:var(--danger-tint)}
+.card.tate .vbody{writing-mode:vertical-rl;height:220px;margin:6px auto;font-size:17px;line-height:1.9;font-weight:700;letter-spacing:.06em}
+
+/* story */
+.stories{display:none;grid-template-columns:1fr 1fr;gap:28px 18px;padding-top:14px}
+.app.view-story .stories{display:grid}
+.app.view-story .masonry,.app.view-story .fchips{display:none}
+.scard{position:relative;background:var(--bg);border:1.5px solid var(--line);border-radius:0 var(--r-card) var(--r-card) var(--r-card);padding:16px 18px 12px;display:grid;gap:8px}
+.scard .tab{background:var(--story);color:var(--story-on)}
+.scard h2{margin:0;font-size:18px;line-height:1.45;font-weight:800}
+.scard p{margin:0;color:var(--ink-2);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.genres{display:flex;gap:6px;flex-wrap:wrap}
+.genre{font-size:12px;font-weight:700;color:var(--story-deep);background:var(--story-tint);border-radius:4px;padding:1px 8px}
+.smeta{display:flex;align-items:center;gap:14px;font-size:12px;color:var(--ink-3);border-top:1px solid var(--line);padding-top:10px}
+.smeta .mg{display:inline-flex;align-items:center;gap:5px;color:var(--manga-deep);font-weight:700}
+.smeta .mg i{width:8px;height:8px;border-radius:2px;background:var(--manga)}
+.smeta .btn{margin-left:auto}
+
+.ad{padding:20px 20px 20px 0;background:var(--wash)}
+.adlabel{font-size:11px;color:var(--ink-3);margin-bottom:6px}
+.adbox{position:sticky;top:16px;width:280px;height:600px;border:1.5px solid var(--line);border-radius:var(--r-card);background:var(--bg);display:grid;place-items:center;color:var(--ink-3);font-size:13px;text-align:center}
+.addots{display:flex;gap:4px;justify-content:center;margin-top:10px}
+.addots i{width:16px;height:3px;border-radius:2px;background:var(--line-2)}
+.addots i:first-child{background:var(--ink)}
+
+/* ---------- design system sheet ---------- */
+.sheet{max-width:1440px;margin:56px auto 0;padding:0 40px 80px}
+.sheet > h2{font-size:26px;font-weight:800;margin:0 0 4px}
+.sheet .lead{color:var(--ink-2);margin:0 0 30px}
+.grid2{display:grid;grid-template-columns:1.25fr 1fr;gap:20px}
+.panel{background:var(--bg);border:1.5px solid var(--line);border-radius:var(--r-card);padding:22px 24px}
+.panel h3{font-size:15px;font-weight:800;margin:0 0 14px}
+.sw{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.sw div{font-size:12px;line-height:1.5;color:var(--ink-2)}
+.sw b{display:block;height:52px;border-radius:var(--r);margin-bottom:6px;border:1px solid rgba(0,0,0,.08)}
+.sw code{font-family:var(--f-latin);font-weight:600;color:var(--ink);font-size:13px}
+.typespec .row{display:grid;grid-template-columns:160px 1fr;gap:16px;align-items:baseline;padding:8px 0;border-top:1px solid var(--line)}
+.typespec .row:first-child{border-top:0}
+.typespec .meta{font-size:12px;color:var(--ink-3)}
+.btnrow{display:grid;grid-template-columns:90px repeat(4,auto);gap:14px;align-items:center;justify-content:start}
+.btnrow .lbl,.btnrow .hd{font-size:12px;color:var(--ink-3)}
+.demo{display:flex;gap:28px;flex-wrap:wrap;align-items:flex-start}
+.demo .col{display:grid;gap:10px;justify-items:start}
+.demo .cap{font-size:12px;color:var(--ink-3)}
+.demo .search{width:340px}
+.demo .nav{width:230px;border:1px solid var(--line);border-radius:var(--r)}
+.rationale{margin-top:20px}
+.rationale ul{margin:0;padding-left:1.2em;display:grid;gap:8px}
+.rationale li{max-width:62em}
+
+@media (max-width:1280px){
+  .body{grid-template-columns:220px 1fr 180px}
+  .app.collapsed .body{grid-template-columns:0 1fr 180px}
+  .adbox{width:160px}
+  .hdr{grid-template-columns:220px 1fr auto}
+}
+@media (max-width:1100px){ .masonry{columns:2} .grid2{grid-template-columns:1fr} .fchips{display:none} }
+@media (max-width:860px){
+  .body,.app.collapsed .body{grid-template-columns:0 1fr}
+  .side,.ad{display:none}
+  .hdr{grid-template-columns:auto 1fr auto;gap:8px}
+  .stories{grid-template-columns:1fr}
+  .sheet{padding:0 16px 60px}
+  .sw{grid-template-columns:repeat(2,1fr)}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-side" viewBox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h16M20 9.5L17.5 12l2.5 2.5"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></symbol>
+  <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 3v2.5M12 18.5V21M3 12h2.5M18.5 12H21M5.6 5.6l1.8 1.8M16.6 16.6l1.8 1.8M5.6 18.4l1.8-1.8M16.6 7.4l1.8-1.8"/></symbol>
+  <symbol id="i-out" viewBox="0 0 24 24"><path d="M14 4h4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-4M10 8l-4 4 4 4M6 12h10"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M4 11l8-6.5 8 6.5V19a1.5 1.5 0 0 1-1.5 1.5H5.5A1.5 1.5 0 0 1 4 19z"/><path d="M10 20.5v-5h4v5"/></symbol>
+  <symbol id="i-memo" viewBox="0 0 24 24"><path d="M5 4.5h14v10l-5 5H5z"/><path d="M14 19.5v-5h5M8.5 9h7M8.5 12.5h4"/></symbol>
+  <symbol id="i-story" viewBox="0 0 24 24"><path d="M4 5.5c2.8-1.2 5.5-1.2 8 .5 2.5-1.7 5.2-1.7 8-.5V19c-2.8-1.2-5.5-1.2-8 .5-2.5-1.7-5.2-1.7-8-.5z"/><path d="M12 6v13.5"/></symbol>
+  <symbol id="i-manga" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="2"/><path d="M3.5 11h9.5M13 3.5v17M13 14.5h7.5"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M5 7h14M10 7V5h4v2M7 7l1 12.5h8L17 7"/></symbol>
+  <symbol id="i-sort" viewBox="0 0 24 24"><path d="M7 5v14M4 16l3 3 3-3M14 7h6M14 12h4M14 17h2"/></symbol>
+</svg>
+
+<div class="app" id="app">
+  <div class="stripe" aria-hidden="true"><i></i><i></i><i></i></div>
+  <header class="hdr">
+    <a class="logo" href="#" aria-label="Rebuild ホーム"><span class="bars" aria-hidden="true"><i></i><i></i><i></i></span>Rebuild</a>
+    <form class="search" role="search" onsubmit="return false">
+      <label class="sr" for="q">メモとストーリーを検索</label>
+      <input id="q" type="search" placeholder="メモ・ストーリーを検索">
+      <button type="submit" aria-label="検索"><svg class="i"><use href="#i-search"/></svg></button>
+    </form>
+    <div class="acts">
+      <button class="btn btn-ghost"><svg class="i s"><use href="#i-gear"/></svg>設定</button>
+      <button class="avatar" aria-label="アカウント">灯</button>
+      <button class="btn btn-ghost"><svg class="i s"><use href="#i-out"/></svg>ログアウト</button>
+    </div>
+    <button class="btn btn-ghost iconbtn sidetoggle" id="sideBtn" aria-expanded="true" aria-controls="side" aria-label="サイドメニューを閉じる"><svg class="i"><use href="#i-side"/></svg></button>
+    <div class="seg" role="group" aria-label="表示切替">
+      <button data-kind="memo" aria-pressed="true"><svg class="i s"><use href="#i-memo"/></svg>メモ</button>
+      <button data-kind="story" aria-pressed="false"><svg class="i s"><use href="#i-story"/></svg>ストーリー</button>
+    </div>
+  </header>
+
+  <div class="body">
+    <nav class="side" id="side" aria-label="メインメニュー">
+      <ul class="nav">
+        <li><a href="#" data-k="home" aria-current="page"><svg class="i"><use href="#i-home"/></svg>ホーム</a></li>
+        <li><a href="#" data-k="memo"><svg class="i"><use href="#i-memo"/></svg>メモ</a></li>
+        <li><a href="#" data-k="story"><svg class="i"><use href="#i-story"/></svg>ストーリー創作</a></li>
+        <li><a href="#" data-k="manga"><svg class="i"><use href="#i-manga"/></svg>漫画創作</a></li>
+      </ul>
+      <h3>あなたの素材</h3>
+      <ul class="counts">
+        <li><span class="sq" style="background:var(--memo)"></span>メモ<b>24</b></li>
+        <li><span class="sq" style="background:var(--story)"></span>ストーリー<b>4</b></li>
+        <li><span class="sq" style="background:var(--manga)"></span>漫画ページ<b>11</b></li>
+      </ul>
+    </nav>
+
+    <main class="main">
+      <div class="toolbar">
+        <h1><span class="kind" aria-hidden="true"></span><span id="viewTitle">メモ</span><span class="num" id="viewCount">24</span></h1>
+        <div class="fchips" role="group" aria-label="種類で絞り込み">
+          <button class="fchip" aria-pressed="true">すべて</button>
+          <button class="fchip" aria-pressed="false">キャラ設定</button>
+          <button class="fchip" aria-pressed="false">プロット</button>
+          <button class="fchip" aria-pressed="false">セリフ案</button>
+          <button class="fchip" aria-pressed="false">世界観</button>
+        </div>
+        <span class="spacer"></span>
+        <button class="btn btn-ghost sm"><svg class="i s"><use href="#i-sort"/></svg>更新順</button>
+        <button class="btn btn-primary" id="newBtn"><svg class="i s"><use href="#i-plus"/></svg><span>メモを書く</span></button>
+      </div>
+
+      <section class="masonry" aria-label="メモ一覧">
+        <article class="card">
+          <span class="tab"><svg class="i s"><use href="#i-memo"/></svg>キャラ設定</span>
+          <h2>灯（あかり）16歳</h2>
+          <p>時計塔に住み込みの見習い修理工。左利き。高い所が苦手なのに、毎朝いちばん上の文字盤を磨いている。</p>
+          <ul><li>口癖「止まった時計にも理由がある」</li><li>工具は祖父のお下がり、柄に名前の刻印</li><li>怒ると敬語になる</li></ul>
+          <div class="foot"><time>12分前</time><button class="btn btn-danger">削除</button><button class="btn btn-secondary">編集</button></div>
+        </article>
+        <article class="card">
+          <span class="tab"><svg class="i s"><use href="#i-memo"/></svg>セリフ案</span>
+          <p class="quote">「直せないものなんて、ないよ。……直したくないものは、あるけど」</p>
+          <div class="foot"><time>1時間前</time><button class="btn btn-danger">削除</button><button class="btn btn-secondary">編集</button></div>
+        </article>
+        <article class="card">
+          <span class="tab"><svg class="i s"><use href="#i-memo"/></svg>プロット</span>
+          <h2>第3話「十三回目の鐘」</h2>
+          <p>雨の夜、塔の鐘が13回鳴る。町の誰も気づかない。数えていたのは灯だけ。翌朝、町じゅうの時計が5分ずつ戻っている。</p>
+          <div class="foot"><time>3時間前</time><button class="btn btn-danger">削除</button><button class="btn btn-secondary">編集</button></div>
+        </article>
+        <article class="card tate">
+          <span class="tab"><svg class="i s"><use href="#i-memo"/></svg>セリフ案・縦書き</span>
+          <div class="vbody">「待って、その針まだ動いてる」<br>「……いや、動かしてるのは誰？」</div>
+          <div class="foot"><time>昨日</time><button class="btn btn-danger">削除</button><button class="btn btn-secondary">編集</button></div>
+        </article>
+        <article class="card">
+          <span class="tab"><svg class="i s"><use href="#i-memo"/></svg>世界観</span>
+          <h2>ずれた時計の町</h2>
+          <p>町の時計はすべてわざと5分ずつずらしてある。揃えてはいけない、という古い決まり。理由を知る人はもういない。</p>
+          <div class="foot"><time>昨日</time><button class="btn btn-danger">削除</button><button class="btn btn-secondary">編集</button></div>
+        </article>
+        <article class="card">
+          <span class="tab"><svg class="i s"><use href="#i-memo"/></svg>構図・コマ割り</span>
+          <h2>見開き案：塔の内部</h2>
+          <p>真上からの俯瞰。歯車の円がコマの枠そのものになる。灯は右下の小さな歯車の中に。</p>
+          <div class="foot"><time>2日前</time><button class="btn btn-danger">削除</button><button class="btn btn-secondary">編集</button></div>
+        </article>
+        <article class="card">
+          <span class="tab"><svg class="i s"><use href="#i-memo"/></svg>キャラ設定</span>
+          <h2>ソウ（郵便配達員）</h2>
+          <p>灯の幼なじみ。自転車のベルを2回鳴らしてから登場するのがお約束。手紙は読まずに届ける主義。</p>
+          <div class="foot"><time>3日前</time><button class="btn btn-danger">削除</button><button class="btn btn-secondary">編集</button></div>
+        </article>
+        <article class="card">
+          <span class="tab"><svg class="i s"><use href="#i-memo"/></svg>プロット</span>
+          <h2>第2話ネーム直し</h2>
+          <ul><li>12ページ → 10ページに圧縮</li><li>回想は1ページにまとめる</li><li>ラストの引きを鐘の音に変更</li></ul>
+          <div class="foot"><time>4日前</time><button class="btn btn-danger">削除</button><button class="btn btn-secondary">編集</button></div>
+        </article>
+      </section>
+
+      <section class="stories" aria-label="ストーリー一覧">
+        <article class="scard">
+          <span class="tab"><svg class="i s"><use href="#i-story"/></svg>ストーリー</span>
+          <h2>十三番目の鐘</h2>
+          <div class="genres"><span class="genre">ファンタジー</span><span class="genre">日常</span><span class="genre">ミステリー</span></div>
+          <p>時計塔の見習い修理工・灯は、雨の夜に鳴った「13回目の鐘」を数えてしまう。翌朝から町の時間が少しずつ巻き戻り始め、幼なじみのソウと原因を探ることに。</p>
+          <div class="smeta"><span>登場人物 5人</span><span>セリフ 128行</span><span class="mg"><i></i>漫画 3ページ</span><button class="btn btn-secondary sm">開く</button></div>
+        </article>
+        <article class="scard">
+          <span class="tab"><svg class="i s"><use href="#i-story"/></svg>ストーリー</span>
+          <h2>放課後スケッチ部</h2>
+          <div class="genres"><span class="genre">青春</span><span class="genre">コメディ</span></div>
+          <p>部員3人、廃部寸前の美術部。文化祭までに「動く絵」を完成させないと部室を明け渡すことに。描けない部長と描きすぎる新入生の衝突から始まる。</p>
+          <div class="smeta"><span>登場人物 4人</span><span>セリフ 86行</span><button class="btn btn-secondary sm">開く</button></div>
+        </article>
+        <article class="scard">
+          <span class="tab"><svg class="i s"><use href="#i-story"/></svg>ストーリー</span>
+          <h2>星くず配達便</h2>
+          <div class="genres"><span class="genre">SF</span><span class="genre">冒険</span></div>
+          <p>小惑星帯を回る小さな配達船。届け先の住所が「まだ存在しない星」だった日から、船長見習いの少女の旅が変わる。</p>
+          <div class="smeta"><span>登場人物 6人</span><span>セリフ 54行</span><span class="mg"><i></i>漫画 1ページ</span><button class="btn btn-secondary sm">開く</button></div>
+        </article>
+        <article class="scard">
+          <span class="tab"><svg class="i s"><use href="#i-story"/></svg>ストーリー</span>
+          <h2>雨宿りの喫茶店</h2>
+          <div class="genres"><span class="genre">ヒューマンドラマ</span></div>
+          <p>雨の日だけ開く喫茶店。客は必ず一つ忘れ物をして帰る。店主はそれを預かり、晴れた日に持ち主へ返しにいく。</p>
+          <div class="smeta"><span>登場人物 3人</span><span>セリフ 40行</span><button class="btn btn-secondary sm">開く</button></div>
+        </article>
+      </section>
+    </main>
+
+    <aside class="ad" aria-label="広告">
+      <div class="adlabel">広告</div>
+      <div class="adbox">広告枠<br>300 × 600</div>
+      <div class="addots" aria-hidden="true"><i></i><i></i><i></i></div>
+    </aside>
+  </div>
+</div>
+
+<section class="sheet">
+  <h2>C2 カラーインデックス</h2>
+  <p class="lead">白地に3つの鮮やかなインデックス色。ファイルの見出しタブのように、種類が色で先に目に入る。</p>
+
+  <div class="grid2">
+    <div class="panel">
+      <h3>カラー</h3>
+      <div class="sw">
+        <div><b style="background:#FFB300"></b><code>#FFB300</code><br>メモ（種類色・文字は #1A1300）</div>
+        <div><b style="background:#2457F5"></b><code>#2457F5</code><br>ストーリー（種類色）・フォーカス</div>
+        <div><b style="background:#D81E60"></b><code>#D81E60</code><br>漫画（種類色）</div>
+        <div><b style="background:#1D2433"></b><code>#1D2433</code><br>本文・主要ボタン</div>
+        <div><b style="background:#FFFFFF"></b><code>#FFFFFF</code><br>ヘッダー・カード</div>
+        <div><b style="background:#F4F5F8"></b><code>#F4F5F8</code><br>コンテンツ背景</div>
+        <div><b style="background:#C9CDD7"></b><code>#C9CDD7</code><br>枠線・キーキャップの縁</div>
+        <div><b style="background:#C4122F"></b><code>#C4122F</code><br>削除</div>
+      </div>
+    </div>
+    <div class="panel typespec">
+      <h3>タイポグラフィ</h3>
+      <div class="row"><div class="meta">ロゴ・数字<br>Outfit 700 / 24px</div><div style="font-family:var(--f-latin);font-weight:700;font-size:24px">Rebuild 24</div></div>
+      <div class="row"><div class="meta">見出し<br>LINE Seed JP 800 / 20px</div><div style="font-size:20px;font-weight:800">十三番目の鐘</div></div>
+      <div class="row"><div class="meta">カード見出し<br>700 / 16px</div><div style="font-size:16px;font-weight:700">灯（あかり）16歳</div></div>
+      <div class="row"><div class="meta">本文<br>400 / 14px / 行間1.7</div><div>時計塔に住み込みの見習い修理工。左利き。</div></div>
+      <div class="row"><div class="meta">補足<br>400 / 12px</div><div style="font-size:12px;color:var(--ink-3)">12分前に更新</div></div>
+    </div>
+  </div>
+
+  <div class="panel" style="margin-top:20px">
+    <h3>ボタン（角丸6px・下辺2pxのキーキャップ。押すと沈む）</h3>
+    <div class="btnrow">
+      <span></span><span class="hd">通常</span><span class="hd">ホバー</span><span class="hd">フォーカス</span><span class="hd">無効</span>
+      <span class="lbl">プライマリ</span><button class="btn btn-primary">保存する</button><button class="btn btn-primary is-hover">保存する</button><button class="btn btn-primary is-focus">保存する</button><button class="btn btn-primary" disabled>保存する</button>
+      <span class="lbl">セカンダリ</span><button class="btn btn-secondary">編集</button><button class="btn btn-secondary is-hover">編集</button><button class="btn btn-secondary is-focus">編集</button><button class="btn btn-secondary" disabled>編集</button>
+      <span class="lbl">ゴースト</span><button class="btn btn-ghost">設定</button><button class="btn btn-ghost is-hover">設定</button><button class="btn btn-ghost is-focus">設定</button><button class="btn btn-ghost" disabled>設定</button>
+      <span class="lbl">削除</span><button class="btn btn-danger"><svg class="i s"><use href="#i-trash"/></svg>削除</button><button class="btn btn-danger is-hover"><svg class="i s"><use href="#i-trash"/></svg>削除</button><button class="btn btn-danger is-focus"><svg class="i s"><use href="#i-trash"/></svg>削除</button><button class="btn btn-danger" disabled><svg class="i s"><use href="#i-trash"/></svg>削除</button>
+    </div>
+  </div>
+
+  <div class="grid2" style="margin-top:20px">
+    <div class="panel">
+      <h3>コンポーネント</h3>
+      <div class="demo">
+        <div class="col"><span class="cap">表示切替（選択中は種類色で塗る）</span>
+          <div class="seg" role="group" aria-label="表示切替の例"><button data-kind="memo" aria-pressed="true">メモ</button><button data-kind="story" aria-pressed="false">ストーリー</button></div>
+          <div class="seg" role="group" aria-label="表示切替の例2"><button data-kind="memo" aria-pressed="false">メモ</button><button data-kind="story" aria-pressed="true">ストーリー</button></div>
+        </div>
+        <div class="col"><span class="cap">検索（通常 / フォーカス）</span>
+          <div class="search"><input placeholder="メモ・ストーリーを検索" aria-label="検索の例"><button aria-label="検索"><svg class="i"><use href="#i-search"/></svg></button></div>
+          <div class="search is-focus"><input value="時計塔" aria-label="検索の例2"><button aria-label="検索"><svg class="i"><use href="#i-search"/></svg></button></div>
+        </div>
+        <div class="col"><span class="cap">サイドメニュー（現在地 / 通常）</span>
+          <ul class="nav">
+            <li><a href="#" data-k="home" aria-current="page"><svg class="i"><use href="#i-home"/></svg>ホーム</a></li>
+            <li><a href="#" data-k="manga"><svg class="i"><use href="#i-manga"/></svg>漫画創作</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="panel" style="background:var(--wash)">
+      <h3>ストーリーカード</h3>
+      <div style="padding-top:24px">
+      <article class="scard">
+        <span class="tab"><svg class="i s"><use href="#i-story"/></svg>ストーリー</span>
+        <h2>十三番目の鐘</h2>
+        <div class="genres"><span class="genre">ファンタジー</span><span class="genre">日常</span></div>
+        <p>時計塔の見習い修理工・灯は、雨の夜に鳴った「13回目の鐘」を数えてしまう。翌朝から町の時間が少しずつ巻き戻り始める。</p>
+        <div class="smeta"><span>セリフ 128行</span><span class="mg"><i></i>漫画 3ページ</span><button class="btn btn-secondary sm">開く</button></div>
+      </article>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel rationale">
+    <h3>デザインの考え方</h3>
+    <ul>
+      <li><b>コンセプト「カラーインデックス」</b>：資料ファイルの見出しタブのように、カードの左上に種類色のタブを付けた。メモは山吹 #FFB300、ストーリーは青 #2457F5、漫画は紅 #D81E60。3色は互いに離れた色相で、色覚の違いがあっても明度差で区別できる。</li>
+      <li><b>色を塗るのは「種類」だけ</b>：ボタンや文字は紺に近い墨色 #1D2433 で統一し、鮮やかな色はタブ・表示切替・ヘッダー最上部の3色ラインにだけ使う。白地に色が少量だから、YouTubeのサムネイルのように中身が際立つ。</li>
+      <li><b>キーキャップ型ボタン</b>：角丸6pxに下辺2pxの縁。押せるものは「厚み」で分かり、カード（厚みなし）と見間違えない。押下時に2px沈む。</li>
+      <li><b>LINE Seed JP ＋ Outfit</b>：LINE Seed JP は画面での可読性が高く太さの段階がはっきりしたゴシック。ロゴと件数の数字は幾何学的な Outfit にして、情報の「数」を見やすくした。</li>
+    </ul>
+  </div>
+</section>
+
+<script>
+(function(){
+  var app=document.getElementById('app');
+  var seg=app.querySelectorAll('.hdr .seg button');
+  seg.forEach(function(b){b.addEventListener('click',function(){
+    seg.forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false')});
+    var story=b.dataset.kind==='story';
+    app.classList.toggle('view-story',story);
+    document.getElementById('viewTitle').textContent=story?'ストーリー':'メモ';
+    document.getElementById('viewCount').textContent=story?'4':'24';
+    document.querySelector('#newBtn span').textContent=story?'ストーリーを書く':'メモを書く';
+  })});
+  var sb=document.getElementById('sideBtn');
+  sb.addEventListener('click',function(){
+    var c=app.classList.toggle('collapsed');
+    sb.setAttribute('aria-expanded',String(!c));
+    sb.setAttribute('aria-label',c?'サイドメニューを開く':'サイドメニューを閉じる');
+  });
+})();
+</script>
+</body>
+</html>

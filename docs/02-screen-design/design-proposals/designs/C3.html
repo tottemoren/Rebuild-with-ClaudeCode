@@ -1,0 +1,461 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rebuild デザイン案 C3 — 若葉トーン</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kiwi+Maru:wght@400;500&family=M+PLUS+Rounded+1c:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+/* C3 若葉トーン — one green hue in tonal steps; light = raw material, deep = finished work.
+   Leaf-shaped cards, 12px squircle buttons, M PLUS Rounded 1c + Kiwi Maru */
+:root{
+  --g50:#EEF8F2; --g100:#D5F0E0; --g200:#A9DFC0; --g300:#6CC79A;
+  --g500:#17784B; --g600:#125F3C; --g700:#0B4A31;
+  --bg:#F6F9F7; --surface:#FFFFFF; --line:#DDE7E1;
+  --ink:#1F2D26; --ink-2:#3E5247; --ink-3:#586A60;
+
+  /* type identity = tonal step */
+  --memo:var(--g100);  --memo-on:var(--g700);
+  --story:var(--g300); --story-on:var(--g700);
+  --manga:var(--g700); --manga-on:#FFFFFF;
+
+  --danger:#B3261E; --danger-tint:#FCE9E7;
+  --focus:#17784B;
+
+  --leaf:24px 4px 24px 4px;
+  --r-btn:12px;
+  --f-body:"M PLUS Rounded 1c", system-ui, sans-serif;
+  --f-head:"Kiwi Maru", "M PLUS Rounded 1c", serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:14px;line-height:1.75;-webkit-font-smoothing:antialiased}
+button,input{font:inherit;color:inherit}
+h1,h2,h3,.btn,.nav a,.seg button,.chip,.genre{font-feature-settings:"palt"}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+svg.i{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+svg.i.s{width:16px;height:16px}
+
+.app{max-width:1440px;margin:0 auto;background:var(--bg);min-height:900px;display:grid;grid-template-rows:auto 1fr}
+.hdr{background:var(--surface);display:grid;grid-template-columns:232px 1fr 300px;grid-template-rows:58px 46px;align-items:center;padding:0 20px;border-bottom:1.5px solid var(--g100)}
+.logo{display:flex;align-items:center;gap:10px;font-family:var(--f-head);font-weight:500;font-size:24px;color:var(--g700);text-decoration:none;width:max-content;border-radius:10px;padding:0 4px}
+.leafmark{display:flex;gap:2px}
+.leafmark i{width:10px;height:20px;border-radius:10px 2px 10px 2px}
+.leafmark i:nth-child(1){background:var(--g100)}
+.leafmark i:nth-child(2){background:var(--g300)}
+.leafmark i:nth-child(3){background:var(--g700)}
+.search{grid-column:2;justify-self:center;display:flex;gap:6px;width:min(580px,100%);height:42px}
+.search .field{flex:1;display:flex;align-items:center;gap:8px;padding:0 14px;border-radius:var(--r-btn);background:var(--g50);border:1.5px solid transparent;color:var(--ink-3)}
+.search .field:focus-within,.search.is-focus .field{background:var(--surface);border-color:var(--g500)}
+.search input{flex:1;border:0;background:transparent;outline:none;min-width:0;color:var(--ink)}
+.search input::placeholder{color:var(--ink-3)}
+.search button{border:0;border-radius:var(--r-btn);background:var(--g100);color:var(--g700);padding:0 18px;font-weight:700;cursor:pointer}
+.search button:hover{background:var(--g200)}
+.acts{grid-column:3;justify-self:end;display:flex;align-items:center;gap:6px}
+.avatar{width:36px;height:36px;border-radius:50%;border:0;background:var(--g200);color:var(--g700);font-weight:800;cursor:pointer}
+.sidetoggle{grid-row:2;grid-column:1;justify-self:start}
+
+.hdr .seg{grid-column:2;grid-row:2;justify-self:center}
+.seg{display:inline-flex;width:max-content;gap:4px;padding:3px;border-radius:14px;background:var(--g50)}
+.seg button{border:1.5px solid transparent;background:transparent;border-radius:11px;padding:2px 18px;color:var(--ink-2);font-weight:500;cursor:pointer;display:flex;align-items:center;gap:6px}
+.seg button:hover{color:var(--g700)}
+.seg button[aria-pressed="true"][data-kind="memo"]{background:var(--memo);color:var(--memo-on);border-color:var(--g200);font-weight:700}
+.seg button[aria-pressed="true"][data-kind="story"]{background:var(--story);color:var(--story-on);font-weight:700}
+
+/* squircle 12px; secondary is a tonal fill, not an outline */
+.btn{display:inline-flex;align-items:center;gap:6px;height:38px;padding:0 18px;border-radius:var(--r-btn);border:1.5px solid transparent;font-weight:700;cursor:pointer;white-space:nowrap;font-size:14px;transition:background-color .15s}
+.btn.sm{height:32px;padding:0 13px;font-size:13px;border-radius:10px}
+.btn-primary{background:var(--g500);color:#fff}
+.btn-primary:hover,.btn-primary.is-hover{background:var(--g600)}
+.btn-secondary{background:var(--g100);color:var(--g700)}
+.btn-secondary:hover,.btn-secondary.is-hover{background:var(--g200)}
+.btn-ghost{background:transparent;color:var(--ink-2);font-weight:500}
+.btn-ghost:hover,.btn-ghost.is-hover{background:var(--g50);color:var(--g700)}
+.btn-danger{background:transparent;color:var(--danger);border-color:#EBB8B3}
+.btn-danger:hover,.btn-danger.is-hover{background:var(--danger-tint);border-color:var(--danger)}
+.btn.is-focus{outline:3px solid var(--focus);outline-offset:2px}
+.btn[disabled]{background:#EEF1EF;color:#8B9790;border-color:transparent;cursor:not-allowed}
+.iconbtn{width:40px;height:40px;padding:0;justify-content:center}
+
+.body{display:grid;grid-template-columns:232px 1fr 300px;transition:grid-template-columns .25s ease}
+.app.collapsed .body{grid-template-columns:0 1fr 300px}
+.side{padding:16px 12px;overflow:hidden}
+.app.collapsed .side{padding:0}
+.nav{list-style:none;margin:0;padding:0;display:grid;gap:2px}
+.nav a{display:flex;align-items:center;gap:12px;height:44px;padding:0 12px;border-radius:var(--r-btn);color:var(--ink-2);text-decoration:none;white-space:nowrap;font-weight:500}
+.nav a:hover{background:var(--g50);color:var(--g700)}
+.nav .sw{width:24px;height:24px;display:grid;place-items:center;border-radius:8px 3px 8px 3px}
+.nav [data-k="home"] .sw{color:var(--g500)}
+.nav [data-k="memo"] .sw{background:var(--memo);color:var(--memo-on)}
+.nav [data-k="story"] .sw{background:var(--story);color:var(--story-on)}
+.nav [data-k="manga"] .sw{background:var(--manga);color:var(--manga-on)}
+.nav .sw svg{width:15px;height:15px}
+.nav a[aria-current="page"]{background:var(--g100);color:var(--g700);font-weight:700}
+.nav a[aria-current="page"] .sw{background:var(--g500);color:#fff}
+.pipe{margin:24px 12px 0;padding:14px 14px 12px;border-radius:var(--leaf);background:var(--surface);border:1.5px solid var(--g100)}
+.pipe h3{font-family:var(--f-head);font-weight:500;font-size:13px;margin:0 0 10px;color:var(--g700)}
+.pipe .bar{display:flex;height:10px;border-radius:5px;overflow:hidden;gap:2px}
+.pipe .bar i:nth-child(1){flex:24;background:var(--memo)}
+.pipe .bar i:nth-child(2){flex:4;background:var(--story)}
+.pipe .bar i:nth-child(3){flex:11;background:var(--manga)}
+.pipe dl{margin:10px 0 0;display:grid;grid-template-columns:1fr auto;gap:2px 8px;font-size:12px;color:var(--ink-2)}
+.pipe dd{margin:0;font-weight:700;color:var(--ink)}
+
+.main{padding:20px 24px 40px;min-width:0}
+.toolbar{display:flex;align-items:center;gap:10px;margin-bottom:18px;flex-wrap:wrap}
+.toolbar h1{margin:0;font-family:var(--f-head);font-weight:500;font-size:22px;color:var(--g700);display:flex;align-items:baseline;gap:8px}
+.toolbar h1 small{font-family:var(--f-body);font-size:13px;color:var(--ink-3);font-weight:500}
+.chips{display:flex;gap:6px;margin-left:10px}
+.chip{border:0;height:30px;padding:0 12px;border-radius:10px;background:transparent;color:var(--ink-2);font-size:13px;cursor:pointer}
+.chip:hover{background:var(--g50)}
+.chip[aria-pressed="true"]{background:var(--g700);color:#fff;font-weight:700}
+.toolbar .spacer{flex:1}
+
+.masonry{columns:3 250px;column-gap:16px}
+.memo{break-inside:avoid;display:inline-block;width:100%;margin:0 0 16px;border-radius:var(--leaf);background:var(--surface);border:1.5px solid var(--g100);padding:16px 18px 12px}
+.memo .tag{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--g700);background:var(--memo);border-radius:8px 3px 8px 3px;padding:0 10px;margin-bottom:6px}
+.memo h2{font-family:var(--f-head);font-weight:500;font-size:17px;line-height:1.5;margin:0 0 6px;color:var(--ink)}
+.memo p{margin:0 0 8px;color:var(--ink-2)}
+.memo ul{margin:0 0 8px;padding-left:1.2em;color:var(--ink-2)}
+.memo .quote{font-family:var(--f-head);font-size:18px;line-height:1.8;color:var(--g700)}
+.memo .foot{display:flex;align-items:center;gap:4px;margin-top:8px}
+.memo time{font-size:12px;color:var(--ink-3);margin-right:auto}
+.memo .btn{height:30px;padding:0 12px;font-size:13px;border-radius:10px}
+.memo .btn-secondary{background:var(--g50)}
+.memo .btn-secondary:hover{background:var(--g100)}
+.memo.fresh .btn-secondary{background:var(--surface)}
+.memo .btn-danger{border-color:transparent;color:var(--ink-3);font-weight:500}
+.memo .btn-danger:hover{color:var(--danger);background:var(--danger-tint)}
+.memo.tate .vbody{writing-mode:vertical-rl;height:230px;margin:6px auto;font-family:var(--f-head);font-size:18px;line-height:1.9;color:var(--g700);letter-spacing:.06em}
+.memo.fresh{background:var(--g50)}
+
+.stories{display:none;grid-template-columns:1fr 1fr;gap:16px}
+.app.view-story .stories{display:grid}
+.app.view-story .masonry,.app.view-story .chips{display:none}
+.scard{border-radius:var(--leaf);background:var(--surface);border:1.5px solid var(--g200);padding:0 20px 14px;display:grid;gap:8px;overflow:hidden}
+.scard .band{margin:0 -20px 4px;padding:8px 20px;background:var(--story);color:var(--story-on);display:flex;gap:6px;flex-wrap:wrap}
+.genre{font-size:12px;font-weight:700;background:rgba(255,255,255,.6);color:var(--g700);border-radius:8px 3px 8px 3px;padding:0 10px}
+.scard h2{margin:0;font-family:var(--f-head);font-weight:500;font-size:19px;line-height:1.45}
+.scard p{margin:0;color:var(--ink-2);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.smeta{display:flex;align-items:center;gap:14px;font-size:12px;color:var(--ink-3)}
+.smeta .mg{background:var(--manga);color:var(--manga-on);border-radius:8px 3px 8px 3px;padding:1px 10px;font-weight:700}
+.smeta .btn{margin-left:auto}
+
+.ad{padding:20px 20px 20px 0}
+.adlabel{font-size:11px;color:var(--ink-3);margin-bottom:6px}
+.adbox{position:sticky;top:16px;width:280px;height:600px;border-radius:16px;background:var(--surface);border:1.5px dashed var(--g200);display:grid;place-items:center;color:var(--ink-3);font-size:13px;text-align:center}
+.addots{display:flex;gap:6px;justify-content:center;margin-top:10px}
+.addots i{width:6px;height:6px;border-radius:50%;background:var(--g200)}
+.addots i:first-child{background:var(--g500)}
+
+.sheet{max-width:1440px;margin:56px auto 0;padding:0 40px 80px}
+.sheet > h2{font-family:var(--f-head);font-weight:500;font-size:28px;color:var(--g700);margin:0 0 4px}
+.sheet .lead{color:var(--ink-2);margin:0 0 28px}
+.grid2{display:grid;grid-template-columns:1.25fr 1fr;gap:20px}
+.panel{background:var(--surface);border-radius:20px;padding:22px 24px;border:1.5px solid var(--line)}
+.panel h3{font-family:var(--f-head);font-weight:500;font-size:16px;margin:0 0 14px;color:var(--g700)}
+.ramp{display:grid;grid-template-columns:repeat(7,1fr);gap:0;border-radius:14px;overflow:hidden;margin-bottom:6px}
+.ramp b{height:64px;display:block}
+.ramplbl{display:grid;grid-template-columns:repeat(7,1fr);font-size:11px;line-height:1.5;color:var(--ink-2);margin-bottom:16px}
+.ramplbl code{font-family:inherit;font-weight:700;color:var(--ink)}
+.roles{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.roles div{border-radius:var(--leaf);padding:10px 14px;font-size:13px;font-weight:700}
+.extra{display:flex;gap:16px;margin-top:14px;font-size:12px;color:var(--ink-2)}
+.extra span{display:flex;align-items:center;gap:6px}
+.extra i{width:18px;height:18px;border-radius:5px;border:1px solid rgba(0,0,0,.08)}
+.typespec .row{display:grid;grid-template-columns:170px 1fr;gap:16px;align-items:baseline;padding:8px 0;border-top:1px solid var(--line)}
+.typespec .row:first-child{border-top:0}
+.typespec .meta{font-size:12px;color:var(--ink-3)}
+.btnrow{display:grid;grid-template-columns:90px repeat(4,auto);gap:14px;align-items:center;justify-content:start}
+.btnrow .lbl,.btnrow .hd{font-size:12px;color:var(--ink-3)}
+.demo{display:flex;gap:28px;flex-wrap:wrap;align-items:flex-start}
+.demo .col{display:grid;gap:10px;justify-items:start}
+.demo .cap{font-size:12px;color:var(--ink-3)}
+.demo .search{width:360px}
+.demo .nav{width:220px;background:var(--bg);padding:8px;border-radius:16px}
+.rationale{margin-top:20px}
+.rationale ul{margin:0;padding-left:1.2em;display:grid;gap:8px}
+.rationale li{max-width:62em}
+
+@media (max-width:1280px){
+  .body{grid-template-columns:220px 1fr 180px}
+  .app.collapsed .body{grid-template-columns:0 1fr 180px}
+  .adbox{width:160px}
+  .hdr{grid-template-columns:220px 1fr auto}
+}
+@media (max-width:1100px){ .masonry{columns:2} .grid2{grid-template-columns:1fr} .chips{display:none} }
+@media (max-width:860px){
+  .body,.app.collapsed .body{grid-template-columns:0 1fr}
+  .side,.ad{display:none}
+  .hdr{grid-template-columns:auto 1fr auto;gap:8px}
+  .stories{grid-template-columns:1fr}
+  .sheet{padding:0 16px 60px}
+  .ramp,.ramplbl{grid-template-columns:repeat(4,1fr)}
+  .roles{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-side" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="5"/><path d="M9 4v16"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></symbol>
+  <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 3v2.5M12 18.5V21M3 12h2.5M18.5 12H21M5.6 5.6l1.8 1.8M16.6 16.6l1.8 1.8M5.6 18.4l1.8-1.8M16.6 7.4l1.8-1.8"/></symbol>
+  <symbol id="i-out" viewBox="0 0 24 24"><path d="M14 4h4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-4M10 8l-4 4 4 4M6 12h10"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M4 11l8-6.5 8 6.5V19a1.5 1.5 0 0 1-1.5 1.5H5.5A1.5 1.5 0 0 1 4 19z"/><path d="M10 20.5v-5h4v5"/></symbol>
+  <symbol id="i-memo" viewBox="0 0 24 24"><path d="M5 4.5h14v10l-5 5H5z"/><path d="M14 19.5v-5h5M8.5 9h7M8.5 12.5h4"/></symbol>
+  <symbol id="i-story" viewBox="0 0 24 24"><path d="M4 5.5c2.8-1.2 5.5-1.2 8 .5 2.5-1.7 5.2-1.7 8-.5V19c-2.8-1.2-5.5-1.2-8 .5-2.5-1.7-5.2-1.7-8-.5z"/><path d="M12 6v13.5"/></symbol>
+  <symbol id="i-manga" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="2.5"/><path d="M3.5 11h9.5M13 3.5v17M13 14.5h7.5"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M5 7h14M10 7V5h4v2M7 7l1 12.5h8L17 7"/></symbol>
+  <symbol id="i-sort" viewBox="0 0 24 24"><path d="M7 5v14M4 16l3 3 3-3M14 7h6M14 12h4M14 17h2"/></symbol>
+</svg>
+
+<div class="app" id="app">
+  <header class="hdr">
+    <a class="logo" href="#" aria-label="Rebuild ホーム"><span class="leafmark" aria-hidden="true"><i></i><i></i><i></i></span>Rebuild</a>
+    <form class="search" role="search" onsubmit="return false">
+      <label class="field"><svg class="i s"><use href="#i-search"/></svg><span class="sr">メモとストーリーを検索</span><input type="search" placeholder="メモ・ストーリーを検索"></label>
+      <button type="submit">検索</button>
+    </form>
+    <div class="acts">
+      <button class="btn btn-ghost"><svg class="i s"><use href="#i-gear"/></svg>設定</button>
+      <button class="avatar" aria-label="アカウント">灯</button>
+      <button class="btn btn-ghost"><svg class="i s"><use href="#i-out"/></svg>ログアウト</button>
+    </div>
+    <button class="btn btn-ghost iconbtn sidetoggle" id="sideBtn" aria-expanded="true" aria-controls="side" aria-label="サイドメニューを閉じる"><svg class="i"><use href="#i-side"/></svg></button>
+    <div class="seg" role="group" aria-label="表示切替">
+      <button data-kind="memo" aria-pressed="true"><svg class="i s"><use href="#i-memo"/></svg>メモ</button>
+      <button data-kind="story" aria-pressed="false"><svg class="i s"><use href="#i-story"/></svg>ストーリー</button>
+    </div>
+  </header>
+
+  <div class="body">
+    <nav class="side" id="side" aria-label="メインメニュー">
+      <ul class="nav">
+        <li><a href="#" data-k="home" aria-current="page"><span class="sw"><svg class="i"><use href="#i-home"/></svg></span>ホーム</a></li>
+        <li><a href="#" data-k="memo"><span class="sw"><svg class="i"><use href="#i-memo"/></svg></span>メモ</a></li>
+        <li><a href="#" data-k="story"><span class="sw"><svg class="i"><use href="#i-story"/></svg></span>ストーリー創作</a></li>
+        <li><a href="#" data-k="manga"><span class="sw"><svg class="i"><use href="#i-manga"/></svg></span>漫画創作</a></li>
+      </ul>
+      <div class="pipe">
+        <h3>素材から作品へ</h3>
+        <div class="bar" aria-hidden="true"><i></i><i></i><i></i></div>
+        <dl><dt>メモ</dt><dd>24</dd><dt>ストーリー</dt><dd>4</dd><dt>漫画ページ</dt><dd>11</dd></dl>
+      </div>
+    </nav>
+
+    <main class="main">
+      <div class="toolbar">
+        <h1><span id="viewTitle">メモ</span><small id="viewCount">24件</small></h1>
+        <div class="chips" role="group" aria-label="内容で絞り込み">
+          <button class="chip" aria-pressed="true">すべて</button>
+          <button class="chip" aria-pressed="false">キャラ設定</button>
+          <button class="chip" aria-pressed="false">プロット</button>
+          <button class="chip" aria-pressed="false">セリフ案</button>
+          <button class="chip" aria-pressed="false">世界観</button>
+        </div>
+        <span class="spacer"></span>
+        <button class="btn btn-ghost sm"><svg class="i s"><use href="#i-sort"/></svg>更新順</button>
+        <button class="btn btn-primary" id="newBtn"><svg class="i s"><use href="#i-plus"/></svg><span>メモを書く</span></button>
+      </div>
+
+      <section class="masonry" aria-label="メモ一覧">
+        <article class="memo fresh">
+          <span class="tag">キャラ設定</span>
+          <h2>灯（あかり）16歳</h2>
+          <p>時計塔に住み込みの見習い修理工。左利き。高い所が苦手なのに、毎朝いちばん上の文字盤を磨いている。</p>
+          <ul><li>口癖「止まった時計にも理由がある」</li><li>工具は祖父のお下がり、柄に名前の刻印</li><li>怒ると敬語になる</li></ul>
+          <div class="foot"><time>12分前</time><button class="btn btn-danger">削除</button><button class="btn btn-secondary">編集</button></div>
+        </article>
+        <article class="memo">
+          <span class="tag">セリフ案</span>
+          <p class="quote">「直せないものなんて、ないよ。……直したくないものは、あるけど」</p>
+          <div class="foot"><time>1時間前</time><button class="btn btn-danger">削除</button><button class="btn btn-secondary">編集</button></div>
+        </article>
+        <article class="memo">
+          <span class="tag">プロット</span>
+          <h2>第3話「十三回目の鐘」</h2>
+          <p>雨の夜、塔の鐘が13回鳴る。町の誰も気づかない。数えていたのは灯だけ。翌朝、町じゅうの時計が5分ずつ戻っている。</p>
+          <div class="foot"><time>3時間前</time><button class="btn btn-danger">削除</button><button class="btn btn-secondary">編集</button></div>
+        </article>
+        <article class="memo tate">
+          <span class="tag">セリフ案・縦書き</span>
+          <div class="vbody">「待って、その針まだ動いてる」<br>「……いや、動かしてるのは誰？」</div>
+          <div class="foot"><time>昨日</time><button class="btn btn-danger">削除</button><button class="btn btn-secondary">編集</button></div>
+        </article>
+        <article class="memo">
+          <span class="tag">世界観</span>
+          <h2>ずれた時計の町</h2>
+          <p>町の時計はすべてわざと5分ずつずらしてある。揃えてはいけない、という古い決まり。理由を知る人はもういない。</p>
+          <div class="foot"><time>昨日</time><button class="btn btn-danger">削除</button><button class="btn btn-secondary">編集</button></div>
+        </article>
+        <article class="memo">
+          <span class="tag">構図・コマ割り</span>
+          <h2>見開き案：塔の内部</h2>
+          <p>真上からの俯瞰。歯車の円がコマの枠そのものになる。灯は右下の小さな歯車の中に。</p>
+          <div class="foot"><time>2日前</time><button class="btn btn-danger">削除</button><button class="btn btn-secondary">編集</button></div>
+        </article>
+        <article class="memo">
+          <span class="tag">キャラ設定</span>
+          <h2>ソウ（郵便配達員）</h2>
+          <p>灯の幼なじみ。自転車のベルを2回鳴らしてから登場するのがお約束。手紙は読まずに届ける主義。</p>
+          <div class="foot"><time>3日前</time><button class="btn btn-danger">削除</button><button class="btn btn-secondary">編集</button></div>
+        </article>
+        <article class="memo">
+          <span class="tag">プロット</span>
+          <h2>第2話ネーム直し</h2>
+          <ul><li>12ページ → 10ページに圧縮</li><li>回想は1ページにまとめる</li><li>ラストの引きを鐘の音に変更</li></ul>
+          <div class="foot"><time>4日前</time><button class="btn btn-danger">削除</button><button class="btn btn-secondary">編集</button></div>
+        </article>
+      </section>
+
+      <section class="stories" aria-label="ストーリー一覧">
+        <article class="scard">
+          <div class="band"><span class="genre">ファンタジー</span><span class="genre">日常</span><span class="genre">ミステリー</span></div>
+          <h2>十三番目の鐘</h2>
+          <p>時計塔の見習い修理工・灯は、雨の夜に鳴った「13回目の鐘」を数えてしまう。翌朝から町の時間が少しずつ巻き戻り始め、幼なじみのソウと原因を探ることに。</p>
+          <div class="smeta"><span>登場人物 5人</span><span>セリフ 128行</span><span class="mg">漫画 3ページ</span><button class="btn btn-secondary sm">開く</button></div>
+        </article>
+        <article class="scard">
+          <div class="band"><span class="genre">青春</span><span class="genre">コメディ</span></div>
+          <h2>放課後スケッチ部</h2>
+          <p>部員3人、廃部寸前の美術部。文化祭までに「動く絵」を完成させないと部室を明け渡すことに。描けない部長と描きすぎる新入生の衝突から始まる。</p>
+          <div class="smeta"><span>登場人物 4人</span><span>セリフ 86行</span><button class="btn btn-secondary sm">開く</button></div>
+        </article>
+        <article class="scard">
+          <div class="band"><span class="genre">SF</span><span class="genre">冒険</span></div>
+          <h2>星くず配達便</h2>
+          <p>小惑星帯を回る小さな配達船。届け先の住所が「まだ存在しない星」だった日から、船長見習いの少女の旅が変わる。</p>
+          <div class="smeta"><span>登場人物 6人</span><span>セリフ 54行</span><span class="mg">漫画 1ページ</span><button class="btn btn-secondary sm">開く</button></div>
+        </article>
+        <article class="scard">
+          <div class="band"><span class="genre">ヒューマンドラマ</span></div>
+          <h2>雨宿りの喫茶店</h2>
+          <p>雨の日だけ開く喫茶店。客は必ず一つ忘れ物をして帰る。店主はそれを預かり、晴れた日に持ち主へ返しにいく。</p>
+          <div class="smeta"><span>登場人物 3人</span><span>セリフ 40行</span><button class="btn btn-secondary sm">開く</button></div>
+        </article>
+      </section>
+    </main>
+
+    <aside class="ad" aria-label="広告">
+      <div class="adlabel">広告</div>
+      <div class="adbox">広告枠<br>300 × 600</div>
+      <div class="addots" aria-hidden="true"><i></i><i></i><i></i></div>
+    </aside>
+  </div>
+</div>
+
+<section class="sheet">
+  <h2>C3 若葉トーン</h2>
+  <p class="lead">ひとつの緑を濃淡で使い分ける。淡いほど素材、濃いほど作品。</p>
+
+  <div class="grid2">
+    <div class="panel">
+      <h3>カラー（1色相・7段階）</h3>
+      <div class="ramp" aria-hidden="true">
+        <b style="background:#EEF8F2"></b><b style="background:#D5F0E0"></b><b style="background:#A9DFC0"></b><b style="background:#6CC79A"></b><b style="background:#17784B"></b><b style="background:#125F3C"></b><b style="background:#0B4A31"></b>
+      </div>
+      <div class="ramplbl">
+        <span><code>#EEF8F2</code><br>入力欄・面</span><span><code>#D5F0E0</code><br>メモ</span><span><code>#A9DFC0</code><br>枠・アバター</span><span><code>#6CC79A</code><br>ストーリー</span><span><code>#17784B</code><br>主要操作</span><span><code>#125F3C</code><br>ホバー</span><span><code>#0B4A31</code><br>漫画・見出し</span>
+      </div>
+      <div class="roles">
+        <div style="background:#D5F0E0;color:#0B4A31">メモ＝淡（素材）</div>
+        <div style="background:#6CC79A;color:#0B4A31">ストーリー＝中（構成）</div>
+        <div style="background:#0B4A31;color:#fff">漫画＝濃（作品）</div>
+      </div>
+      <div class="extra">
+        <span><i style="background:#F6F9F7"></i>#F6F9F7 背景</span>
+        <span><i style="background:#1F2D26"></i>#1F2D26 本文</span>
+        <span><i style="background:#B3261E"></i>#B3261E 削除のみ</span>
+      </div>
+    </div>
+    <div class="panel typespec">
+      <h3>タイポグラフィ</h3>
+      <div class="row"><div class="meta">ロゴ・見出し<br>Kiwi Maru 500 / 24px</div><div style="font-family:var(--f-head);font-weight:500;font-size:24px;color:var(--g700)">Rebuild　十三番目の鐘</div></div>
+      <div class="row"><div class="meta">カード見出し<br>Kiwi Maru 500 / 17px</div><div style="font-family:var(--f-head);font-weight:500;font-size:17px">灯（あかり）16歳</div></div>
+      <div class="row"><div class="meta">本文<br>M PLUS Rounded 1c 400 / 14px / 行間1.75</div><div>時計塔に住み込みの見習い修理工。左利き。</div></div>
+      <div class="row"><div class="meta">ボタン・ラベル<br>M PLUS Rounded 1c 700 / 14px</div><div style="font-weight:700">メモを書く　編集　保存する</div></div>
+      <div class="row"><div class="meta">補足<br>400 / 12px</div><div style="font-size:12px;color:var(--ink-3)">12分前に更新</div></div>
+    </div>
+  </div>
+
+  <div class="panel" style="margin-top:20px">
+    <h3>ボタン（角丸12pxのスクワークル。セカンダリは枠線ではなく淡い面）</h3>
+    <div class="btnrow">
+      <span></span><span class="hd">通常</span><span class="hd">ホバー</span><span class="hd">フォーカス</span><span class="hd">無効</span>
+      <span class="lbl">プライマリ</span><button class="btn btn-primary">保存する</button><button class="btn btn-primary is-hover">保存する</button><button class="btn btn-primary is-focus">保存する</button><button class="btn btn-primary" disabled>保存する</button>
+      <span class="lbl">セカンダリ</span><button class="btn btn-secondary">編集</button><button class="btn btn-secondary is-hover">編集</button><button class="btn btn-secondary is-focus">編集</button><button class="btn btn-secondary" disabled>編集</button>
+      <span class="lbl">ゴースト</span><button class="btn btn-ghost">設定</button><button class="btn btn-ghost is-hover">設定</button><button class="btn btn-ghost is-focus">設定</button><button class="btn btn-ghost" disabled>設定</button>
+      <span class="lbl">削除</span><button class="btn btn-danger"><svg class="i s"><use href="#i-trash"/></svg>削除</button><button class="btn btn-danger is-hover"><svg class="i s"><use href="#i-trash"/></svg>削除</button><button class="btn btn-danger is-focus"><svg class="i s"><use href="#i-trash"/></svg>削除</button><button class="btn btn-danger" disabled><svg class="i s"><use href="#i-trash"/></svg>削除</button>
+    </div>
+  </div>
+
+  <div class="grid2" style="margin-top:20px">
+    <div class="panel">
+      <h3>コンポーネント</h3>
+      <div class="demo">
+        <div class="col"><span class="cap">表示切替（選択中は種類の濃さ）</span>
+          <div class="seg" role="group" aria-label="表示切替の例"><button data-kind="memo" aria-pressed="true">メモ</button><button data-kind="story" aria-pressed="false">ストーリー</button></div>
+          <div class="seg" role="group" aria-label="表示切替の例2"><button data-kind="memo" aria-pressed="false">メモ</button><button data-kind="story" aria-pressed="true">ストーリー</button></div>
+        </div>
+        <div class="col"><span class="cap">検索（通常 / フォーカス）</span>
+          <div class="search"><label class="field"><svg class="i s"><use href="#i-search"/></svg><input placeholder="メモ・ストーリーを検索" aria-label="検索の例"></label><button>検索</button></div>
+          <div class="search is-focus"><label class="field"><svg class="i s"><use href="#i-search"/></svg><input value="時計塔" aria-label="検索の例2"></label><button>検索</button></div>
+        </div>
+        <div class="col"><span class="cap">サイドメニュー（現在地 / 通常）</span>
+          <ul class="nav">
+            <li><a href="#" data-k="home" aria-current="page"><span class="sw"><svg class="i"><use href="#i-home"/></svg></span>ホーム</a></li>
+            <li><a href="#" data-k="manga"><span class="sw"><svg class="i"><use href="#i-manga"/></svg></span>漫画創作</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="panel">
+      <h3>ストーリーカード</h3>
+      <article class="scard">
+        <div class="band"><span class="genre">ファンタジー</span><span class="genre">日常</span></div>
+        <h2>十三番目の鐘</h2>
+        <p>時計塔の見習い修理工・灯は、雨の夜に鳴った「13回目の鐘」を数えてしまう。翌朝から町の時間が少しずつ巻き戻り始める。</p>
+        <div class="smeta"><span>セリフ 128行</span><span class="mg">漫画 3ページ</span><button class="btn btn-secondary sm">開く</button></div>
+      </article>
+    </div>
+  </div>
+
+  <div class="panel rationale">
+    <h3>デザインの考え方</h3>
+    <ul>
+      <li><b>コンセプト「若葉トーン」</b>：使う色相は緑ひとつ。メモは淡い若葉、ストーリーは中間、漫画は深緑。色の「濃さ」が制作の進み具合を表し、素材が作品に育っていく流れを画面全体で感じられる。</li>
+      <li><b>色数を増やさずに種類を見分ける</b>：明度差で区別するので、色覚の違いやモノクロ印刷でも種類が崩れない。赤は「削除」の確認時だけに残し、警告の意味を薄めない。</li>
+      <li><b>葉っぱ形のカード</b>：角丸を対角だけ大きくした葉の形（20px／6px）でカードとタグを統一。ボタンは12pxのスクワークルでカードと形を変え、「押せるもの」と「読むもの」を分けた。</li>
+      <li><b>M PLUS Rounded 1c ＋ Kiwi Maru</b>：本文は小さくても読みやすい丸ゴシック。見出しとセリフには筆の温度が残る Kiwi Maru を使い、セリフ案のメモが「声」として立ち上がる。</li>
+      <li><b>YouTube的な見やすさ</b>：ヘッダーとメニューは白と淡緑だけの静かな面。濃い色はプライマリボタンと漫画の印にしか出てこないので、目線はメモの中身に向かう。</li>
+    </ul>
+  </div>
+</section>
+
+<script>
+(function(){
+  var app=document.getElementById('app');
+  var seg=app.querySelectorAll('.hdr .seg button');
+  seg.forEach(function(b){b.addEventListener('click',function(){
+    seg.forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false')});
+    var story=b.dataset.kind==='story';
+    app.classList.toggle('view-story',story);
+    document.getElementById('viewTitle').textContent=story?'ストーリー':'メモ';
+    document.getElementById('viewCount').textContent=story?'4件':'24件';
+    document.querySelector('#newBtn span').textContent=story?'ストーリーを書く':'メモを書く';
+  })});
+  var sb=document.getElementById('sideBtn');
+  sb.addEventListener('click',function(){
+    var c=app.classList.toggle('collapsed');
+    sb.setAttribute('aria-expanded',String(!c));
+    sb.setAttribute('aria-label',c?'サイドメニューを開く':'サイドメニューを閉じる');
+  });
+})();
+</script>
+</body>
+</html>

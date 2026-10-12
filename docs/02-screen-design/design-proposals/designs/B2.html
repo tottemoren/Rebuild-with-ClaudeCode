@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Rebuild デザイン案 B2 — 入稿前の赤ペン</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Murecho:wght@400;500;700;900&family=Shippori+Mincho+B1:wght@600;700&display=swap" rel="stylesheet">
+<style>
+
+:root{
+  --paper:#FFFFFF; --page:#F4F5F6;
+  --ink:#1E1F24; --ink-2:#4A4C54; --ink-3:#62656D;
+  --tone:#D3D5DA; --tone-2:#EDEEF0;
+  --red:#C42A22; --red-dk:#9E1F18; --red-tint:#FBEDEB;
+  --f-ui:"Murecho",system-ui,sans-serif;
+  --f-title:"Shippori Mincho B1","Murecho",serif;
+  --side-w:208px; --ad-w:228px; --gap:18px;
+  --tombo:linear-gradient(var(--ink),var(--ink));
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--page);color:var(--ink);font-family:var(--f-ui);font-size:14px;line-height:1.6;-webkit-font-smoothing:antialiased;font-feature-settings:"palt" 1}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer}
+h1,h2,h3,p,ul,ol,dl{margin:0}
+ul,ol{padding:0}
+[hidden]{display:none!important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.ic{flex:none;display:block}
+.app{max-width:1440px;margin:0 auto;background:var(--paper);min-height:960px;display:flex;flex-direction:column}
+.hdr{display:grid;grid-template-columns:var(--side-w) 1fr auto;column-gap:24px;padding:14px 24px 10px;position:sticky;top:0;z-index:5;background:var(--paper)}
+.hdr-left{display:flex;flex-direction:column;justify-content:space-between;align-items:flex-start;gap:8px}
+.hdr-center{display:flex;flex-direction:column;align-items:center;gap:10px}
+.hdr-right{display:flex;align-items:flex-start;gap:10px}
+.logo{text-decoration:none;color:var(--ink);line-height:1;display:inline-block}
+.search{display:flex;width:min(600px,100%)}
+.search input{flex:1;min-width:0;height:40px;padding:0 14px;outline:none}
+.search input::placeholder{color:var(--ink-3)}
+.search-btn{display:grid;place-items:center;width:56px;height:40px;flex:none}
+.seg{display:inline-flex}
+.seg button{height:32px;padding:0 18px;font-size:13.5px;border:0;background:none}
+.icon-btn{display:grid;place-items:center;width:36px;height:32px;padding:0;background:none}
+.avatar{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;padding:0;font-weight:700;font-size:15px}
+.body{display:grid;grid-template-columns:var(--side-w) minmax(0,1fr) var(--ad-w);flex:1}
+.app.side-closed .body{grid-template-columns:0 minmax(0,1fr) var(--ad-w)}
+.app.side-closed .side{visibility:hidden;transform:translateX(-24px);opacity:0}
+.side{padding:12px 12px 24px 16px;display:flex;flex-direction:column;gap:4px;transition:opacity .18s,transform .18s}
+.nav-item{display:flex;align-items:center;gap:12px;height:42px;padding:0 12px;text-decoration:none;font-size:14px;white-space:nowrap}
+.main{padding:8px 28px 48px;min-width:0}
+.main-head{display:flex;align-items:baseline;gap:14px;margin:6px 0 16px}
+.main-title{font-size:20px;line-height:1.3}
+.main-meta{font-size:13px;color:var(--ink-3)}
+.memo-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:var(--gap);grid-auto-flow:row dense;align-items:start}
+.memo-grid:not(.js){row-gap:var(--gap)}
+.memo-grid.js{grid-auto-rows:4px}
+.memo.wide{grid-column:span 2}
+.memo{display:flex;flex-direction:column;gap:8px;min-width:0}
+.memo-meta{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:12.5px;color:var(--ink-3)}
+.memo-body ul,.memo-body ol{padding-left:1.25em;display:grid;gap:4px}
+.memo-body p+p{margin-top:6px}
+.memo-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:6px}
+.story-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--gap)}
+.story{display:flex;flex-direction:column;gap:10px;min-height:188px}
+.story-syn{color:var(--ink-2);max-width:40em}
+.story-foot{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:12.5px;color:var(--ink-3)}
+.story-genres{list-style:none;display:flex;flex-wrap:wrap;gap:6px}
+.ad{padding:12px 24px 24px 0}
+.ad-slot{position:sticky;top:132px;height:600px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:13px;color:var(--ink-3)}
+.ad-slot small{font-size:11.5px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:38px;padding:0 16px;font-size:14px;font-weight:700;white-space:nowrap;text-decoration:none;position:relative}
+.btn-sm{height:32px;padding:0 11px;font-size:13px;gap:4px}
+.btn-sm .ic{width:16px;height:16px}
+.btn[disabled]{cursor:not-allowed}
+.sheet{max-width:1440px;margin:0 auto;padding:56px 48px 80px;background:var(--page)}
+.sheet-h{font-size:22px;margin-bottom:6px}
+.sheet-lead{color:var(--ink-2);margin-bottom:28px;max-width:46em}
+.sheet-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:20px}
+.blk{background:var(--paper);padding:22px 24px;grid-column:span 6;min-width:0}
+.blk.w12{grid-column:span 12}.blk.w4{grid-column:span 4}.blk.w8{grid-column:span 8}
+.blk h3{font-size:15px;margin-bottom:16px}
+.sw-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.sw{display:flex;flex-direction:column;gap:2px;font-size:12.5px}
+.sw i{display:block;height:56px;margin-bottom:6px}
+.sw b{font-size:13px}
+.sw code{font-family:var(--f-ui);color:var(--ink-2)}
+.sw span{color:var(--ink-3)}
+.type-row{display:grid;grid-template-columns:220px 1fr;gap:16px;align-items:baseline;padding:10px 0}
+.type-row+.type-row{border-top:1px solid var(--tone-2)}
+.type-row dt{font-size:12px;color:var(--ink-3);line-height:1.5}
+.type-row dd{margin:0}
+.btn-table{display:grid;grid-template-columns:110px repeat(4,minmax(0,1fr));gap:14px 16px;align-items:center}
+.btn-table .h{font-size:12px;color:var(--ink-3)}
+.demo-stack{display:grid;gap:18px;justify-items:start}
+.demo-side{width:240px;display:grid;gap:4px}
+.rationale{margin-top:20px;background:var(--paper);padding:24px 28px}
+.rationale h3{font-size:15px;margin-bottom:12px}
+.rationale ul{padding-left:1.2em;display:grid;gap:8px;max-width:62em}
+.rationale b{font-weight:700}
+@media (max-width:1180px){
+  :root{--ad-w:184px;--side-w:192px}
+  .memo-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .blk,.blk.w4,.blk.w8{grid-column:span 12}
+}
+@media (max-width:900px){
+  .body,.app.side-closed .body{grid-template-columns:minmax(0,1fr)}
+  .side,.ad{display:none}
+  .hdr{grid-template-columns:auto 1fr;row-gap:10px}
+  .hdr-right{grid-column:1/-1;justify-content:flex-end}
+  .memo-grid{grid-template-columns:minmax(0,1fr)}
+  .memo.wide{grid-column:auto}
+  .story-grid{grid-template-columns:minmax(0,1fr)}
+  .btn-table{grid-template-columns:80px repeat(4,auto);overflow-x:auto}
+  .type-row{grid-template-columns:1fr}
+  .sheet{padding:40px 16px}
+  .main{padding:8px 16px 40px}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}
+
+
+.hdr{border-bottom:1px solid var(--tone)}
+.logo{font-family:var(--f-ui);font-weight:900;font-size:26px;letter-spacing:-.01em;padding:2px 0}
+.logo:focus-visible{outline:2px solid var(--red);outline-offset:4px}
+.icon-btn{border:1px solid var(--tone);border-bottom:2px solid var(--ink);border-radius:3px;color:var(--ink)}
+.icon-btn:hover{background:var(--tone-2)}
+.search input{border:1px solid var(--tone);border-bottom:2px solid var(--ink);border-right:0;border-radius:3px 0 0 3px;background:#fff}
+.search-btn{border:0;background:var(--ink);color:#fff;border-radius:0 3px 3px 0}
+.search-btn:hover{background:#3A3C44}
+.search:focus-within,.search.is-focus{outline:2px solid var(--red);outline-offset:3px;border-radius:4px}
+.seg{gap:6px}
+.seg button{color:var(--ink-2);font-weight:500;padding:0 20px;height:34px;border-radius:3px}
+.seg button:hover{color:var(--ink);background-color:var(--tone-2)}
+.seg button[aria-selected="true"]{color:var(--ink);font-weight:700;background:transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 40' preserveAspectRatio='none'%3E%3Cpath d='M14 31C4 26 4 12 22 7c22-6 66-5 84 2 14 6 10 19-6 23-22 6-60 6-80 1-6-2-10-5-8-9' fill='none' stroke='%23C42A22' stroke-width='2.4' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") center/100% 100% no-repeat}
+.seg button:focus-visible{outline:2px solid var(--ink);outline-offset:1px}
+.avatar{border:1px solid var(--ink);background:#fff;color:var(--ink);font-family:var(--f-title)}
+.avatar:focus-visible,.icon-btn:focus-visible{outline:2px solid var(--red);outline-offset:2px}
+.nav-item{color:var(--ink-2);border-radius:3px;position:relative;font-weight:500}
+.nav-item:hover,.nav-item.is-hover{background:var(--tone-2);color:var(--ink)}
+.nav-item.is-active{color:var(--ink);font-weight:700;background:var(--tone-2)}
+.nav-item.is-active::before{content:"";position:absolute;left:0;top:9px;bottom:9px;width:3px;border-radius:2px;background:var(--red)}
+.nav-item:focus-visible{outline:2px solid var(--red);outline-offset:2px}
+.memo,.story{background-color:#fff;border:1px solid var(--tone);padding:18px 18px 14px;
+  background-image:var(--tombo),var(--tombo),var(--tombo),var(--tombo),var(--tombo),var(--tombo),var(--tombo),var(--tombo);
+  background-repeat:no-repeat;
+  background-size:12px 2px,2px 12px,12px 2px,2px 12px,12px 2px,2px 12px,12px 2px,2px 12px;
+  background-position:left top,left top,right top,right top,left bottom,left bottom,right bottom,right bottom}
+.tag{display:inline-block;font-size:12px;font-weight:500;color:var(--ink-2);border:1px solid var(--tone);padding:0 7px;border-radius:2px;line-height:1.75}
+.memo-meta .tag{color:var(--ink)}
+.memo-title{font-family:var(--f-title);font-size:17px;font-weight:700;line-height:1.45}
+.memo-body{font-size:14px;line-height:1.85;color:var(--ink)}
+.memo-body .line{font-family:var(--f-title);font-weight:700;font-size:16px;line-height:1.7}
+.memo-body li::marker{color:var(--ink-3)}
+.story{padding:22px 24px 18px}
+.story-title{font-family:var(--f-title);font-size:21px;font-weight:700;line-height:1.4}
+.story-syn{font-size:14px;line-height:1.85}
+.ad-slot{border:1px solid var(--tone);background-color:#fff;background-image:radial-gradient(circle,rgba(30,31,36,.16) 1px,transparent 1.4px);background-size:6px 6px}
+.ad-slot span,.ad-slot small{background:#fff;padding:0 8px}
+.btn{border:1px solid var(--ink);border-bottom-width:3px;border-radius:3px;background:#fff;color:var(--ink);transition:background-color .12s,transform .06s}
+.btn:hover,.btn.is-hover{background:var(--tone-2)}
+.btn:active{transform:translateY(2px);border-bottom-width:1px}
+.btn:focus-visible,.btn.is-focus{outline:2px solid var(--red);outline-offset:3px}
+.btn-primary{background:var(--ink);color:#fff;border-color:var(--ink)}
+.btn-primary:hover,.btn-primary.is-hover{background:#3A3C44;border-color:#3A3C44}
+.btn-ghost{border-color:transparent;color:var(--ink-2);font-weight:500}
+.btn-ghost:hover,.btn-ghost.is-hover{background:var(--tone-2);color:var(--ink)}
+.btn-danger{color:var(--red);border-color:var(--red)}
+.btn-danger:hover,.btn-danger.is-hover{background:var(--red-tint);color:var(--red-dk);border-color:var(--red-dk)}
+.btn-danger:focus-visible,.btn-danger.is-focus{outline-color:var(--ink)}
+.btn[disabled]{color:#80838A;border-color:var(--tone);background:#F5F6F8;transform:none}
+.btn-sm{border-bottom-width:2px}
+.memo .btn-sm{border-top-color:var(--tone);border-left-color:var(--tone);border-right-color:var(--tone)}
+.memo .btn-danger.btn-sm{border-color:var(--tone);border-bottom-color:#B9BCC3}
+.memo .btn-danger.btn-sm:hover{border-color:var(--red)}
+.sheet-h{font-family:var(--f-title);font-weight:700}
+.blk,.rationale{border:1px solid var(--tone)}
+.blk h3,.rationale h3{font-weight:700}
+.blk h3{font-family:var(--f-title)}
+
+</style>
+</head>
+<body>
+<div class="app" id="app">
+<header class="hdr">
+  <div class="hdr-left">
+    <a class="logo" href="#" aria-label="Rebuild ホームを再読み込み">Rebuild</a>
+    <button class="icon-btn side-toggle" id="sideToggle" type="button" aria-label="サイドメニューを閉じる" aria-expanded="true" aria-controls="side"><svg class="ic" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="1.5"/><path d="M9 4v16"/><path d="M15.5 10l-2 2 2 2"/></svg></button>
+  </div>
+  <div class="hdr-center">
+    <form class="search" role="search" onsubmit="return false">
+      <label class="sr" for="q">メモとストーリーを検索</label>
+      <input id="q" type="search" placeholder="メモ・ストーリーを検索" autocomplete="off">
+      <button class="search-btn" type="submit" aria-label="検索"><svg class="ic" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></svg></button>
+    </form>
+    <div class="seg" role="tablist" aria-label="表示内容">
+      <button type="button" role="tab" aria-selected="true" data-view="memo">メモ</button><button type="button" role="tab" aria-selected="false" data-view="story">ストーリー</button>
+    </div>
+  </div>
+  <div class="hdr-right">
+    <button class="btn btn-ghost btn-sm" type="button"><svg class="ic" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.820-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.830l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68 1.65 1.65 0 0 0 10 3.17V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>設定</span></button>
+    <button class="avatar" type="button" aria-label="アカウント情報">ミ</button>
+    <button class="btn btn-secondary btn-sm" type="button"><svg class="ic" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4.5H6v15h8"/><path d="M11 12h9M17 9l3 3-3 3"/></svg><span>ログアウト</span></button>
+  </div>
+</header>
+<div class="body">
+  <nav class="side" id="side" aria-label="メインメニュー">
+    <a class="nav-item is-active" aria-current="page" href="#"><svg class="ic" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11l8-6.5 8 6.5"/><path d="M6 9.5V20h12V9.5"/><path d="M10 20v-5h4v5"/></svg><span>ホーム</span></a>
+    <a class="nav-item" href="#"><svg class="ic" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3.5h9l3.5 3.5v13.5H6z"/><path d="M15 3.5V7h3.5"/><path d="M9 11.5h6M9 15h4"/></svg><span>メモ</span></a>
+    <a class="nav-item" href="#"><svg class="ic" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5.5c2.5-1 5-1 8 .8 3-1.8 5.5-1.8 8-.8v13c-2.5-1-5-1-8 .8-3-1.8-5.5-1.8-8-.8z"/><path d="M12 6.3v13.2"/></svg><span>ストーリー創作</span></a>
+    <a class="nav-item" href="#"><svg class="ic" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="1"/><path d="M3.5 11h9.5M13 3.5v17M13 14.5h7.5"/></svg><span>漫画創作</span></a>
+  </nav>
+  <main class="main">
+    <div class="main-head"><h1 class="main-title" id="viewTitle">メモ</h1><p class="main-meta" id="viewMeta">9件 更新が新しい順</p></div>
+    <section id="memoView" class="memo-grid" aria-label="メモ一覧">
+<article class="memo tall">
+  <div class="memo-meta"><span class="tag">キャラ設定</span><time>10月12日</time></div>
+  <h2 class="memo-title">灯野ミナト（とうの・みなと）</h2>
+  <div class="memo-body"><ul><li>17歳。港町の古い灯台に祖父と二人で住む。</li><li>口癖は「まあ、なんとかなるでしょ」。本当は、なんとかならないと思っている。</li><li>左手首に止まったままの腕時計。外さない理由は第5話まで伏せる。</li><li>嘘をつくとき右耳を触る。気づいているのはカイだけ。</li></ul></div>
+  <div class="memo-actions"><button class="btn btn-danger btn-sm" type="button"><svg class="ic" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 7h15"/><path d="M9.5 7V4.5h5V7"/><path d="M6.5 7l1 13h9l1-13"/></svg><span>削除</span></button><button class="btn btn-secondary btn-sm" type="button"><svg class="ic" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.5 4.5l4 4L9 19H5v-4z"/><path d="M13 7l4 4"/></svg><span>編集</span></button></div>
+</article>
+<article class="memo ">
+  <div class="memo-meta"><span class="tag">セリフ案</span><time>10月12日</time></div>
+  <h2 class="memo-title">第3話ラストの決め台詞</h2>
+  <div class="memo-body"><p class="line">「明日が来なくても、今日の約束は守るから」</p><p>雨。ミナトの顔は見せず、背中と傘だけで。</p></div>
+  <div class="memo-actions"><button class="btn btn-danger btn-sm" type="button"><svg class="ic" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 7h15"/><path d="M9.5 7V4.5h5V7"/><path d="M6.5 7l1 13h9l1-13"/></svg><span>削除</span></button><button class="btn btn-secondary btn-sm" type="button"><svg class="ic" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.5 4.5l4 4L9 19H5v-4z"/><path d="M13 7l4 4"/></svg><span>編集</span></button></div>
+</article>
+<article class="memo wide">
+  <div class="memo-meta"><span class="tag">プロット</span><time>10月11日</time></div>
+  <h2 class="memo-title">第2話の流れ</h2>
+  <div class="memo-body"><ol><li>転校生のカイが、夜の灯台に忍び込む。</li><li>見回り中のミナトと鉢合わせ。懐中電灯の光だけで顔が見える。</li><li>灯台の灯りが一瞬消え、町じゅうの時計が止まる。</li><li>「見なかったことにして」とミナトが頼む。カイは返事をしない。</li></ol></div>
+  <div class="memo-actions"><button class="btn btn-danger btn-sm" type="button"><svg class="ic" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 7h15"/><path d="M9.5 7V4.5h5V7"/><path d="M6.5 7l1 13h9l1-13"/></svg><span>削除</span></button><button class="btn btn-secondary btn-sm" type="button"><svg class="ic" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.5 4.5l4 4L9 19H5v-4z"/><path d="M13 7l4 4"/></svg><span>編集</span></button></div>
+</article>
+<article class="memo ">
+  <div class="memo-meta"><span class="tag">背景資料</span><time>10月10日</time></div>
+  <h2 class="memo-title">朝市の取材メモ</h2>
+  <div class="memo-body"><p>6時台は発泡スチロールの箱で通路が狭い。カモメが屋根に一列に並ぶ。濡れた路面の反射を入れると朝らしくなる。</p></div>
+  <div class="memo-actions"><button class="btn btn-danger btn-sm" type="button"><svg class="ic" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 7h15"/><path d="M9.5 7V4.5h5V7"/><path d="M6.5 7l1 13h9l1-13"/></svg><span>削除</span></button><button class="btn btn-secondary btn-sm" type="button"><svg class="ic" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.5 4.5l4 4L9 19H5v-4z"/><path d="M13 7l4 4"/></svg><span>編集</span></button></div>
+</article>
+<article class="memo ">
+  <div class="memo-meta"><span class="tag">ネーム</span><time>10月9日</time></div>
+  <h2 class="memo-title">14–15ページ 見開き</h2>
+  <div class="memo-body"><p>灯台の光が町をなめていくカット。縦3段、最後のコマだけ裁ち切り。セリフは入れない。</p></div>
+  <div class="memo-actions"><button class="btn btn-danger btn-sm" type="button"><svg class="ic" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 7h15"/><path d="M9.5 7V4.5h5V7"/><path d="M6.5 7l1 13h9l1-13"/></svg><span>削除</span></button><button class="btn btn-secondary btn-sm" type="button"><svg class="ic" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.5 4.5l4 4L9 19H5v-4z"/><path d="M13 7l4 4"/></svg><span>編集</span></button></div>
+</article>
+<article class="memo ">
+  <div class="memo-meta"><span class="tag">キャラ設定</span><time>10月8日</time></div>
+  <h2 class="memo-title">鷺沼カイ（さぎぬま・かい）</h2>
+  <div class="memo-body"><p>転校生。無口だが料理がうまい。父の仕事で町を転々としてきたので、別れ際があっさりしている。</p></div>
+  <div class="memo-actions"><button class="btn btn-danger btn-sm" type="button"><svg class="ic" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 7h15"/><path d="M9.5 7V4.5h5V7"/><path d="M6.5 7l1 13h9l1-13"/></svg><span>削除</span></button><button class="btn btn-secondary btn-sm" type="button"><svg class="ic" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.5 4.5l4 4L9 19H5v-4z"/><path d="M13 7l4 4"/></svg><span>編集</span></button></div>
+</article>
+<article class="memo tall">
+  <div class="memo-meta"><span class="tag">世界観</span><time>10月6日</time></div>
+  <h2 class="memo-title">町のルール</h2>
+  <div class="memo-body"><ul><li>灯台の光が届く範囲だけ、時間が進む。</li><li>光の外に出た人は、戻るまで歳をとらない。</li><li>町の人はそれを当たり前だと思っている。外から来たカイだけが違和感に気づく。</li><li>灯りを守るのは代々、灯野家の役目。</li></ul></div>
+  <div class="memo-actions"><button class="btn btn-danger btn-sm" type="button"><svg class="ic" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 7h15"/><path d="M9.5 7V4.5h5V7"/><path d="M6.5 7l1 13h9l1-13"/></svg><span>削除</span></button><button class="btn btn-secondary btn-sm" type="button"><svg class="ic" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.5 4.5l4 4L9 19H5v-4z"/><path d="M13 7l4 4"/></svg><span>編集</span></button></div>
+</article>
+<article class="memo ">
+  <div class="memo-meta"><span class="tag">セリフ案</span><time>10月5日</time></div>
+  <h2 class="memo-title">時計に気づく場面</h2>
+  <div class="memo-body"><p class="line">「それ、まだ動いてないの？」</p><p>カイの口調は軽く、責めない。ミナトは答えずに袖を下ろす。</p></div>
+  <div class="memo-actions"><button class="btn btn-danger btn-sm" type="button"><svg class="ic" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 7h15"/><path d="M9.5 7V4.5h5V7"/><path d="M6.5 7l1 13h9l1-13"/></svg><span>削除</span></button><button class="btn btn-secondary btn-sm" type="button"><svg class="ic" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.5 4.5l4 4L9 19H5v-4z"/><path d="M13 7l4 4"/></svg><span>編集</span></button></div>
+</article>
+<article class="memo wide">
+  <div class="memo-meta"><span class="tag">小物</span><time>10月3日</time></div>
+  <h2 class="memo-title">止まった腕時計</h2>
+  <div class="memo-body"><p>文字盤は群青。針は4時12分で止まっている。革ベルトは擦り切れて、穴をひとつ自分で開け足した跡がある。アップのコマでは秒針の影まで描く。</p></div>
+  <div class="memo-actions"><button class="btn btn-danger btn-sm" type="button"><svg class="ic" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 7h15"/><path d="M9.5 7V4.5h5V7"/><path d="M6.5 7l1 13h9l1-13"/></svg><span>削除</span></button><button class="btn btn-secondary btn-sm" type="button"><svg class="ic" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.5 4.5l4 4L9 19H5v-4z"/><path d="M13 7l4 4"/></svg><span>編集</span></button></div>
+</article>
+    </section>
+    <section id="storyView" class="story-grid" aria-label="ストーリー一覧" hidden>
+<article class="story">
+  <h2 class="story-title">灯台守のいない夜</h2>
+  <p class="story-syn">光の届く範囲だけ時間が進む港町。灯台守の孫ミナトは、止まった腕時計の秘密を転校生カイに知られてしまう。</p>
+  <div class="story-foot"><ul class="story-genres" aria-label="ジャンル"><li class="tag">青春</li><li class="tag">ファンタジー</li><li class="tag">ミステリー</li></ul><time>10月12日</time></div>
+</article>
+<article class="story">
+  <h2 class="story-title">午前二時の弁当屋</h2>
+  <p class="story-syn">深夜だけ開く弁当屋で働く元ボクサーと、常連の受験生。言葉少なな二人が、毎晩ひとつずつ献立を決めていく。</p>
+  <div class="story-foot"><ul class="story-genres" aria-label="ジャンル"><li class="tag">日常</li><li class="tag">ヒューマンドラマ</li><li class="tag">グルメ</li></ul><time>10月10日</time></div>
+</article>
+<article class="story">
+  <h2 class="story-title">鉄塔のうえの郵便局</h2>
+  <p class="story-syn">送り先のない手紙だけが届く、鉄塔の上の郵便局。新人局員の少女は、手紙の書き手を探しに町へ降りる。</p>
+  <div class="story-foot"><ul class="story-genres" aria-label="ジャンル"><li class="tag">ファンタジー</li><li class="tag">冒険</li><li class="tag">群像劇</li></ul><time>10月7日</time></div>
+</article>
+<article class="story">
+  <h2 class="story-title">三分間のヒーロー</h2>
+  <p class="story-syn">一日に三分だけ超人になれる会社員。その三分をいつ使うか、毎朝の会議で真剣に決めている。</p>
+  <div class="story-foot"><ul class="story-genres" aria-label="ジャンル"><li class="tag">コメディ</li><li class="tag">アクション</li><li class="tag">お仕事</li></ul><time>10月4日</time></div>
+</article>
+<article class="story">
+  <h2 class="story-title">雪解けの観測所</h2>
+  <p class="story-syn">山頂の観測所に残った研究者と、毎週荷物を運び上げる若い歩荷。春までの十二週間の記録。</p>
+  <div class="story-foot"><ul class="story-genres" aria-label="ジャンル"><li class="tag">ヒューマンドラマ</li><li class="tag">山岳</li><li class="tag">恋愛</li></ul><time>9月28日</time></div>
+</article>
+<article class="story">
+  <h2 class="story-title">ことばを食べる猫</h2>
+  <p class="story-syn">口にした言葉をひとつずつ食べてしまう猫を拾った小学生。消えた言葉の代わりを探す夏休み。</p>
+  <div class="story-foot"><ul class="story-genres" aria-label="ジャンル"><li class="tag">児童</li><li class="tag">ファンタジー</li><li class="tag">日常</li></ul><time>9月21日</time></div>
+</article>
+    </section>
+  </main>
+  <aside class="ad" aria-label="広告"><div class="ad-slot"><span>広告</span><small>300×600</small></div></aside>
+</div>
+</div>
+
+<section class="sheet" aria-labelledby="sheetH">
+  <h2 class="sheet-h" id="sheetH">デザインシステム B2</h2>
+  <p class="sheet-lead">原稿の四隅に入るトンボ（裁ち落としの目印）と、編集者の赤ペン。黒はベタ、赤は「ここを見て」の印としてだけ使います。</p>
+  <div class="sheet-grid">
+    <div class="blk w12"><h3>配色</h3><div class="sw-grid"><div class="sw"><i style="background:#FFFFFF;box-shadow:inset 0 0 0 1px var(--tone)"></i><b>原稿用紙</b><code>#FFFFFF</code><span>背景・カード</span></div><div class="sw"><i style="background:#1E1F24;"></i><b>ベタ</b><code>#1E1F24</code><span>本文・主ボタン・トンボ</span></div><div class="sw"><i style="background:#4A4C54;"></i><b>鉛筆グレー</b><code>#4A4C54</code><span>補助テキスト</span></div><div class="sw"><i style="background:#C42A22;"></i><b>赤ペン</b><code>#C42A22</code><span>現在地・選択・削除</span></div><div class="sw"><i style="background:#FBEDEB;box-shadow:inset 0 0 0 1px var(--tone)"></i><b>赤ペン 淡</b><code>#FBEDEB</code><span>削除ホバー面</span></div><div class="sw"><i style="background:#D3D5DA;"></i><b>トーン</b><code>#D3D5DA</code><span>カード枠・区切り</span></div><div class="sw"><i style="background:#EDEEF0;"></i><b>トーン 淡</b><code>#EDEEF0</code><span>ホバー面</span></div></div></div>
+    <div class="blk w12"><h3>タイポグラフィ</h3><dl><div class="type-row"><dt>ロゴ<br>Murecho 900 / 26px</dt><dd style="font-family:var(--f-ui);font-weight:900;font-size:26px;letter-spacing:-.01em;line-height:1.2">Rebuild</dd></div><div class="type-row"><dt>作品タイトル<br>Shippori Mincho B1 700 / 21px</dt><dd style="font-family:var(--f-title);font-weight:700;font-size:21px">雪解けの観測所</dd></div><div class="type-row"><dt>メモ見出し<br>Shippori Mincho B1 700 / 17px</dt><dd style="font-family:var(--f-title);font-weight:700;font-size:17px">第2話の流れ</dd></div><div class="type-row"><dt>UI・本文<br>Murecho 400/500 / 14px、行送り1.85</dt><dd style="font-size:14px;line-height:1.85;max-width:36em">転校生。無口だが料理がうまい。父の仕事で町を転々としてきた。</dd></div><div class="type-row"><dt>セリフ<br>Shippori Mincho B1 700 / 16px</dt><dd style="font-family:var(--f-title);font-weight:700;font-size:16px">「それ、まだ動いてないの？」</dd></div></dl></div>
+    <div class="blk w12"><h3>ボタン</h3>
+      <div class="btn-table">
+        <span></span><span class="h">通常</span><span class="h">ホバー</span><span class="h">フォーカス</span><span class="h">無効</span>
+        <span class="h">プライマリ</span><span><button class="btn btn-primary" type="button"><span>保存する</span></button></span><span><button class="btn btn-primary is-hover" type="button"><span>保存する</span></button></span><span><button class="btn btn-primary is-focus" type="button"><span>保存する</span></button></span><span><button class="btn btn-primary" type="button" disabled><span>保存する</span></button></span><span class="h">セカンダリ</span><span><button class="btn btn-secondary" type="button"><svg class="ic" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.5 4.5l4 4L9 19H5v-4z"/><path d="M13 7l4 4"/></svg><span>編集</span></button></span><span><button class="btn btn-secondary is-hover" type="button"><svg class="ic" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.5 4.5l4 4L9 19H5v-4z"/><path d="M13 7l4 4"/></svg><span>編集</span></button></span><span><button class="btn btn-secondary is-focus" type="button"><svg class="ic" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.5 4.5l4 4L9 19H5v-4z"/><path d="M13 7l4 4"/></svg><span>編集</span></button></span><span><button class="btn btn-secondary" type="button" disabled><svg class="ic" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.5 4.5l4 4L9 19H5v-4z"/><path d="M13 7l4 4"/></svg><span>編集</span></button></span><span class="h">ゴースト</span><span><button class="btn btn-ghost" type="button"><svg class="ic" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.820-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.830l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68 1.65 1.65 0 0 0 10 3.17V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>設定</span></button></span><span><button class="btn btn-ghost is-hover" type="button"><svg class="ic" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.820-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.830l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68 1.65 1.65 0 0 0 10 3.17V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>設定</span></button></span><span><button class="btn btn-ghost is-focus" type="button"><svg class="ic" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.820-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.830l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68 1.65 1.65 0 0 0 10 3.17V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>設定</span></button></span><span><button class="btn btn-ghost" type="button" disabled><svg class="ic" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.820-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.830l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68 1.65 1.65 0 0 0 10 3.17V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>設定</span></button></span><span class="h">危険</span><span><button class="btn btn-danger" type="button"><svg class="ic" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 7h15"/><path d="M9.5 7V4.5h5V7"/><path d="M6.5 7l1 13h9l1-13"/></svg><span>削除</span></button></span><span><button class="btn btn-danger is-hover" type="button"><svg class="ic" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 7h15"/><path d="M9.5 7V4.5h5V7"/><path d="M6.5 7l1 13h9l1-13"/></svg><span>削除</span></button></span><span><button class="btn btn-danger is-focus" type="button"><svg class="ic" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 7h15"/><path d="M9.5 7V4.5h5V7"/><path d="M6.5 7l1 13h9l1-13"/></svg><span>削除</span></button></span><span><button class="btn btn-danger" type="button" disabled><svg class="ic" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 7h15"/><path d="M9.5 7V4.5h5V7"/><path d="M6.5 7l1 13h9l1-13"/></svg><span>削除</span></button></span>
+      </div>
+    </div>
+    <div class="blk w4"><h3>表示切替</h3>
+      <div class="demo-stack">
+        <div class="seg" role="tablist" aria-label="表示内容（見本）"><button type="button" role="tab" aria-selected="true">メモ</button><button type="button" role="tab" aria-selected="false">ストーリー</button></div>
+        <div class="seg" role="tablist" aria-label="表示内容（見本2）"><button type="button" role="tab" aria-selected="false">メモ</button><button type="button" role="tab" aria-selected="true">ストーリー</button></div>
+      </div>
+    </div>
+    <div class="blk w8"><h3>検索</h3>
+      <div class="demo-stack">
+        <form class="search" role="search" onsubmit="return false"><label class="sr" for="q2">検索（見本）</label><input id="q2" type="search" placeholder="メモ・ストーリーを検索"><button class="search-btn" type="submit" aria-label="検索"><svg class="ic" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></svg></button></form>
+        <form class="search is-focus" role="search" onsubmit="return false"><label class="sr" for="q3">検索（入力中の見本）</label><input id="q3" type="search" value="灯台"><button class="search-btn" type="submit" aria-label="検索"><svg class="ic" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></svg></button></form>
+      </div>
+    </div>
+    <div class="blk w4"><h3>サイドメニュー項目</h3>
+      <div class="demo-side">
+        <a class="nav-item is-active" href="#" aria-current="page"><svg class="ic" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11l8-6.5 8 6.5"/><path d="M6 9.5V20h12V9.5"/><path d="M10 20v-5h4v5"/></svg><span>ホーム（現在地）</span></a>
+        <a class="nav-item" href="#"><svg class="ic" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3.5h9l3.5 3.5v13.5H6z"/><path d="M15 3.5V7h3.5"/><path d="M9 11.5h6M9 15h4"/></svg><span>メモ</span></a>
+        <a class="nav-item is-hover" href="#"><svg class="ic" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5.5c2.5-1 5-1 8 .8 3-1.8 5.5-1.8 8-.8v13c-2.5-1-5-1-8 .8-3-1.8-5.5-1.8-8-.8z"/><path d="M12 6.3v13.2"/></svg><span>ストーリー創作（ホバー）</span></a>
+      </div>
+    </div>
+    <div class="blk w8"><h3>ストーリーカード</h3>
+      <article class="story">
+  <h2 class="story-title">灯台守のいない夜</h2>
+  <p class="story-syn">光の届く範囲だけ時間が進む港町。灯台守の孫ミナトは、止まった腕時計の秘密を転校生カイに知られてしまう。</p>
+  <div class="story-foot"><ul class="story-genres" aria-label="ジャンル"><li class="tag">青春</li><li class="tag">ファンタジー</li><li class="tag">ミステリー</li></ul><time>10月12日</time></div>
+</article>
+    </div>
+  </div>
+  <div class="rationale"><h3>設計意図</h3><ul><li><b>コンセプト「入稿前の赤ペン」</b>：原稿の四隅のトンボと、編集者が入れる赤ペンの丸囲み。仕上げ前の原稿をチェックする机の上をそのまま画面にしています。</li><li><b>配色</b>：白とベタ（黒）が基本。赤ペンは「現在地」「選択中のタブ」「削除」という“印を付ける”場面だけに使います。主ボタンは黒ベタなので、赤と役割が混ざりません。</li><li><b>形</b>：カードは薄いトーン枠に墨のトンボを四隅だけ重ね、囲みすぎずにまとまりを出します。ボタンは細い輪郭と太い下線の「入り抜き」で、押すと下線が細くなって沈みます。</li><li><b>文字</b>：UIと本文は字面が大きく読みやすいMurecho、作品名・メモ見出し・セリフは写植の明朝を思わせるShippori Mincho B1。題名とセリフだけが紙の上の文字のように立ちます。</li><li><b>YouTube的な見やすさ</b>：色面はほぼ使わず、赤の丸囲みが画面に1つだけ出る構成です。スクリーントーンは広告枠だけに敷き、広告をコンテンツと見分けやすくしています。</li></ul></div>
+</section>
+
+<script>
+(function(){
+  var app=document.getElementById('app');
+  var grid=document.getElementById('memoView');
+  var stories=document.getElementById('storyView');
+  var title=document.getElementById('viewTitle');
+  var meta=document.getElementById('viewMeta');
+  function layout(){
+    if(grid.hidden) return;
+    grid.classList.add('js');
+    var gap=parseFloat(getComputedStyle(grid).columnGap)||16;
+    grid.querySelectorAll('.memo').forEach(function(c){
+      c.style.gridRowEnd='auto';
+      var h=c.getBoundingClientRect().height;
+      c.style.gridRowEnd='span '+Math.ceil((h+gap)/4);
+    });
+  }
+  var tabs=app.querySelectorAll('.hdr .seg [data-view]');
+  tabs.forEach(function(b){
+    b.addEventListener('click',function(){
+      var v=b.getAttribute('data-view');
+      tabs.forEach(function(x){x.setAttribute('aria-selected',String(x===b));});
+      grid.hidden=(v!=='memo'); stories.hidden=(v!=='story');
+      title.textContent=(v==='memo'?'メモ':'ストーリー');
+      meta.textContent=(v==='memo'?'9件 更新が新しい順':'6件 更新が新しい順');
+      layout();
+    });
+  });
+  var t=document.getElementById('sideToggle');
+  t.addEventListener('click',function(){
+    var closed=app.classList.toggle('side-closed');
+    t.setAttribute('aria-expanded',String(!closed));
+    t.setAttribute('aria-label',closed?'サイドメニューを開く':'サイドメニューを閉じる');
+    requestAnimationFrame(layout);
+  });
+  window.addEventListener('resize',layout);
+  if(document.fonts&&document.fonts.ready){document.fonts.ready.then(layout);}
+  layout();
+})();
+</script>
+</body>
+</html>
