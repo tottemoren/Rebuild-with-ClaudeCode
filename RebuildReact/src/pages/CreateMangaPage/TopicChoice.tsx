@@ -179,8 +179,7 @@ function TopicChoice() {
           onClick={handleNext}
           disabled={selectedStoryId === null}
         >
-          Next <br />
-          - 次へ -
+          次へ
         </button>
       }
     >
@@ -216,9 +215,7 @@ function TopicChoice() {
                   {story.summary}
                 </p>
 
-                <p>
-                  ------------------------------------------------------------
-                </p>
+                <hr className="topic-choice-divider" />
 
                 <p>
                   ジャンル {story.genre}
@@ -288,7 +285,10 @@ function TopicChoice() {
                   className="folder-card-name"
                   onClick={() => selectFolder(folder.id)}
                 >
-                  📁 {folder.name}
+                  <svg className="folder-card-icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M3.5 6.5h6l2 2h9v10h-17z" />
+                  </svg>
+                  {folder.name}
                 </button>
 
                 <button

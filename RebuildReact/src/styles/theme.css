@@ -1,0 +1,57 @@
+/* ======================================
+   デザイントークン（テーマ：A1 ホワイト・キャンバス）
+
+   色・フォント・角丸などの見た目の値は、ここにだけ書く。
+   各画面のCSSは、値を直接書かずに var(--color-accent) のように参照する。
+
+   将来テーマを切り替えるときは、<html data-theme="..."> に対して
+   同じ名前の変数を上書きするブロックを追加する（配置は変えない）。
+   各テーマの値の見本：docs/02-screen-design/design-proposals/editor/source/themes/
+====================================== */
+
+:root {
+
+    /* ---------- 色：面 ---------- */
+    --color-bg: #FFFFFF;             /* ページ・ヘッダー・カードの地 */
+    --color-surface: #F8F9FA;        /* 広告枠・パネルなど一段沈んだ面 */
+    --color-surface-2: #F1F3F4;      /* ボタン・チップ・タグの面 */
+    --color-surface-3: #E3E5E8;      /* ボタン・チップのホバー */
+
+    /* ---------- 色：線 ---------- */
+    --color-line: #E3E5E8;
+    --color-line-strong: #C7CBD1;
+
+    /* ---------- 色：文字 ---------- */
+    --color-text: #202124;           /* 見出し・主要な文字 */
+    --color-text-body: #3C4043;      /* 本文 */
+    --color-text-sub: #5F6368;       /* 補足・日時など */
+    --color-text-disabled: #9AA0A6;
+
+    /* ---------- 色：アクセント（操作できるもの・選択中） ---------- */
+    --color-accent: #2741B8;
+    --color-accent-hover: #1F3596;
+    --color-accent-soft: #E8ECFB;
+    --color-on-accent: #FFFFFF;
+
+    /* ---------- 色：状態 ---------- */
+    --color-danger: #C5221F;         /* 削除など取り消せない操作 */
+    --color-danger-soft: #FCE8E6;
+
+    /* ---------- 色：漫画作成画面 ---------- */
+    --color-desk: #5F6368;           /* 原稿の周りの作業スペース */
+    --color-manuscript: #FFFFFF;     /* 原稿用紙（テーマに関係なく白） */
+    --color-manuscript-ink: #111111; /* コマ枠（テーマに関係なく黒） */
+
+    /* ---------- フォント ---------- */
+    --font-ui: "Zen Kaku Gothic New", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", system-ui, sans-serif;
+    --font-logo: "Manrope", "Zen Kaku Gothic New", system-ui, sans-serif;
+
+    /* ---------- 角丸 ---------- */
+    --radius-pill: 999px;            /* ボタン・チップ・検索窓 */
+    --radius-card: 12px;
+    --radius-panel: 16px;
+
+    /* ---------- フォーカス ---------- */
+    --focus-ring: 2px solid var(--color-accent);
+    --focus-ring-offset: 2px;
+}

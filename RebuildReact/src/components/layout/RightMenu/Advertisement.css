@@ -1,8 +1,9 @@
 
 .right-menu {
-    width: 22%;
-    padding: 5px;
-    background-color: rgb(255, 255, 255);
+    flex-shrink: 0;
+    width: 316px;
+    padding: 8px 16px 16px 0;
+    background-color: var(--color-bg);
     overflow-y: auto;
     box-sizing: border-box;
     height: 100%;
@@ -11,6 +12,7 @@
 
 .right-menu img {
     width: 100%;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
     display: block;
+    border-radius: var(--radius-card);
 }

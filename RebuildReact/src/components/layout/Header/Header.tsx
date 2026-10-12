@@ -98,7 +98,8 @@ function Header({ centerContent, secondaryRow }: HeaderProps) {
     <>
       <input
         type="text"
-        placeholder="検索..."
+        placeholder="メモ・ストーリーを検索"
+        aria-label="メモ・ストーリーを検索"
         className="search-input"
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
@@ -107,22 +108,32 @@ function Header({ centerContent, secondaryRow }: HeaderProps) {
       <button
         className="modern-button search-button"
         onClick={handleSearch}
+        aria-label="検索"
       >
-        検索
+        <svg className="header-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="11" cy="11" r="6.5" />
+          <path d="M16 16l4.5 4.5" />
+        </svg>
       </button>
     </>
   );
 
   return (
-    <div className={"HomePagetop" + (secondaryRow ? " HomePagetop-tall" : "")}>
+    <div className="HomePagetop">
 
       <div className="LogomarkSpace">
-        <img
+        <button
+          type="button"
           className="Logomark"
-          src="/images/settingimages/RebuildRogo1.png"
-          alt="logo"
+          aria-label="Rebuild（再読み込み）"
           onClick={() => window.location.reload()}
-        />
+        >
+          <svg className="Logomark-mark" viewBox="0 0 26 26" aria-hidden="true">
+            <rect width="26" height="26" rx="7" />
+            <path d="M7 7h12v8H7z M7 17h5v2H7z M14 17h5v2h-5z" />
+          </svg>
+          <span className="Logomark-word">Rebuild</span>
+        </button>
       </div>
 
       <div className="header-center">
@@ -142,8 +153,12 @@ function Header({ centerContent, secondaryRow }: HeaderProps) {
 
       <div className="space">
 
-        <button className="icon-button" title="設定">
-          ⚙
+        <button className="header-text-button" type="button">
+          <svg className="header-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="3" />
+            <path d="M12 3.5v2.2M12 18.3v2.2M3.5 12h2.2M18.3 12h2.2M6 6l1.6 1.6M16.4 16.4L18 18M6 18l1.6-1.6M16.4 7.6L18 6" />
+          </svg>
+          設定
         </button>
 
         <input
@@ -167,7 +182,9 @@ function Header({ centerContent, secondaryRow }: HeaderProps) {
               alt="プロフィール画像"
             />
           ) : (
-            "👤"
+            <span className="profile-initial">
+              {user?.username?.charAt(0) ?? ""}
+            </span>
           )}
         </button>
 

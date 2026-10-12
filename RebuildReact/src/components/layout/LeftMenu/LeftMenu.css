@@ -1,28 +1,61 @@
-
 .left-menu {
-    width: 10%;
-    padding: 5px;
-    background-color: rgb(255, 255, 255);
+    flex-shrink: 0;
+    width: 232px;
+    padding: 12px;
+    background-color: var(--color-bg);
     box-sizing: border-box;
 }
 
 .left-menu nav {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 2px;
 }
 
-.left-menu button {
+.left-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
     width: 100%;
-    padding: 12px 8px;
-    border: 1px solid rgb(198, 186, 186);
-    border-radius: 100px;
-    background-color: white;
-    cursor: pointer;
+    height: 42px;
+    padding: 0 14px;
+    border: none;
+    border-radius: var(--radius-pill);
+    background-color: transparent;
+    color: var(--color-text);
+    font: inherit;
     font-size: 14px;
-    transition: 0.2s;
+    text-align: left;
+    cursor: pointer;
+    transition: background-color 0.12s ease;
 }
 
-.left-menu button:hover {
-    background-color: rgb(240, 240, 240);
+.left-menu-item:hover {
+    background-color: var(--color-surface-2);
+}
+
+.left-menu-item:focus-visible {
+    outline: var(--focus-ring);
+    outline-offset: var(--focus-ring-offset);
+}
+
+.left-menu-item.is-active {
+    background-color: var(--color-accent-soft);
+    color: var(--color-accent);
+    font-weight: 700;
+}
+
+.left-menu-icon {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    fill: none;
+    stroke: var(--color-text-sub);
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.left-menu-item.is-active .left-menu-icon {
+    stroke: var(--color-accent);
 }

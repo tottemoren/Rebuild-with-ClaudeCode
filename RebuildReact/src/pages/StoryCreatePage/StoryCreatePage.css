@@ -2,15 +2,29 @@
 /*  ↓↓  コンテンツ画面（左・右画面） ↓↓                 */
 /*=======================================================*/
 
+.story-create-page {
+
+    height: 100%;
+
+    text-align: left;
+
+}
+
 .story-container {
 
     display: flex;
+
+    gap: 16px;
 
     width: 100%;
 
     height: 100%;
 
-    background-color: rgb(0, 0, 0);
+    padding-top: 8px;
+
+    box-sizing: border-box;
+
+    background-color: var(--color-bg);
 
 }
 
@@ -18,33 +32,152 @@
 /*  ↓↓  左側画面 ↓↓                                     */
 /*=======================================================*/
 
+/* 中身が画面の高さを超えたときは、列の中だけでスクロールさせる */
 .menu1 {
 
     width: 50%;
 
     height: 100%;
 
-    background-color: white;
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 12px;
+
+    overflow-y: auto;
+
+    box-sizing: border-box;
 
 }
 
+/* タイトル・あらすじ・ジャンルの入力パネル */
 .thema {
 
-    width: 85%;
+    flex-shrink: 0;
 
-    height: 55%;
+    display: flex;
 
-    margin: 10px auto 20px auto;
+    flex-direction: column;
 
-    border: 3px solid rgb(64, 128, 128);
+    gap: 12px;
 
-    padding: 30px;
+    padding: 20px;
 
-    text-align: center;
+    background-color: var(--color-surface);
+
+    border-radius: var(--radius-panel);
+
+    box-sizing: border-box;
 
 }
 
+.thema br {
+
+    display: none;
+
+}
+
+.thema > div {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    align-items: center;
+
+    gap: 8px 12px;
+
+}
+
+.thema label {
+
+    width: 4.5em;
+
+    flex-shrink: 0;
+
+    color: var(--color-text-sub);
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+}
+
+.thema input,
+.thema textarea,
+.Reference-image-lines input {
+
+    padding: 8px 12px;
+
+    border: 1px solid var(--color-line-strong);
+
+    border-radius: 10px;
+
+    background-color: var(--color-bg);
+
+    color: var(--color-text);
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+    box-sizing: border-box;
+
+}
+
+.thema input,
+.thema textarea {
+
+    flex: 1;
+
+    min-width: 0;
+
+}
+
+.thema textarea {
+
+    resize: vertical;
+
+    line-height: 1.6;
+
+}
+
+/* ジャンルは3つの欄を横に並べる */
+.thema > div:last-child input {
+
+    flex: 1 1 120px;
+
+}
+
+.thema input:focus,
+.thema textarea:focus,
+.Reference-image-lines input:focus {
+
+    outline: none;
+
+    border-color: var(--color-accent);
+
+    box-shadow: inset 0 0 0 1px var(--color-accent);
+
+}
+
+.story-form-divider {
+
+    width: 100%;
+
+    margin: 0;
+
+    border: none;
+
+    border-top: 1px dashed var(--color-line-strong);
+
+}
+
+/* セリフ台本（漫画のセリフと同じく縦書き） */
 .Reference-image-lines {
+
+    flex-shrink: 0;
 
     writing-mode: vertical-rl;
 
@@ -52,66 +185,245 @@
 
     text-align: start;
 
-    width: 90%;
+    height: 440px;
 
-    height: 45%;
+    padding: 16px;
 
-    border: 3px solid black;
+    border: 1px solid var(--color-line);
 
-    padding: 10px;
+    border-radius: var(--radius-card);
 
-    margin: 0 auto 20px auto;
+    background-color: var(--color-bg);
 
-    overflow-y: scroll;
+    color: var(--color-text);
+
+    overflow-x: auto;
+
+    box-sizing: border-box;
+
+}
+
+.Reference-image-lines h3 {
+
+    margin: 0 0 0 12px;
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+}
+
+.Reference-image-lines label {
+
+    color: var(--color-text-sub);
+
+    font-size: 13px;
+
+}
+
+/* 縦書きなので、1行分（人物名 → セリフ → 削除）を上から下へ1列に並べる */
+.line-item {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    margin-left: 12px;
+
+}
+
+.line-item label,
+.line-item button {
+
+    flex-shrink: 0;
+
+    white-space: nowrap;
+
+}
+
+.line-item input {
+
+    inline-size: 12em;
+
+}
+
+.line-item input:first-of-type {
+
+    inline-size: 6.5em;
 
 }
 
 /*=======================================================*/
-/*  ↓↓  右側画面 ↓↓                                     */
+/*  ↓↓  ボタン ↓↓                                       */
+/*=======================================================*/
+
+.story-primary-button,
+.story-secondary-button,
+.story-line-delete {
+
+    border: none;
+
+    border-radius: var(--radius-pill);
+
+    padding: 8px 14px;
+
+    font-family: inherit;
+
+    font-size: 13px;
+
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition: background-color 0.12s ease;
+
+}
+
+.story-primary-button {
+
+    background-color: var(--color-accent);
+
+    color: var(--color-on-accent);
+
+    font-weight: 700;
+
+}
+
+.story-primary-button:hover {
+
+    background-color: var(--color-accent-hover);
+
+}
+
+.story-secondary-button {
+
+    background-color: var(--color-surface-2);
+
+    color: var(--color-text);
+
+}
+
+.story-secondary-button:hover {
+
+    background-color: var(--color-surface-3);
+
+}
+
+/* 取り消せない操作なので、普段は赤い文字だけにして目立たせすぎない */
+.story-line-delete {
+
+    background-color: transparent;
+
+    color: var(--color-danger);
+
+}
+
+.story-line-delete:hover {
+
+    background-color: var(--color-danger-soft);
+
+}
+
+.Reference-image-lines button {
+
+    margin: 4px 0;
+
+}
+
+.story-create-page button:focus-visible {
+
+    outline: var(--focus-ring);
+
+    outline-offset: var(--focus-ring-offset);
+
+}
+
+/*=======================================================*/
+/*  ↓↓  右側画面（参照エリア） ↓↓                       */
 /*=======================================================*/
 
 .menu2 {
 
     width: 50%;
 
-    height: 760px;
+    height: 100%;
 
-    padding: 5px;
+    display: flex;
 
-    background-color: white;
+    flex-direction: column;
 
-    overflow-y: scroll;
+    gap: 12px;
 
-}
+    overflow-y: auto;
 
-.story-block {
-
-    width: 85%;
-
-    margin: 10px auto 20px auto;
-
-    border: 3px solid rgb(0, 128, 255);
-
-    padding: 10px;
-
-    text-align: center;
+    box-sizing: border-box;
 
 }
 
+.menu2 h2 {
+
+    margin: 0;
+
+    color: var(--color-text);
+
+    font-size: 16px;
+
+    font-weight: 700;
+
+}
+
+.story-block,
 .memo-block {
 
-    width: 85%;
+    display: flex;
 
-    margin: 10px auto 20px auto;
+    flex-direction: column;
 
-    border: 3px solid rgb(230, 150, 0);
+    align-items: flex-start;
 
-    padding: 10px;
+    gap: 6px;
 
-    text-align: center;
+    padding: 14px 16px;
+
+    border: 1px solid var(--color-line);
+
+    border-radius: var(--radius-card);
+
+    background-color: var(--color-bg);
 
 }
 
+.story-block h3,
+.memo-block h3 {
+
+    margin: 0;
+
+    color: var(--color-text);
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+}
+
+.story-block p,
+.memo-block p {
+
+    margin: 0;
+
+    color: var(--color-text-body);
+
+    font-size: 13px;
+
+    line-height: 1.7;
+
+    white-space: pre-wrap;
+
+}
+
+/* 選んだストーリーのセリフ台本（縦書き） */
 .line-block {
 
     writing-mode: vertical-rl;
@@ -120,14 +432,18 @@
 
     text-align: start;
 
-    width: 90%;
+    align-self: stretch;
 
     height: 380px;
 
-    border: 3px solid rgb(0, 232, 232);
+    padding: 12px;
 
-    padding: 10px;
+    border-radius: 10px;
 
-    margin: 0 auto 20px auto;
+    background-color: var(--color-surface);
+
+    overflow-x: auto;
+
+    box-sizing: border-box;
 
 }

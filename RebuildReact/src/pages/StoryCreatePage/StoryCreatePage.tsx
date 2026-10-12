@@ -283,9 +283,7 @@ function StoryCreatePage() {
 
               </div>
 
-              <p>
-                --------------------------------
-              </p>
+              <hr className="story-form-divider" />
 
               <div>
 
@@ -381,6 +379,7 @@ function StoryCreatePage() {
 
                   <button
                     type="button"
+                    className="story-line-delete"
                     onClick={() =>
                       removeLine(index)
                     }
@@ -394,12 +393,17 @@ function StoryCreatePage() {
 
               <button
                 type="button"
+                className="story-secondary-button"
                 onClick={addLine}
               >
                 行を追加
               </button>
 
-              <button type="button" onClick={createStory}>
+              <button
+                type="button"
+                className="story-primary-button"
+                onClick={createStory}
+              >
                 登録
               </button>
 
@@ -437,7 +441,11 @@ function StoryCreatePage() {
                       {story.genre}
                     </p>
 
-                    <button onClick={() => handleStoryClick(story.id)} >
+                    <button
+                      type="button"
+                      className="story-secondary-button"
+                      onClick={() => handleStoryClick(story.id)}
+                    >
                       {
                         selectedStoryId === story.id
                           ? "閉じる"
