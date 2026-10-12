@@ -9,25 +9,27 @@
 
 .CreateMangaPage-folder-tab {
     flex-shrink: 0;
+    height: 28px;
     border: none;
-    border-radius: 100px;
-    padding: 4px 14px;
-    font-size: 12px;
-    background: #f1f5f9;
-    color: #555;
+    border-radius: var(--radius-pill);
+    padding: 0 14px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    background: var(--color-surface-2);
+    color: var(--color-text);
     cursor: pointer;
     white-space: nowrap;
 }
 
 .CreateMangaPage-folder-tab:hover {
-    background: #e2e8f0;
+    background: var(--color-surface-3);
 }
 
+/* 選択中は他の画面の切り替えボタンと同じく藍の塗り */
 .CreateMangaPage-folder-tab.active {
-    background: #e2e8f0;
-    color: #222;
-    font-weight: bold;
-    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.18);
+    background: var(--color-accent);
+    color: var(--color-on-accent);
 }
 
 .CreateMangaPage-top {
@@ -40,23 +42,27 @@
     width: 65%;
     max-height: 95%;
     margin: 2px;
-    padding: 2px 8px;
+    padding: 6px 12px;
     box-sizing: border-box;
     overflow-y: auto;
+    text-align: left;
     h3,p{
         margin: 0;
         padding: 0;
-        font-size: 11px;
-        line-height: 1.15;
+        font-size: 12px;
+        line-height: 1.4;
+        color: var(--color-text-body);
     }
     h3 {
         /* タイトルは1行に収め、はみ出す分は … で省略する */
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        color: var(--color-text);
+        font-size: 13px;
     }
-    background-color: rgb(250, 250, 250);
-	border: 3px solid black;
+    background-color: var(--color-surface);
+    border-radius: var(--radius-card);
 }
 
 /* あらすじは長さが不定なので、2行を超えたら … で省略し、縦に伸びすぎないようにする */
@@ -72,21 +78,23 @@
 .CreateMangaPage-thema-divider {
     margin: 3px 0;
     border: none;
-    border-top: 1px solid rgb(180, 180, 180);
+    border-top: 1px dashed var(--color-line-strong);
 }
 
 .CreateMangaPage-dialogue-toggle {
-    margin-top: 2px;
-    padding: 1px 10px;
-    font-size: 11px;
-    border: 1px solid rgb(180, 180, 180);
-    border-radius: 100px;
-    background-color: white;
+    margin-top: 4px;
+    padding: 2px 12px;
+    font-family: inherit;
+    font-size: 12px;
+    border: none;
+    border-radius: var(--radius-pill);
+    background-color: var(--color-surface-3);
+    color: var(--color-text);
     cursor: pointer;
 }
 
 .CreateMangaPage-dialogue-toggle:hover {
-    background-color: rgb(240, 240, 240);
+    background-color: var(--color-line-strong);
 }
 
 .CreateMangaPage-dialogue-list {
@@ -126,7 +134,7 @@
 }
 
 .CreateMangaPage-character button.active {
-    border-color: #4d90fe;
+    border-color: var(--color-accent);
 }
 
 /*=======================================================*/
@@ -161,6 +169,8 @@
     width: 100%;
     flex: 1;
     min-height: 0;
+    border-radius: var(--radius-card);
+    background-color: var(--color-desk);
 }
 
 /* 縮小表示中のキャンバスが、実際に占める見た目のサイズ分だけ場所を確保する箱 */
@@ -176,7 +186,7 @@
     position: relative;
     overflow: hidden;
     flex-shrink: 0;
-    background-color: rgb(78, 78, 78);
+    background-color: var(--color-desk);
 }
 
 
@@ -189,7 +199,7 @@
        画像本来の縦横比とキャンバス（640×900）の比率が大きく違うため
        見た目が歪んでいた。contain（縦横比を保ったまま枠内に収める）に変更 */
     object-fit: contain;
-    background-color: rgb(78, 78, 78);
+    background-color: var(--color-desk);
     pointer-events: none;
     user-select: none;
 }
@@ -203,7 +213,7 @@
 }
 
 .placed-koma.selected {
-    outline: 3px solid #4d90fe;
+    outline: 3px solid var(--color-accent);
     outline-offset: 2px;
 }
 
@@ -213,8 +223,8 @@
     height: 24px;
     border-radius: 50%;
     border: none;
-    background: #e53935;
-    color: white;
+    background: var(--color-danger);
+    color: var(--color-on-accent);
     font-size: 14px;
     line-height: 24px;
     text-align: center;
@@ -235,11 +245,43 @@
 }
 
 .CreateMangaPage-toolbar button {
-    padding: 8px 16px;
-    border-radius: 8px;
-    border: 1px solid rgb(198, 186, 186);
-    background: white;
+    height: 36px;
+    padding: 0 18px;
+    border: none;
+    border-radius: var(--radius-pill);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
     cursor: pointer;
+    transition: background-color 0.12s ease;
+}
+
+/* 作業内容を失わないための操作なので、こちらを主ボタンにする */
+.CreateMangaPage-toolbar .CreateMangaPage-primary-button {
+    background: var(--color-accent);
+    color: var(--color-on-accent);
+    font-weight: 700;
+}
+
+.CreateMangaPage-toolbar .CreateMangaPage-primary-button:hover:not(:disabled) {
+    background: var(--color-accent-hover);
+}
+
+.CreateMangaPage-toolbar .CreateMangaPage-secondary-button {
+    background: var(--color-surface-2);
+    color: var(--color-text);
+}
+
+.CreateMangaPage-toolbar .CreateMangaPage-secondary-button:hover {
+    background: var(--color-surface-3);
+}
+
+.CreateMangaPage-toolbar button:focus-visible,
+.CreateMangaPage-folder-tab:focus-visible,
+.CreateMangaPage-dialogue-toggle:focus-visible,
+.CreateMangaPage-character button:focus-visible {
+    outline: var(--focus-ring);
+    outline-offset: var(--focus-ring-offset);
 }
 
 .CreateMangaPage-toolbar button:disabled {
@@ -249,7 +291,7 @@
 
 .status-message {
     font-size: 13px;
-    color: #444;
+    color: var(--color-text-sub);
 }
 
 /*=======================================================*/
@@ -265,7 +307,8 @@
     gap: 8px;
     padding: 8px;
     overflow-y: auto;
-    background-color: rgb(245, 245, 245);
+    border-radius: var(--radius-card);
+    background-color: var(--color-surface);
     box-sizing: border-box;
 }
 
@@ -274,7 +317,7 @@
     height: 70px;
     object-fit: contain;
     cursor: grab;
-    background: white;
-    border: 1px solid rgb(220, 220, 220);
-    border-radius: 6px;
+    background: var(--color-bg);
+    border: 1px solid var(--color-line);
+    border-radius: 10px;
 }

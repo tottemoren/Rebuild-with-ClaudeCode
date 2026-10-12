@@ -374,11 +374,20 @@ export default function CreateMangaPage() {
         </div>
 
         <div className="CreateMangaPage-toolbar">
-          <button type="button" onClick={handleExportPng}>
+          <button
+            type="button"
+            className="CreateMangaPage-secondary-button"
+            onClick={handleExportPng}
+          >
             画像として保存
           </button>
 
-          <button type="button" onClick={handleSave} disabled={isSaving}>
+          <button
+            type="button"
+            className="CreateMangaPage-primary-button"
+            onClick={handleSave}
+            disabled={isSaving}
+          >
             {isSaving ? "保存中..." : "サーバーに保存"}
           </button>
 

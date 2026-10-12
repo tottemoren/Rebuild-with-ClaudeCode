@@ -4,26 +4,35 @@
 
 .TopicChoice-next {
 
-    padding: 10px 16px;
+    height: 36px;
+    padding: 0 24px;
 
-    border: 1px solid rgb(198, 186, 186);
-    border-radius: 100px;
+    border: none;
+    border-radius: var(--radius-pill);
 
-    background-color: white;
+    background-color: var(--color-accent);
+    color: var(--color-on-accent);
+
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
 
     cursor: pointer;
+
+    transition: background-color 0.12s ease;
 }
 
 .TopicChoice-next:hover {
 
-    background-color: rgb(240, 240, 240);
+    background-color: var(--color-accent-hover);
 }
 
+/* ストーリーを選ぶまでは押せないことが分かるよう、グレーにする */
 .TopicChoice-next:disabled {
 
-    color: rgb(180, 180, 180);
+    background-color: var(--color-surface-2);
+    color: var(--color-text-disabled);
     cursor: default;
-    background-color: white;
 }
 
 
@@ -37,11 +46,15 @@
     width: 100%;
     height: 100%;
 
-    gap: 10px;
+    gap: 16px;
+
+    padding-top: 8px;
 
     overflow: hidden;
 
     box-sizing: border-box;
+
+    text-align: left;
 }
 
 
@@ -58,9 +71,9 @@
     display: flex;
     flex-direction: column;
 
-    gap: 20px;
+    gap: 12px;
 
-    padding-right: 10px;
+    padding-right: 4px;
 }
 
 
@@ -70,47 +83,80 @@
 
 .topic-choice-thema {
 
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
     width: 100%;
 
-    padding: 16px;
+    padding: 14px 16px;
 
-    border-radius: 20px;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-card);
 
-    background: white;
-
-    box-shadow:
-        0 4px 12px rgba(0,0,0,0.08);
+    background: var(--color-bg);
 
     box-sizing: border-box;
 
     cursor: pointer;
 
-    border: 2px solid transparent;
-
-    transition: all 0.2s ease;
+    transition: background-color 0.12s ease, border-color 0.12s ease;
 }
 
 .topic-choice-thema:hover {
 
-    box-shadow:
-        0 6px 16px rgba(0,0,0,0.12);
+    border-color: var(--color-line-strong);
 }
 
 .topic-choice-thema.selected {
 
-    border: 2px solid rgb(0, 128, 255);
+    border-color: var(--color-accent);
+
+    box-shadow: inset 0 0 0 1px var(--color-accent);
+
+    background: var(--color-accent-soft);
+}
+
+.topic-choice-thema h3 {
+
+    margin: 0;
+
+    color: var(--color-text);
+
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.topic-choice-thema p {
+
+    margin: 0;
+
+    color: var(--color-text-body);
+
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+.topic-choice-divider {
+
+    width: 100%;
+
+    margin: 2px 0;
+
+    border: none;
+    border-top: 1px dashed var(--color-line-strong);
 }
 
 .topic-choice-empty {
 
-    color: #999;
+    color: var(--color-text-sub);
 
     font-size: 14px;
 }
 
 
 /* ======================================
-   LINE BLOCK
+   LINE BLOCK（マウスを乗せたストーリーのセリフ）
 ====================================== */
 
 .topic-choice-Reference-image-lines {
@@ -123,14 +169,15 @@
 
     min-height: 380px;
 
+    margin-top: 8px;
+
     padding: 16px;
 
-    border-radius: 20px;
+    border-radius: var(--radius-card);
 
-    background: white;
+    background: var(--color-surface);
 
-    box-shadow:
-        0 4px 12px rgba(0,0,0,0.08);
+    color: var(--color-text);
 
     box-sizing: border-box;
 }
@@ -149,7 +196,6 @@
 
     display: flex;
     flex-direction: column;
-
     gap: 12px;
 }
 
@@ -178,35 +224,57 @@
     flex: 1;
     min-width: 0;
 
-    padding: 6px 8px;
+    height: 36px;
+    padding: 0 12px;
 
-    border: 1px solid #ddd;
-    border-radius: 8px;
+    border: 1px solid var(--color-line-strong);
+    border-radius: 10px;
 
+    background: var(--color-bg);
+    color: var(--color-text);
+
+    font-family: inherit;
     font-size: 13px;
 
     box-sizing: border-box;
 }
 
-.folder-new-button {
+.folder-new-input:focus {
 
-    border: none;
-    border-radius: 8px;
+    outline: none;
 
-    padding: 6px 10px;
+    border-color: var(--color-accent);
 
-    background: rgb(0, 128, 255);
-    color: white;
-
-    font-size: 13px;
-    font-weight: bold;
-
-    cursor: pointer;
+    box-shadow: inset 0 0 0 1px var(--color-accent);
 }
 
-.folder-new-button:hover {
+.folder-new-button,
+.material-upload-button {
 
-    background: rgb(0, 100, 210);
+    border: none;
+    border-radius: var(--radius-pill);
+
+    background: var(--color-surface-2);
+    color: var(--color-text);
+
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition: background-color 0.12s ease;
+}
+
+.folder-new-button {
+
+    padding: 0 16px;
+}
+
+.folder-new-button:hover,
+.material-upload-button:hover {
+
+    background: var(--color-surface-3);
 }
 
 
@@ -218,7 +286,7 @@
 
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 2px;
 }
 
 .folder-card {
@@ -228,21 +296,21 @@
     justify-content: space-between;
     gap: 6px;
 
-    padding: 8px 10px;
+    padding: 2px 4px 2px 0;
 
-    border-radius: 12px;
+    border-radius: var(--radius-pill);
 
-    background: white;
+    transition: background-color 0.12s ease;
+}
 
-    box-shadow:
-        0 4px 12px rgba(0,0,0,0.08);
+.folder-card:hover {
 
-    transition: all 0.2s ease;
+    background: var(--color-surface-2);
 }
 
 .folder-card.selected {
 
-    outline: 2px solid rgb(0, 128, 255);
+    background: var(--color-accent-soft);
 }
 
 .folder-card-name {
@@ -250,12 +318,22 @@
     flex: 1;
     min-width: 0;
 
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    height: 36px;
+    padding: 0 12px;
+
     border: none;
+    border-radius: var(--radius-pill);
+
     background: none;
+    color: var(--color-text);
 
+    font-family: inherit;
+    font-size: 14px;
     text-align: left;
-
-    font-size: 13px;
 
     overflow: hidden;
     text-overflow: ellipsis;
@@ -264,17 +342,44 @@
     cursor: pointer;
 }
 
+.folder-card.selected .folder-card-name {
+
+    color: var(--color-accent);
+
+    font-weight: 700;
+}
+
+.folder-card-icon {
+
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+
+    fill: none;
+    stroke: var(--color-text-sub);
+    stroke-width: 1.8;
+    stroke-linejoin: round;
+}
+
+.folder-card.selected .folder-card-icon {
+
+    stroke: var(--color-accent);
+}
+
+/* 取り消せない操作なので、普段は赤い文字だけにして目立たせすぎない */
 .folder-card-delete {
 
     flex-shrink: 0;
 
     border: none;
-    border-radius: 8px;
+    border-radius: var(--radius-pill);
 
-    padding: 4px 8px;
+    padding: 4px 10px;
 
-    background: #f1f5f9;
+    background: transparent;
+    color: var(--color-danger);
 
+    font-family: inherit;
     font-size: 12px;
 
     cursor: pointer;
@@ -282,7 +387,7 @@
 
 .folder-card-delete:hover {
 
-    background: #e2e8f0;
+    background: var(--color-danger-soft);
 }
 
 
@@ -294,14 +399,13 @@
 
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 10px;
 
-    padding: 10px;
+    padding: 12px;
 
-    border-radius: 12px;
+    border-radius: var(--radius-panel);
 
-    background: #fafafa;
-    border: 1px solid #eee;
+    background: var(--color-surface);
 }
 
 .material-panel-header {
@@ -310,30 +414,15 @@
     align-items: center;
     justify-content: space-between;
 
-    font-size: 13px;
-    font-weight: bold;
+    color: var(--color-text-sub);
 
-    color: #555;
+    font-size: 13px;
+    font-weight: 700;
 }
 
 .material-upload-button {
 
-    border: none;
-    border-radius: 8px;
-
-    padding: 4px 10px;
-
-    background: rgb(0, 128, 255);
-    color: white;
-
-    font-size: 12px;
-
-    cursor: pointer;
-}
-
-.material-upload-button:hover {
-
-    background: rgb(0, 100, 210);
+    padding: 4px 12px;
 }
 
 .material-upload-button:disabled {
@@ -351,8 +440,9 @@
 
 .material-empty {
 
+    color: var(--color-text-sub);
+
     font-size: 12px;
-    color: #999;
 }
 
 .material-thumb {
@@ -362,13 +452,12 @@
     width: 64px;
     height: 64px;
 
+    border: 1px solid var(--color-line);
     border-radius: 10px;
+
     overflow: hidden;
 
-    background: white;
-
-    box-shadow:
-        0 2px 6px rgba(0,0,0,0.08);
+    background: var(--color-bg);
 }
 
 .material-thumb img {
@@ -379,6 +468,7 @@
     object-fit: cover;
 }
 
+/* 素材画像の上に重ねるボタン。画像の色に関係なく見えるよう、テーマによらず半透明の黒にする */
 .material-thumb-delete {
 
     position: absolute;
@@ -391,13 +481,20 @@
     border: none;
     border-radius: 50%;
 
-    background: rgba(0,0,0,0.6);
+    background: rgba(0, 0, 0, 0.6);
     color: white;
 
     font-size: 12px;
     line-height: 1;
 
     cursor: pointer;
+}
+
+.TopicChoice-body button:focus-visible,
+.TopicChoice-next:focus-visible {
+
+    outline: var(--focus-ring);
+    outline-offset: var(--focus-ring-offset);
 }
 
 
@@ -411,7 +508,6 @@
     height: 80px;
 
     border: none;
-
     border-radius: 20px;
 
     overflow: hidden;
