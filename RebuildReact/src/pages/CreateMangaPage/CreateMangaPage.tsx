@@ -1,10 +1,11 @@
 import "./CreateMangaPage.css";
 
 import { useEffect, useRef, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 import MainLayout from "../../components/layout/PageLayouts/MainLayout";
-import RightMenuKoma, { type CharacterKey } from "./layout/RightMenuKoma";
+import FolderStrip from "./layout/FolderStrip";
+import MaterialPalette from "./layout/MaterialPalette";
 import {
   useMangaCanvas,
   exportMangaFrameToPng,
@@ -15,7 +16,9 @@ import type { MangaPanelDto } from "../../types/MangaPanel";
 import type { Story } from "../../types/Story";
 import type { Dialogue } from "../../types/Dialogue";
 import type { Folder } from "../../types/Folder";
+import type { Material } from "../../types/Material";
 import useLoginUser from "../../hooks/useLoginUser";
+import { resolveImageSrc } from "../../utils/imageSrc";
 
 // 固定のキャンバス枠のサイズ（このサイズのまま画像として書き出す）
 // blankpaper.png の実寸（1057×748、横長）に合わせている
@@ -24,24 +27,8 @@ const CANVAS_HEIGHT = 748;
 
 const BLANK_PAPER_SRC = "/images/settingimages/blankpaper.png";
 
-const CHARACTER_THUMBNAILS: Record<CharacterKey, { src: string; alt: string }> = {
-  hiiragi: {
-    src: "/images/ArtistName_TsukishiroKaede/CharacterAndKomaImages/HiiragiRen_1/0_HiiragiRen.png",
-    alt: "Hiiragi",
-  },
-  amano: {
-    src: "/images/ArtistName_TsukishiroKaede/CharacterAndKomaImages/AmanoYui_1/0_AmanoYui.png",
-    alt: "Amano",
-  },
-  kisaragi: {
-    src: "/images/ArtistName_TsukishiroKaede/CharacterAndKomaImages/KisaragiMioko_1/0_KisaragiMioko.png",
-    alt: "Kisaragi",
-  },
-};
-
 export default function CreateMangaPage() {
-  const [selectedCharacter, setSelectedCharacter] =
-    useState<CharacterKey>("hiiragi");
+  const navigate = useNavigate();
 
   const [isSaving, setIsSaving] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -60,6 +47,9 @@ export default function CreateMangaPage() {
   const folderIdParam = searchParams.get("folderId");
 
   const [folders, setFolders] = useState<Folder[]>([]);
+  const [materialsByFolder, setMaterialsByFolder] = useState<
+    Record<number, Material[]>
+  >({});
   const [selectedFolderId, setSelectedFolderId] = useState<number | null>(
     folderIdParam ? Number(folderIdParam) : null
   );
@@ -157,14 +147,34 @@ export default function CreateMangaPage() {
       .then((data: Dialogue[]) => setDialogues(data));
   }, [storyId]);
 
-  // フォルダタブ表示用に、ユーザーの素材フォルダ一覧を取得する
-  // （TopicChoice画面のfetchFoldersと同じ方式）
+  // ユーザーの素材フォルダと、各フォルダの素材を取得する
+  // （フォルダ帯の表紙に1枚目の素材を使うため、全フォルダ分をまとめて読み込む）
   useEffect(() => {
     if (!loginUser.id) return;
 
-    fetch(`${import.meta.env.VITE_API_BASE_URL}/api/folders?userId=${loginUser.id}`)
+    const apiBase = import.meta.env.VITE_API_BASE_URL;
+
+    fetch(`${apiBase}/api/folders?userId=${loginUser.id}`)
       .then((response) => response.json())
-      .then((data: Folder[]) => setFolders(data));
+      .then(async (data: Folder[]) => {
+        setFolders(data);
+
+        const entries = await Promise.all(
+          data.map(async (folder) => {
+            const response = await fetch(`${apiBase}/api/folders/${folder.id}/materials`);
+            const materials: Material[] = await response.json();
+            return [folder.id, materials] as const;
+          })
+        );
+
+        setMaterialsByFolder(Object.fromEntries(entries));
+
+        // URLでフォルダが指定されていなければ、1つ目のフォルダを選んでおく
+        setSelectedFolderId((current) => current ?? data[0]?.id ?? null);
+      })
+      .catch(() => {
+        setStatusMessage("素材フォルダの読み込みに失敗しました");
+      });
   }, [loginUser.id]);
 
   const handleSave = async () => {
@@ -211,6 +221,19 @@ export default function CreateMangaPage() {
 
   const selectedPanel = panels.find((panel) => panel.id === selectedId);
 
+  const selectedFolder =
+    folders.find((folder) => folder.id === selectedFolderId) ?? null;
+
+  const coverUrls: Record<number, string> = {};
+  for (const [folderId, materials] of Object.entries(materialsByFolder)) {
+    if (materials.length > 0) {
+      coverUrls[Number(folderId)] = materials[0].url;
+    }
+  }
+
+  // ジャンルは「職業 天才 葛藤」のように空白区切りで保存されているため、タグに分けて表示する
+  const genres = story?.genre ? story.genre.split(/\s+/).filter(Boolean) : [];
+
   const handleExportPng = async () => {
     try {
       const dataUrl = await exportMangaFrameToPng({
@@ -229,74 +252,64 @@ export default function CreateMangaPage() {
   return (
     <MainLayout
       showAdvertisement={false}
-      headerSecondaryContent={
-        folders.length > 0 && (
-          <div className="CreateMangaPage-folder-tabs">
-            {folders.map((folder) => (
-              <button
-                key={folder.id}
-                type="button"
-                className={
-                  "CreateMangaPage-folder-tab" +
-                  (selectedFolderId === folder.id ? " active" : "")
-                }
-                onClick={() => setSelectedFolderId(folder.id)}
-              >
-                {folder.name}
-              </button>
-            ))}
-          </div>
-        )
-      }
       headerContent={
         <div className="CreateMangaPage-top">
           <div className="CreateMangaPage-thema">
-            <h3>{story?.title || "（無題）"}</h3>
-            <p className="CreateMangaPage-thema-summary">{story?.summary}</p>
-            <hr className="CreateMangaPage-thema-divider" />
-            <p>ジャンル {story?.genre}</p>
+            {story ? (
+              <>
+                <h3>{story.title || "（無題）"}</h3>
+                <p className="CreateMangaPage-thema-summary">{story.summary}</p>
 
-            <button
-              type="button"
-              className="CreateMangaPage-dialogue-toggle"
-              onClick={() => setShowDialogues((prev) => !prev)}
-            >
-              {showDialogues ? "セリフを閉じる" : "セリフを見る"}
-            </button>
+                <div className="CreateMangaPage-thema-footer">
+                  {genres.length > 0 && (
+                    <ul className="CreateMangaPage-genres" aria-label="ジャンル">
+                      {genres.map((genre) => (
+                        <li key={genre} className="CreateMangaPage-genre">{genre}</li>
+                      ))}
+                    </ul>
+                  )}
 
-            {showDialogues && (
-              <div className="CreateMangaPage-dialogue-list">
-                {dialogues.length === 0 && <p>セリフがありません</p>}
+                  <button
+                    type="button"
+                    className="CreateMangaPage-dialogue-toggle"
+                    onClick={() => setShowDialogues((prev) => !prev)}
+                  >
+                    {showDialogues ? "セリフを閉じる" : "セリフを見る"}
+                  </button>
+                </div>
 
-                {dialogues.map((dialogue) => (
-                  <p key={dialogue.id}>
-                    <strong>{dialogue.talkerName}</strong>：{dialogue.line}
-                  </p>
-                ))}
+                {showDialogues && (
+                  <div className="CreateMangaPage-dialogue-list">
+                    {dialogues.length === 0 && <p>セリフがありません</p>}
+
+                    {dialogues.map((dialogue) => (
+                      <p key={dialogue.id}>
+                        <strong>{dialogue.talkerName}</strong>：{dialogue.line}
+                      </p>
+                    ))}
+                  </div>
+                )}
+              </>
+            ) : (
+              <div className="CreateMangaPage-thema-empty">
+                <p>ストーリーが選ばれていません</p>
+                <button
+                  type="button"
+                  className="CreateMangaPage-dialogue-toggle"
+                  onClick={() => navigate("/TopicChoice")}
+                >
+                  ストーリー選択に戻る
+                </button>
               </div>
             )}
           </div>
 
-          {/* キャラ選択 */}
-          <div className="CreateMangaPage-character">
-            {(Object.keys(CHARACTER_THUMBNAILS) as CharacterKey[]).map(
-              (character) => (
-                <button
-                  key={character}
-                  type="button"
-                  className={
-                    selectedCharacter === character ? "active" : ""
-                  }
-                  onClick={() => setSelectedCharacter(character)}
-                >
-                  <img
-                    src={CHARACTER_THUMBNAILS[character].src}
-                    alt={CHARACTER_THUMBNAILS[character].alt}
-                  />
-                </button>
-              )
-            )}
-          </div>
+          <FolderStrip
+            folders={folders}
+            coverUrls={coverUrls}
+            selectedFolderId={selectedFolderId}
+            onSelect={setSelectedFolderId}
+          />
         </div>
       }
     >
@@ -332,7 +345,7 @@ export default function CreateMangaPage() {
           {panels.map((panel) => (
             <img
               key={panel.id}
-              src={panel.imageSrc}
+              src={resolveImageSrc(panel.imageSrc)}
               alt="配置したコマ"
               className={
                 "placed-koma" + (selectedId === panel.id ? " selected" : "")
@@ -399,8 +412,11 @@ export default function CreateMangaPage() {
       </div>
 
       {/* 右：ドラッグ元のコマ素材 */}
-      <RightMenuKoma
-        selectedCharacter={selectedCharacter}
+      <MaterialPalette
+        folderName={selectedFolder?.name ?? null}
+        materials={
+          selectedFolderId !== null ? materialsByFolder[selectedFolderId] ?? [] : []
+        }
         onDragStart={handleKomaDragStart}
       />
 

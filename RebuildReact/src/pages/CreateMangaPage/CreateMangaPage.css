@@ -1,45 +1,14 @@
 
-/* ヘッダー2段目：作業するフォルダを選ぶタブ */
-.CreateMangaPage-folder-tabs {
-    display: flex;
-    gap: 6px;
-    overflow-x: auto;
-    max-width: 100%;
-}
-
-.CreateMangaPage-folder-tab {
-    flex-shrink: 0;
-    height: 28px;
-    border: none;
-    border-radius: var(--radius-pill);
-    padding: 0 14px;
-    font-family: inherit;
-    font-size: 13px;
-    font-weight: 500;
-    background: var(--color-surface-2);
-    color: var(--color-text);
-    cursor: pointer;
-    white-space: nowrap;
-}
-
-.CreateMangaPage-folder-tab:hover {
-    background: var(--color-surface-3);
-}
-
-/* 選択中は他の画面の切り替えボタンと同じく藍の塗り */
-.CreateMangaPage-folder-tab.active {
-    background: var(--color-accent);
-    color: var(--color-on-accent);
-}
-
 .CreateMangaPage-top {
-    display:flex;
+    display: flex;
+    gap: 12px;
     width: 100%;
     height: 100%;
 }
 
 .CreateMangaPage-thema {
-    width: 65%;
+    flex-shrink: 0;
+    width: 420px;
     max-height: 95%;
     margin: 2px;
     padding: 6px 12px;
@@ -73,14 +42,6 @@
     overflow: hidden;
 }
 
-/* 以前は「---...---」という文字列（2行分の高さ）だったが、
-   本物の罫線に置き換えて高さを詰めた */
-.CreateMangaPage-thema-divider {
-    margin: 3px 0;
-    border: none;
-    border-top: 1px dashed var(--color-line-strong);
-}
-
 .CreateMangaPage-dialogue-toggle {
     margin-top: 4px;
     padding: 2px 12px;
@@ -106,35 +67,6 @@
 
 .CreateMangaPage-dialogue-list p {
     margin: 1px 0 !important;
-}
-
-.CreateMangaPage-character {
-    width: 35%;
-    display: flex;
-    flex-wrap: wrap;
-    align-content: flex-start;
-
-}
-
-.CreateMangaPage-character img {
-    width: auto;
-    /* 以前は90%（親の高さ基準）だったが、Header統合で親の高さの基準が
-       曖昧になり、画像が本来の大きさのまま表示されてしまっていた。
-       ヘッダー内に1段で収まる固定サイズに変更 */
-    height: 42px;
-    margin: 3px;
-}
-
-.CreateMangaPage-character button {
-    border: 3px solid transparent;
-    background: none;
-    padding: 0;
-    cursor: pointer;
-    border-radius: 8px;
-}
-
-.CreateMangaPage-character button.active {
-    border-color: var(--color-accent);
 }
 
 /*=======================================================*/
@@ -277,9 +209,8 @@
 }
 
 .CreateMangaPage-toolbar button:focus-visible,
-.CreateMangaPage-folder-tab:focus-visible,
 .CreateMangaPage-dialogue-toggle:focus-visible,
-.CreateMangaPage-character button:focus-visible {
+.FolderStrip-item:focus-visible {
     outline: var(--focus-ring);
     outline-offset: var(--focus-ring-offset);
 }
@@ -295,29 +226,207 @@
 }
 
 /*=======================================================*/
-/*  ↓↓  右メニュー（コマ素材）  ↓↓                     */
+/*  ↓↓  ヘッダー：ストーリー情報（ジャンル・未選択時）  ↓↓ */
+/*=======================================================*/
+
+.CreateMangaPage-thema-footer {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 4px;
+}
+
+.CreateMangaPage-genres {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.CreateMangaPage-genre {
+    padding: 1px 8px;
+    border-radius: var(--radius-pill);
+    background-color: var(--color-bg);
+    color: var(--color-text-body);
+    font-size: 11px;
+    white-space: nowrap;
+}
+
+.CreateMangaPage-thema-footer .CreateMangaPage-dialogue-toggle {
+    margin-top: 0;
+    margin-left: auto;
+}
+
+.CreateMangaPage-thema-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 6px;
+    height: 100%;
+}
+
+/*=======================================================*/
+/*  ↓↓  ヘッダー：素材フォルダの帯  ↓↓                  */
+/*=======================================================*/
+
+/* フォルダが増えたら横にスクロールする */
+.FolderStrip {
+    display: flex;
+    gap: 8px;
+    flex: 1;
+    min-width: 0;
+    margin: 0;
+    padding: 2px 2px 6px;
+    list-style: none;
+    overflow-x: auto;
+}
+
+.FolderStrip-item {
+    display: grid;
+    grid-template-rows: 56px auto;
+    gap: 4px;
+    width: 88px;
+    padding: 4px;
+    border: none;
+    border-radius: 12px;
+    background: transparent;
+    color: var(--color-text);
+    font-family: inherit;
+    text-align: left;
+    cursor: pointer;
+    transition: background-color 0.12s ease;
+}
+
+.FolderStrip-item:hover {
+    background-color: var(--color-surface-2);
+}
+
+.FolderStrip-item.is-active {
+    background-color: var(--color-accent-soft);
+    color: var(--color-accent);
+}
+
+.FolderStrip-cover {
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    border: 1px solid var(--color-line);
+    border-radius: 8px;
+    background-color: var(--color-bg);
+}
+
+.FolderStrip-item.is-active .FolderStrip-cover {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 1px var(--color-accent);
+}
+
+.FolderStrip-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.FolderStrip-cover-icon {
+    width: 24px;
+    height: 24px;
+    fill: none;
+    stroke: var(--color-text-sub);
+    stroke-width: 1.6;
+    stroke-linejoin: round;
+}
+
+.FolderStrip-name {
+    overflow: hidden;
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.FolderStrip-item.is-active .FolderStrip-name {
+    font-weight: 700;
+}
+
+.FolderStrip-empty {
+    align-self: center;
+    margin: 0;
+    color: var(--color-text-sub);
+    font-size: 13px;
+}
+
+/*=======================================================*/
+/*  ↓↓  右メニュー（選択中フォルダの素材）  ↓↓          */
 /*=======================================================*/
 
 .CreateMangaPage-right {
-    width: 180px;
+    width: 240px;
     flex-shrink: 0;
     display: flex;
-    flex-wrap: wrap;
-    align-content: flex-start;
-    gap: 8px;
-    padding: 8px;
+    flex-direction: column;
+    gap: 10px;
+    padding: 12px;
     overflow-y: auto;
     border-radius: var(--radius-card);
     background-color: var(--color-surface);
     box-sizing: border-box;
+    text-align: left;
 }
 
-.CreateMangaPage-right img {
-    width: 70px;
-    height: 70px;
+.MaterialPalette-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.MaterialPalette-title {
+    margin: 0;
+    overflow: hidden;
+    color: var(--color-text);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.MaterialPalette-count {
+    flex-shrink: 0;
+    color: var(--color-text-sub);
+    font-size: 12px;
+}
+
+.MaterialPalette-empty {
+    margin: 0;
+    color: var(--color-text-sub);
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+.MaterialPalette-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.MaterialPalette-image {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1 / 1;
     object-fit: contain;
-    cursor: grab;
-    background: var(--color-bg);
     border: 1px solid var(--color-line);
     border-radius: 10px;
+    background-color: var(--color-bg);
+    cursor: grab;
+}
+
+.MaterialPalette-image:hover {
+    border-color: var(--color-line-strong);
 }
