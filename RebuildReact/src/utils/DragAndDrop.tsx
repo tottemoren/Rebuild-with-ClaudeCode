@@ -220,9 +220,12 @@ type ExportFrameOptions = {
   panels: PlacedKoma[];
 };
 
-function loadImage(src: string): Promise<HTMLImageElement> {
+// アップロードした素材はバックエンド（別のオリジン）から読み込むため、
+// 許可（CORS）付きで読み込まないと、キャンバスをPNGに変換するときにブラウザに拒否される
+export function loadImage(src: string): Promise<HTMLImageElement> {
   return new Promise((resolve, reject) => {
     const img = new Image();
+    img.crossOrigin = "anonymous";
     img.onload = () => resolve(img);
     img.onerror = () =>
       reject(new Error(`画像の読み込みに失敗しました: ${src}`));
