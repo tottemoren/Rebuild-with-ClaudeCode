@@ -9,6 +9,7 @@
 // ができるようにしている。
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { resolveImageSrc } from "./imageSrc";
 
 export type PlacedKoma = {
   id: string;
@@ -219,9 +220,12 @@ type ExportFrameOptions = {
   panels: PlacedKoma[];
 };
 
-function loadImage(src: string): Promise<HTMLImageElement> {
+// アップロードした素材はバックエンド（別のオリジン）から読み込むため、
+// 許可（CORS）付きで読み込まないと、キャンバスをPNGに変換するときにブラウザに拒否される
+export function loadImage(src: string): Promise<HTMLImageElement> {
   return new Promise((resolve, reject) => {
     const img = new Image();
+    img.crossOrigin = "anonymous";
     img.onload = () => resolve(img);
     img.onerror = () =>
       reject(new Error(`画像の読み込みに失敗しました: ${src}`));
@@ -250,7 +254,7 @@ export async function exportMangaFrameToPng(
   );
 
   for (const panel of sortedPanels) {
-    const image = await loadImage(panel.imageSrc);
+    const image = await loadImage(resolveImageSrc(panel.imageSrc));
     ctx.drawImage(image, panel.x, panel.y, panel.width, panel.height);
   }
 
