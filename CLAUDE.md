@@ -51,7 +51,7 @@ Rebuild は、ユーザーが作画した同じイラストを使って何度で
 - バックエンド：Java 21 + Spring Boot 4 + Spring Data JPA + Spring Security（テスト：JUnit + MockMvc。実際のMySQLに接続して検証）
 - データベース：MySQL 8.4
 - CI/CD：GitHub Actions（Frontend CI / Backend CI / Deploy Frontend）
-- 本番：フロントエンドは AWS（S3 + CloudFront）。バックエンドの本番デプロイは未構築
+- 本番：フロントエンドは AWS（S3 + CloudFront、自動デプロイ）。バックエンドは EC2（Ubuntu・t3.micro）上の Docker Compose で動かし、手動で反映（自動デプロイは未構築）。詳細は「本番環境」を参照
 - 開発環境：macOS / Eclipse / VS Code / Docker
 
 ## ディレクトリ構成
@@ -128,6 +128,7 @@ docker compose logs -f               # ログ確認
 - PRの作成とマージは、ユーザーがGitHub上で行う。Claude Code は作成・マージしない（PR本文の下書きは提供してよい）
 - マージ前に Frontend CI / Backend CI が成功していること
 - mainへのマージで `RebuildReact/` 配下に変更があると、本番（S3 + CloudFront）へ自動デプロイされる。影響を必ず説明する
+- `RebuildJava/` 配下の変更は、マージしても本番に自動では反映されない。マージ後にEC2への手動反映が必要なことを、PRのたびに伝える（フロントだけが先に本番に出てずれることがある）
 - コミットメッセージは日本語で、簡潔な要約（必要なら説明を追記）
 - 破壊的なgit操作は事前に確認を取ってから実行する
 
@@ -138,6 +139,25 @@ Claude Code が承認を得て何らかの修正・変更を行った場合、**
 - 場所：`docs/docs/ClaudeCode CHANGELOG/YYYY/MM/YYYY-MM-DD.md`
 - 同じ日に複数回作業した場合は、新規ファイルを作らず同じ日付のファイルに追記する
 - フォーマットは既存ファイルに倣う（`## Claude によるアップデート（YYYY-MM-DD）` → 概要 → `### 実施した内容`）
+
+## 学習ノート（`docs/Study`）の運用
+
+作業の中で学びがあった場合（新しい考え方、設計の判断、つまずきと原因、テストの工夫、新しい用語）は、**同じPRで** `docs/Study` の該当ファイルも更新する。学びが無い作業では更新しない。
+
+- CHANGELOG との書き分け：CHANGELOG は「何をしたか」（ファイル・手順・確認結果）を日付順に記録する。Study は「なぜそうしたか・他の選択肢・次に同じ場面でどう考えるか・用語の意味」をテーマ別に要点だけ書き、細部は CHANGELOG に任せる
+- 書く場所：開発の歩み（01）、設計判断（02）、テスト（05）、AIとの開発（07）、つまずき（08）、用語（09）など、既存の分類に合わせる
+- 各項目の最後に、元になった CHANGELOG を `<sub>作業記録：[2026-10-13（5回目）](../docs/ClaudeCode%20CHANGELOG/2026/10/2026-10-13.md)</sub>` の形で小さく書く（見出しへの直接リンクは使わず、ファイルへのリンク＋何回目か）。元の記録が分からないものには付けない
+- 初学者にも分かる言葉で書き、うまくいかなかったことも書く（`docs/Study/README.md` の方針に従う）
+
+## 本番環境
+
+公開リポジトリのため、IPアドレス・CloudFrontのドメイン名やID・AWSのアカウントID・鍵ファイル名は書かない。
+
+- 構成：利用者 → フロント用 CloudFront（S3）／API用 CloudFront（`rebuild-backend-first`）→ EC2 の Docker Compose（`backend` と `mysql`）
+- バックエンドの反映（手動）：EC2で `cd ~/Rebuild-with-ClaudeCode` → `git status`（変更が無いことを確認）→ `git pull origin main` → `docker compose up -d --build backend`。t3.micro のためビルドに数分かかる。EC2での作業はユーザーが行う
+- API用 CloudFront の WAF（無料プラン、コア保護）で `SizeRestrictions_BODY` を「カウント」にしている。8KBを超える送信（画像アップロード、長いメモ・ストーリー）がブロックされていたため。無料プランではラベルを使った例外ルールが作れない
+- 本番でアップロードした画像は EC2 のディスク（`RebuildJava/uploads/`）にある（S3には未移行）。EC2が失われると消える
+- ローカルと本番の違い（CloudFront・WAF・オリジンの違い）で、本番だけ動かないことがある。本番の不具合は、ブラウザの開発者ツール（Network・Console）とEC2のログ（`docker logs rebuild-java`）で確認する
 
 ## プロジェクト固有の注意
 
@@ -150,7 +170,8 @@ Claude Code が承認を得て何らかの修正・変更を行った場合、**
 ## 既知の課題（依頼がない限り直さず、気づいたら報告するだけ）
 
 [docs/05-api/api-list.md](docs/05-api/api-list.md) の「現行実装との主な差分」を参照（認証未実装などを含む）。
-バックエンドの本番デプロイ、DBマイグレーション管理、監視は未整備。
+特に、ユーザーごとのデータ分離と認証が無いため、本番で他のユーザーのメモ・ストーリーが見え、APIを直接呼べば読み書き・削除もできる状態（メモには所有者の項目自体が無い）。
+バックエンドの自動デプロイ、DBマイグレーション管理、監視は未整備。EC2のOS更新がたまっている。
 
 ## 開発予定・今後の目標
 
