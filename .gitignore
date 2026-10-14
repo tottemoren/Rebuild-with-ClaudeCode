@@ -33,3 +33,6 @@ RebuildJava/uploads/
 
 # Environment variables
 .env
+
+# Private local notes for Claude Code (not published)
+CLAUDE.local.md
