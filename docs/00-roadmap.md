@@ -84,7 +84,7 @@
 | ⬜ | 認証（JWT）を導入し、ログイン前のお試しで使うもの以外のAPIを認証必須にする | [system-design.md 2章](03-system-design/system-design.md) |
 | ⬜ | APIのパスを `/api/**` に統一する | [api-list.md](05-api/api-list.md) |
 | ⬜ | 未テストのAPI（ストーリー/セリフ、ログイン/登録）のテストを追加する | [Study/05](Study/05-testing.md) |
-| ⬜ | ブランチ保護を設定し、CIが失敗したらマージできないようにする | [Study/03](Study/03-loop-engineering.md) |
+| ✅ | ブランチ保護を設定し、CIが失敗したらマージできないようにする（2026-10-15） | [Study/03](Study/03-loop-engineering.md) |
 | ⬜ | 本番のバックエンドに反映し、本番でもデータが分離されていることを確認する | |
 
 **完了条件**
