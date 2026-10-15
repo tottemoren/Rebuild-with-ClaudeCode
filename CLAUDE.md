@@ -20,6 +20,9 @@
 
 ### 2. 事前確認なしにやってはいけない操作
 
+このうち main への push、force push、`reset --hard`、全ファイルの一括 add（`-A` / `.`）、`.env` の表示・編集は、`.claude/hooks/` の Hooks で機械的に止めている。止められた場合は回避せず、利用者に説明する。
+
+
 - git：commit、push、ブランチの作成・削除、PR・マージ、force push、`reset --hard`など履歴を書き換える操作。mainへ直接pushしない（作業は `feature/` ブランチで行う）
 - 削除：複数ファイルの一括削除、DBのデータや `RebuildJava/uploads/` の削除
 - 外部サービスの設定変更：GitHub（ブランチ保護、Secretsなど）、AWS（S3、CloudFront、IAMなど）、本番環境への操作
