@@ -38,8 +38,8 @@
 | 03 | SCR-003 | ホーム画面 | メモ・ストーリー・漫画を一覧表示する | [Home.drawio](wireframes/Home.drawio.png) | [Home.md](specifications/Home.md) |
 | 04 | SCR-004 | メモ管理画面 | メモの作成・編集・削除を行う | [Memo.drawio](wireframes/Memo.drawio.png) | [Memo.md](specifications/Memo.md) |
 | 05 | SCR-005 | ストーリー管理画面 | あらすじ・ジャンル・セリフ台本の作成を行う | [StoryCreate.drawio](wireframes/StoryCreate.drawio.png) | [StoryCreate.md](specifications/StoryCreate.md) |
-| 06 | SCR-006 | 漫画作成 - ストーリー選択画面 | 漫画化するストーリーと素材フォルダを選択する | [TopicChoice2.drawio](wireframes/TopicChoice2.drawio.png) | [TopicChoice.md](specifications/TopicChoice.md) |
-| 07 | SCR-007 | 漫画作成 - 編集画面 | イラスト素材を配置し、漫画のコマを作成する | [CreateManga.drawio](wireframes/CreateManga.drawio.png) | [CreateManga.md](specifications/CreateManga.md) |
+| 06 | SCR-006 | （廃止予定）漫画作成 - ストーリー選択画面 | SCR-007 に統合するため廃止予定 | [TopicChoice2.drawio](wireframes/TopicChoice2.drawio.png) | [TopicChoice.md](specifications/TopicChoice.md) |
+| 07 | SCR-007 | 漫画作成画面 | ストーリーと素材フォルダを選び、見開き単位で漫画を作成する | [CreateManga2.svg](wireframes/CreateManga2.svg) | [CreateManga.md](specifications/CreateManga.md) |
 
 ---
 
@@ -91,8 +91,8 @@
 <tr>
 <td width="50%">
 
-**SCR-007 漫画作成 - 編集画面**
-<img src="wireframes/CreateManga.drawio.png" width="360">
+**SCR-007 漫画作成画面**
+<img src="wireframes/CreateManga2.svg" width="360">
 
 </td>
 <td width="50%">
@@ -124,6 +124,8 @@
 
 新しい画面を追加する場合も、ワイヤーフレームとその仕様書のファイル名（拡張子を除く）を一致させる。
 
+**ワイヤーフレームの形式**：2026年10月以降に作るワイヤーフレームは、SVG 形式（`.svg`）で作る。AI（Claude Code）が直接書いて直せること、GitHub 上でそのまま表示され変更の差分を追えること、Figma や draw.io に取り込んで編集できることが理由。それ以前に作ったものは drawio 形式のまま残す。
+
 **改訂版のファイル名について**：ワイヤーフレームを修正した場合、元のファイルは上書きせず末尾に連番（`2`, `3`…）を付けて別ファイルとして保存する運用になっている（例：`TopicChoice.drawio.png` → `TopicChoice2.drawio.png`）。**同じ名前で番号違いのファイルが複数存在する場合、番号が最大のものが常に最新かつ正式版**。番号なし（無印）が最も古い版になる。本READMEおよび各仕様書からは、その時点での最新版（最大番号のファイル）にリンクする。
 
 ---
@@ -133,7 +135,8 @@
 現時点で仕様が固まっていない、または対応を保留している事項。03-system-design以降で扱うか、対応方針を決めるまではこのまま保留とする。
 
 - **設定画面・アカウント情報編集画面が未定義**：ヘッダーの設定ボタン／アカウントボタンから遷移する想定だが、画面自体は[screen-list.md](screen-list.md)に未掲載。対応保留中。
-- **イラスト素材のアップロードUIは作らない方針**：素材フォルダへの画像追加は、専用画面を用意せずOS標準のファイル選択ダイアログに委ねる。そのため[screen-list.md](screen-list.md)にアップロード専用画面は存在しない（意図的な設計判断）。
+- **イラスト素材のアップロードUIは作らない方針（見直し予定）**：2026年10月の見直しで、素材を探す・整理する・追加する「素材画面」を新設することになった（[要件定義 REQ-009](../01-requirements/README.md)）。画面の設計は、ロードマップ段階2bの前に行う。
+- **画面遷移図は旧版のまま**：画面遷移図（screen-flow2.drawio.png）には、廃止予定のストーリー選択画面が含まれている。新しい画面（素材・トップ・使い方・読み物・設定）を設計する段階2bの前に、まとめて更新する。
 - **メモ管理画面とストーリー管理画面の直接遷移**：ワイヤーフレーム（StoryCreate）のヘッダーには両画面を直接切り替えるボタンがあるが、画面遷移図（screen-flow2.drawio）ではホーム画面経由の遷移としてのみ表現されている。どちらが正か要確認。
 
 ---

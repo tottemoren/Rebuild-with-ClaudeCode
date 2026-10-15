@@ -1,0 +1,203 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800" font-family="'Hiragino Sans', 'Noto Sans JP', sans-serif">
+  <title>SCR-007 漫画作成画面 ワイヤーフレーム（段階2a）</title>
+  <style>
+    .frame { fill: #ffffff; stroke: #333333; stroke-width: 1.5; }
+    .box { fill: #ffffff; stroke: #666666; stroke-width: 1; }
+    .soft { fill: #f2f2f2; stroke: #999999; stroke-width: 1; }
+    .btn { fill: #ffffff; stroke: #555555; stroke-width: 1; }
+    .btn-main { fill: #333333; stroke: #333333; }
+    .sel { fill: #e8e8e8; stroke: #333333; stroke-width: 2; }
+    .t { font-size: 13px; fill: #222222; }
+    .ts { font-size: 11px; fill: #555555; }
+    .tw { font-size: 13px; fill: #ffffff; }
+    .th { font-size: 14px; fill: #111111; font-weight: bold; }
+    .num { fill: #333333; }
+    .numt { font-size: 11px; fill: #ffffff; font-weight: bold; }
+    .ink { fill: #444444; }
+    .handle { fill: #ffffff; stroke: #333333; stroke-width: 1.2; }
+    .dash { fill: #ffffff; stroke: #333333; stroke-width: 1.2; stroke-dasharray: 5 3; }
+  </style>
+
+  <!-- 画面の外枠 -->
+  <rect x="5" y="5" width="1190" height="790" class="frame"/>
+
+  <!-- ===== ① ヘッダー ===== -->
+  <rect x="15" y="15" width="1170" height="90" class="box"/>
+  <rect x="25" y="25" width="140" height="36" class="box"/>
+  <text x="95" y="48" text-anchor="middle" class="t">LOGO</text>
+  <rect x="25" y="68" width="62" height="26" class="btn"/>
+  <text x="56" y="86" text-anchor="middle" class="t">◀ ▶</text>
+  <text x="95" y="86" class="ts">左の列を切替</text>
+
+  <!-- ② ストーリー欄 -->
+  <rect x="185" y="25" width="420" height="70" class="soft"/>
+  <text x="197" y="45" class="th">ストーリー：放課後の約束 ▼</text>
+  <text x="197" y="65" class="ts">あらすじ：転校してきた少女と、図書室で出会った少年が…（2行まで）</text>
+  <rect x="197" y="72" width="44" height="17" rx="8" class="btn"/>
+  <text x="219" y="85" text-anchor="middle" class="ts">学園</text>
+  <rect x="246" y="72" width="44" height="17" rx="8" class="btn"/>
+  <text x="268" y="85" text-anchor="middle" class="ts">青春</text>
+  <rect x="500" y="69" width="95" height="22" class="btn"/>
+  <text x="547" y="85" text-anchor="middle" class="t">セリフ一覧</text>
+
+  <!-- ③ 素材フォルダ帯 -->
+  <rect x="620" y="25" width="380" height="70" class="soft"/>
+  <rect x="630" y="33" width="80" height="54" class="sel"/>
+  <text x="670" y="64" text-anchor="middle" class="ts">学園・主人公</text>
+  <rect x="718" y="33" width="80" height="54" class="box"/>
+  <text x="758" y="64" text-anchor="middle" class="ts">学園・友人</text>
+  <rect x="806" y="33" width="80" height="54" class="box"/>
+  <text x="846" y="64" text-anchor="middle" class="ts">背景</text>
+  <rect x="894" y="33" width="80" height="54" class="box"/>
+  <text x="934" y="64" text-anchor="middle" class="ts">効果</text>
+  <text x="988" y="64" text-anchor="middle" class="t">›</text>
+
+  <!-- 設定・アカウント・ログアウト -->
+  <rect x="1012" y="40" width="48" height="28" class="btn"/>
+  <text x="1036" y="59" text-anchor="middle" class="ts">設定</text>
+  <circle cx="1088" cy="54" r="17" class="btn"/>
+  <text x="1088" y="58" text-anchor="middle" class="ts">アイコン</text>
+  <rect x="1115" y="40" width="62" height="28" class="btn"/>
+  <text x="1146" y="59" text-anchor="middle" class="ts">ログアウト</text>
+
+  <!-- ===== ④ 見開き一覧（左の列） ===== -->
+  <rect x="15" y="115" width="155" height="670" class="box"/>
+  <text x="92" y="137" text-anchor="middle" class="th">見開き一覧</text>
+  <rect x="27" y="150" width="131" height="80" class="sel"/>
+  <rect x="35" y="158" width="55" height="56" class="box"/>
+  <rect x="95" y="158" width="55" height="56" class="box"/>
+  <text x="92" y="226" text-anchor="middle" class="ts">1–2（表示中）</text>
+  <rect x="27" y="240" width="131" height="80" class="box"/>
+  <rect x="35" y="248" width="55" height="56" class="soft"/>
+  <rect x="95" y="248" width="55" height="56" class="soft"/>
+  <text x="92" y="316" text-anchor="middle" class="ts">3–4</text>
+  <rect x="27" y="330" width="131" height="80" class="box"/>
+  <rect x="35" y="338" width="55" height="56" class="soft"/>
+  <rect x="95" y="338" width="55" height="56" class="soft"/>
+  <text x="92" y="406" text-anchor="middle" class="ts">5–6</text>
+  <rect x="27" y="422" width="131" height="32" class="dash"/>
+  <text x="92" y="443" text-anchor="middle" class="t">＋ 見開きを追加</text>
+  <text x="27" y="478" class="ts">・ドラッグで並び替え</text>
+  <text x="27" y="496" class="ts">・右クリックで削除・複製</text>
+
+  <!-- ===== ⑥ 編集キャンバス（見開き） ===== -->
+  <rect x="185" y="115" width="830" height="602" class="soft"/>
+  <g transform="translate(0,-40)">
+  <!-- 左ページ -->
+  <rect x="215" y="187" width="370" height="510" class="frame"/>
+  <!-- 右ページ -->
+  <rect x="615" y="187" width="370" height="510" class="frame"/>
+  <text x="400" y="712" text-anchor="middle" class="ts">1</text>
+  <text x="800" y="712" text-anchor="middle" class="ts">2</text>
+
+  <!-- 左ページのコマ枠（選択中・素材を切り取って表示） -->
+  <defs>
+    <clipPath id="koma1"><rect x="235" y="207" width="330" height="200"/></clipPath>
+  </defs>
+  <g clip-path="url(#koma1)">
+    <circle cx="330" cy="290" r="38" class="ink"/>
+    <path d="M285 335 L375 335 L395 470 L265 470 Z" class="ink"/>
+    <rect x="420" y="250" width="200" height="160" fill="#d0d0d0"/>
+  </g>
+  <rect x="235" y="207" width="330" height="200" fill="none" stroke="#222222" stroke-width="3"/>
+  <rect x="231" y="203" width="8" height="8" class="handle"/>
+  <rect x="396" y="203" width="8" height="8" class="handle"/>
+  <rect x="561" y="203" width="8" height="8" class="handle"/>
+  <rect x="231" y="303" width="8" height="8" class="handle"/>
+  <rect x="561" y="303" width="8" height="8" class="handle"/>
+  <rect x="231" y="403" width="8" height="8" class="handle"/>
+  <rect x="396" y="403" width="8" height="8" class="handle"/>
+  <rect x="561" y="403" width="8" height="8" class="handle"/>
+
+  <!-- 左ページ下段のコマ枠（2つ） -->
+  <rect x="235" y="420" width="160" height="257" fill="none" stroke="#222222" stroke-width="3"/>
+  <rect x="405" y="420" width="160" height="257" fill="none" stroke="#222222" stroke-width="3"/>
+  <circle cx="485" cy="520" r="26" fill="#bbbbbb"/>
+  <path d="M455 550 L515 550 L525 677 L445 677 Z" fill="#bbbbbb"/>
+
+  <!-- 右ページ：大きなコマ枠＋吹き出し -->
+  <rect x="635" y="207" width="330" height="300" fill="none" stroke="#222222" stroke-width="3"/>
+  <circle cx="820" cy="330" r="44" class="ink"/>
+  <path d="M770 380 L870 380 L890 507 L750 507 Z" class="ink"/>
+  <!-- ⑦ 吹き出し（縦書き） -->
+  <ellipse cx="700" cy="300" rx="44" ry="70" fill="#ffffff" stroke="#222222" stroke-width="2"/>
+  <path d="M735 340 L770 370 L728 350" fill="#ffffff" stroke="#222222" stroke-width="2" stroke-linejoin="round"/>
+  <text x="712" y="260" text-anchor="middle" class="t">
+    <tspan x="712" dy="0">図</tspan><tspan x="712" dy="17">書</tspan><tspan x="712" dy="17">室</tspan><tspan x="712" dy="17">で</tspan>
+  </text>
+  <text x="690" y="260" text-anchor="middle" class="t">
+    <tspan x="690" dy="0">ま</tspan><tspan x="690" dy="17">た</tspan><tspan x="690" dy="17">明</tspan><tspan x="690" dy="17">日</tspan>
+  </text>
+  <rect x="635" y="520" width="330" height="157" fill="none" stroke="#222222" stroke-width="3"/>
+
+  </g>
+
+  <!-- ⑨ セリフ一覧（ストーリー欄から開く。ストーリーの書き方に合わせて縦書き） -->
+  <rect x="380" y="98" width="230" height="230" fill="#ffffff" stroke="#333333" stroke-width="1.5"/>
+  <text x="392" y="118" class="th">セリフ一覧</text>
+  <text x="585" y="140" text-anchor="middle" class="ts"><tspan x="585" dy="0">ミ</tspan><tspan x="585" dy="16">カ</tspan></text>
+  <text x="585" y="178" text-anchor="middle" class="t"><tspan x="585" dy="0">図</tspan><tspan x="585" dy="16">書</tspan><tspan x="585" dy="16">室</tspan><tspan x="585" dy="16">で</tspan><tspan x="585" dy="16">、</tspan><tspan x="585" dy="16">ま</tspan><tspan x="585" dy="16">た</tspan><tspan x="585" dy="16">明</tspan><tspan x="585" dy="16">日</tspan></text>
+  <text x="545" y="140" text-anchor="middle" class="ts"><tspan x="545" dy="0">ユ</tspan><tspan x="545" dy="16">ウ</tspan></text>
+  <text x="545" y="178" text-anchor="middle" class="t"><tspan x="545" dy="0">…</tspan><tspan x="545" dy="16">…</tspan><tspan x="545" dy="16">う</tspan><tspan x="545" dy="16">ん</tspan></text>
+  <text x="505" y="140" text-anchor="middle" class="ts"><tspan x="505" dy="0">ミ</tspan><tspan x="505" dy="16">カ</tspan></text>
+  <text x="505" y="178" text-anchor="middle" class="t"><tspan x="505" dy="0">約</tspan><tspan x="505" dy="16">束</tspan><tspan x="505" dy="16">だ</tspan><tspan x="505" dy="16">よ</tspan></text>
+  <text x="392" y="300" class="ts">クリックで吹き出しとして配置</text>
+  <text x="392" y="316" class="ts">使用済みは薄く表示</text>
+
+  <!-- ===== ⑧ 下部（⑤ 編集アイコン・書き出し・保存） ===== -->
+  <rect x="185" y="725" width="830" height="60" class="box"/>
+  <!-- ⑤ 編集アイコン（文字は出さず、マウスを乗せると説明を表示） -->
+  <rect x="198" y="738" width="34" height="34" class="btn"/>
+  <rect x="206" y="747" width="14" height="16" fill="none" stroke="#333333" stroke-width="1.5"/><text x="226" y="752" text-anchor="middle" class="ts">+</text>
+  <rect x="238" y="738" width="34" height="34" class="btn"/>
+  <ellipse cx="254" cy="753" rx="10" ry="7" fill="none" stroke="#333333" stroke-width="1.5"/><path d="M258 759 L264 766 L253 760" fill="none" stroke="#333333" stroke-width="1.5"/>
+  <line x1="282" y1="740" x2="282" y2="770" stroke="#bbbbbb"/>
+  <rect x="292" y="738" width="34" height="34" class="btn"/>
+  <rect x="300" y="751" width="12" height="12" fill="#cccccc" stroke="#333333"/><rect x="306" y="745" width="12" height="12" fill="#ffffff" stroke="#333333"/>
+  <rect x="332" y="738" width="34" height="34" class="btn"/>
+  <rect x="346" y="751" width="12" height="12" fill="#ffffff" stroke="#333333"/><rect x="340" y="745" width="12" height="12" fill="#cccccc" stroke="#333333"/>
+  <rect x="372" y="738" width="34" height="34" class="btn"/>
+  <path d="M381 747 L397 763 M397 747 L381 763" stroke="#333333" stroke-width="2"/>
+  <line x1="416" y1="740" x2="416" y2="770" stroke="#bbbbbb"/>
+  <rect x="426" y="738" width="34" height="34" class="btn"/>
+  <text x="443" y="761" text-anchor="middle" class="th">↶</text>
+  <!-- マウスを乗せたときの説明の例 -->
+  <rect x="190" y="700" width="120" height="22" fill="#333333"/>
+  <text x="250" y="715" text-anchor="middle" class="tw" style="font-size:11px">コマ枠を追加</text>
+  <!-- 保存の状態・書き出し・保存 -->
+  <text x="690" y="760" text-anchor="end" class="ts">● 未保存の変更あり</text>
+  <rect x="700" y="738" width="170" height="34" class="btn"/>
+  <text x="785" y="760" text-anchor="middle" class="t">見開きを書き出す（PNG）</text>
+  <rect x="880" y="738" width="120" height="34" class="btn-main"/>
+  <text x="940" y="760" text-anchor="middle" class="tw">保存</text>
+
+  <!-- ===== ⑩ 素材一覧（右の列） ===== -->
+  <rect x="1025" y="115" width="160" height="670" class="box"/>
+  <text x="1105" y="137" text-anchor="middle" class="th">学園・主人公</text>
+  <rect x="1037" y="150" width="64" height="80" class="soft"/>
+  <circle cx="1069" cy="175" r="12" class="ink"/><path d="M1052 192 L1086 192 L1092 225 L1046 225 Z" class="ink"/>
+  <rect x="1109" y="150" width="64" height="80" class="soft"/>
+  <circle cx="1141" cy="175" r="12" class="ink"/><path d="M1124 192 L1158 192 L1164 225 L1118 225 Z" class="ink"/>
+  <rect x="1037" y="238" width="64" height="80" class="soft"/>
+  <circle cx="1069" cy="263" r="12" class="ink"/><path d="M1052 280 L1086 280 L1092 313 L1046 313 Z" class="ink"/>
+  <rect x="1109" y="238" width="64" height="80" class="soft"/>
+  <rect x="1037" y="326" width="64" height="80" class="soft"/>
+  <rect x="1109" y="326" width="64" height="80" class="soft"/>
+  <text x="1037" y="430" class="ts">キャンバスへドラッグ</text>
+  <text x="1037" y="448" class="ts">コマ枠の上に落とすと</text>
+  <text x="1037" y="466" class="ts">枠の形に切り取られる</text>
+
+  <!-- ===== 番号（仕様書の表と対応） ===== -->
+  <g>
+    <circle cx="22" cy="22" r="10" class="num"/><text x="22" y="26" text-anchor="middle" class="numt">1</text>
+    <circle cx="190" cy="22" r="10" class="num"/><text x="190" y="26" text-anchor="middle" class="numt">2</text>
+    <circle cx="625" cy="22" r="10" class="num"/><text x="625" y="26" text-anchor="middle" class="numt">3</text>
+    <circle cx="22" cy="122" r="10" class="num"/><text x="22" y="126" text-anchor="middle" class="numt">4</text>
+    <circle cx="198" cy="736" r="10" class="num"/><text x="198" y="740" text-anchor="middle" class="numt">5</text>
+    <circle cx="192" cy="124" r="10" class="num"/><text x="192" y="128" text-anchor="middle" class="numt">6</text>
+    <circle cx="650" cy="192" r="10" class="num"/><text x="650" y="196" text-anchor="middle" class="numt">7</text>
+    <circle cx="1008" cy="732" r="10" class="num"/><text x="1008" y="736" text-anchor="middle" class="numt">8</text>
+    <circle cx="386" cy="104" r="10" class="num"/><text x="386" y="108" text-anchor="middle" class="numt">9</text>
+    <circle cx="1032" cy="122" r="10" class="num"/><text x="1032" y="126" text-anchor="middle" class="numt">10</text>
+  </g>
+</svg>
