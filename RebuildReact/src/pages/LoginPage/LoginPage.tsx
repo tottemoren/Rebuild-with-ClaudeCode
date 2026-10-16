@@ -2,6 +2,7 @@ import "./LoginPage.css"
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { apiFetch, clearAuthToken, setAuthToken } from "../../utils/api";
 
 function LoginPage() {
 
@@ -13,8 +14,8 @@ function LoginPage() {
 
   const login = async (): Promise<void> => {
 
-    const response = await fetch(
-      `${import.meta.env.VITE_API_BASE_URL}/login`,
+    const response = await apiFetch(
+      `/login`,
       {
         method: "POST",
 
@@ -31,8 +32,16 @@ function LoginPage() {
 
     if (response.ok) {
 
-      const user =
+      // 合言葉（token）はユーザー情報と分けて保存する。
+      // 合言葉を発行する前のバックエンドが返す場合は token が無いので、古い合言葉を残さないよう消しておく
+      const { token, ...user } =
         await response.json();
+
+      if (token) {
+        setAuthToken(token);
+      } else {
+        clearAuthToken();
+      }
 
       localStorage.setItem(
         "loginUser",

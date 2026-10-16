@@ -19,6 +19,7 @@ import type { Folder } from "../../types/Folder";
 import type { Material } from "../../types/Material";
 import useLoginUser from "../../hooks/useLoginUser";
 import { resolveImageSrc } from "../../utils/imageSrc";
+import { apiFetch } from "../../utils/api";
 
 // 固定のキャンバス枠のサイズ（このサイズのまま画像として書き出す）
 // blankpaper.png の実寸（1057×748、横長）に合わせている
@@ -107,7 +108,7 @@ export default function CreateMangaPage() {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsLoading(true);
 
-    fetch(`${import.meta.env.VITE_API_BASE_URL}/api/manga-panels?storyId=${storyId}`)
+    apiFetch(`/api/manga-panels?storyId=${storyId}`)
       .then((response) => response.json())
       .then((data: MangaPanelDto[]) => {
         const loaded: PlacedKoma[] = data.map((item) => ({
@@ -135,14 +136,14 @@ export default function CreateMangaPage() {
   useEffect(() => {
     if (!storyId) return;
 
-    fetch(`${import.meta.env.VITE_API_BASE_URL}/stories`)
+    apiFetch(`/stories`)
       .then((response) => response.json())
       .then((data: Story[]) => {
         const found = data.find((item) => item.id === storyId);
         setStory(found ?? null);
       });
 
-    fetch(`${import.meta.env.VITE_API_BASE_URL}/dialogues?storyId=${storyId}`)
+    apiFetch(`/dialogues?storyId=${storyId}`)
       .then((response) => response.json())
       .then((data: Dialogue[]) => setDialogues(data));
   }, [storyId]);
@@ -152,16 +153,14 @@ export default function CreateMangaPage() {
   useEffect(() => {
     if (!loginUser.id) return;
 
-    const apiBase = import.meta.env.VITE_API_BASE_URL;
-
-    fetch(`${apiBase}/api/folders?userId=${loginUser.id}`)
+    apiFetch(`/api/folders?userId=${loginUser.id}`)
       .then((response) => response.json())
       .then(async (data: Folder[]) => {
         setFolders(data);
 
         const entries = await Promise.all(
           data.map(async (folder) => {
-            const response = await fetch(`${apiBase}/api/folders/${folder.id}/materials`);
+            const response = await apiFetch(`/api/folders/${folder.id}/materials`);
             const materials: Material[] = await response.json();
             return [folder.id, materials] as const;
           })
@@ -189,8 +188,8 @@ export default function CreateMangaPage() {
     setStatusMessage(null);
 
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}/api/manga-panels?storyId=${storyId}`,
+      const response = await apiFetch(
+        `/api/manga-panels?storyId=${storyId}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },

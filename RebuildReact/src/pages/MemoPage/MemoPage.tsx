@@ -3,6 +3,7 @@ import './MemoPage.css'
 import MemoItem from '../../components/MemoItem'
 import MainLayout from "../../components/layout/PageLayouts/MainLayout"
 import type { Memo, WritingDirection } from '../../types/Memo'
+import { apiFetch } from '../../utils/api'
 
 function MemoPage() {
 
@@ -19,7 +20,7 @@ function MemoPage() {
 
 
   const fetchMemos = () => {
-    fetch(`${import.meta.env.VITE_API_BASE_URL}/api/memos`)
+    apiFetch(`/api/memos`)
       .then((response) => response.json())
       .then((data) => setMemos(data))
   }
@@ -49,12 +50,12 @@ function MemoPage() {
       editingId !== null && editingDirection === direction
 
     const url = isUpdating
-      ? `${import.meta.env.VITE_API_BASE_URL}/api/memos/${editingId}`
-      : `${import.meta.env.VITE_API_BASE_URL}/api/memos`
+      ? `/api/memos/${editingId}`
+      : `/api/memos`
 
     const method = isUpdating ? 'put' : 'post'
 
-    fetch(url, {
+    apiFetch(url, {
       method: method,
       headers: {
         'Content-Type': 'application/json',
@@ -85,7 +86,7 @@ function MemoPage() {
   }
 
   const deleteMemo = (id: number) => {
-    fetch(`${import.meta.env.VITE_API_BASE_URL}/api/memos/${id}`, {
+    apiFetch(`/api/memos/${id}`, {
       method: 'DELETE',
     })
       .then(() => fetchMemos())

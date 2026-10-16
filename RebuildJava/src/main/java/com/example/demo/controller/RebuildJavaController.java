@@ -15,10 +15,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.LoginRequest;
+import com.example.demo.dto.LoginResponse;
 import com.example.demo.entity.Memo;
 import com.example.demo.entity.User;
 import com.example.demo.repository.MemoRepository;
 import com.example.demo.repository.UserRepository;
+import com.example.demo.service.TokenService;
 
 @RestController
 @CrossOrigin(origins = {
@@ -38,16 +40,19 @@ public class RebuildJavaController {
 	private final MemoRepository memoRepository;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final TokenService tokenService;
 
     public RebuildJavaController(
             MemoRepository memoRepository,
             UserRepository userRepository,
-            PasswordEncoder passwordEncoder
+            PasswordEncoder passwordEncoder,
+            TokenService tokenService
     ) {
 
         this.memoRepository = memoRepository;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.tokenService = tokenService;
     }
 
 
@@ -75,7 +80,7 @@ public class RebuildJavaController {
             ) {
 
                 return ResponseEntity.ok(
-                        user);
+                        LoginResponse.of(user, tokenService.issue(user)));
             }
         }
 

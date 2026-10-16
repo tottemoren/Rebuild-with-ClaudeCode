@@ -3,6 +3,7 @@ import "./HomePage.css"
 import MainLayout from "../../components/layout/PageLayouts/MainLayout"
 import type { Memo } from "../../types/Memo"
 import type { Story } from "../../types/Story"
+import { apiFetch } from "../../utils/api"
 
 type ContentView = "memo" | "story"
 
@@ -13,11 +14,11 @@ function HomePage() {
   const [stories, setStories] = useState<Story[]>([])
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_BASE_URL}/api/memos`)
+    apiFetch(`/api/memos`)
       .then((response) => response.json())
       .then((data) => setMemos(data))
 
-    fetch(`${import.meta.env.VITE_API_BASE_URL}/stories`)
+    apiFetch(`/stories`)
       .then((response) => response.json())
       .then((data) => setStories(data))
   }, [])

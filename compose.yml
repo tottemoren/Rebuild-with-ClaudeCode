@@ -22,6 +22,8 @@ services:
       # 値はこのファイルに書かず、compose.yml と同じ場所の .env（Git の管理外）に INVITE_CODE=... と書く。
       # 未設定のときは、新規登録を受け付けない。
       INVITE_CODE: ${INVITE_CODE:-}
+      # ログインで発行する合言葉（JWT）の署名の鍵（32文字以上）。未設定だとバックエンドが起動しない。
+      JWT_SECRET: ${JWT_SECRET:-}
     depends_on:
       - mysql
 

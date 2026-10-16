@@ -1,11 +1,15 @@
 package com.example.demo;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.time.Duration;
+import java.util.Base64;
 import java.util.Optional;
 
 import org.junit.jupiter.api.DisplayName;
@@ -15,11 +19,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.JwtException;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.entity.User;
+import com.jayway.jsonpath.JsonPath;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
 
@@ -45,6 +53,9 @@ class AuthApiTest {
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+
+	@Autowired
+	private JwtDecoder jwtDecoder;
 
 	// src/test/resources/config/application.properties のテスト専用の値
 	private static final String INVITE_CODE = "test-invite-code";
@@ -185,7 +196,64 @@ class AuthApiTest {
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.username").value(username))
 				.andExpect(jsonPath("$.id").isNumber())
-				.andExpect(jsonPath("$.password").doesNotExist());
+				.andExpect(jsonPath("$.role").value("USER"))
+				.andExpect(jsonPath("$.password").doesNotExist())
+				.andExpect(jsonPath("$.email").doesNotExist());
+	}
+
+	@Test
+	@DisplayName("ログインに成功すると合言葉（JWT）が返り、中身はユーザーID・ユーザー名・24時間の有効期限で、署名を確認できる")
+	void login_returnsSignedTokenWithUserIdAndExpiry() throws Exception {
+		String username = uniqueUsername();
+		User user = userService.register(username, emailFor(username), PASSWORD);
+
+		String body = mockMvc.perform(post("/login")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(loginJson(username, PASSWORD)))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.token").isString())
+				.andReturn().getResponse().getContentAsString();
+
+		String token = JsonPath.read(body, "$.token");
+
+		// 署名が正しくなければ、ここで例外になる
+		Jwt jwt = jwtDecoder.decode(token);
+		assertThat(jwt.getSubject()).isEqualTo(String.valueOf(user.getId()));
+		assertThat(jwt.getClaimAsString("username")).isEqualTo(username);
+		assertThat(jwt.getClaimAsString("iss")).isEqualTo("rebuild");
+		assertThat(Duration.between(jwt.getIssuedAt(), jwt.getExpiresAt())).isEqualTo(Duration.ofHours(24));
+	}
+
+	@Test
+	@DisplayName("今の段階では認証を必須にしていないので、壊れた合言葉が付いていても、合言葉なしでも、APIは今までどおり動く")
+	void apis_doNotRequireTokenYet() throws Exception {
+		mockMvc.perform(get("/api/memos")
+				.header("Authorization", "Bearer broken.token.value"))
+				.andExpect(status().isOk());
+
+		mockMvc.perform(get("/api/memos"))
+				.andExpect(status().isOk());
+	}
+
+	@Test
+	@DisplayName("中身を書き換えた合言葉は、署名の確認で偽物として拒否される")
+	void tamperedToken_isRejected() throws Exception {
+		String username = uniqueUsername();
+		userService.register(username, emailFor(username), PASSWORD);
+
+		String body = mockMvc.perform(post("/login")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(loginJson(username, PASSWORD)))
+				.andReturn().getResponse().getContentAsString();
+		String token = JsonPath.read(body, "$.token");
+
+		// 真ん中の部分（中身）を、別のユーザーIDのものに差し替える
+		String[] parts = token.split("\\.");
+		String forgedPayload = Base64.getUrlEncoder().withoutPadding()
+				.encodeToString("{\"sub\":\"1\",\"iss\":\"rebuild\",\"exp\":9999999999}".getBytes());
+		String forged = parts[0] + "." + forgedPayload + "." + parts[2];
+
+		assertThrows(JwtException.class, () -> jwtDecoder.decode(forged));
 	}
 
 	@Test
