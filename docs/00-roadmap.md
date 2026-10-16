@@ -84,8 +84,9 @@
 | ⬜ | メモに所有者（`user_id`）を追加し、自分のメモだけを扱う | [table-definitions.md](04-database/table-definitions.md) |
 | ⬜ | すべてのAPIで、データの持ち主をサーバー側で判定する（他人のデータは拒否） | [api-list.md](05-api/api-list.md) |
 | ⬜ | 認証（JWT）を導入し、ログイン前のお試しで使うもの以外のAPIを認証必須にする | [system-design.md 2章](03-system-design/system-design.md) |
+| ⬜ | 同じユーザー名で登録したときに、サーバー内部のエラーではなく「重複」（409）とメッセージを返す（テストで今の動きを記録済み） | |
 | ⬜ | APIのパスを `/api/**` に統一する | [api-list.md](05-api/api-list.md) |
-| ⬜ | 未テストのAPI（ストーリー/セリフ、ログイン/登録）のテストを追加する | [Study/05](Study/05-testing.md) |
+| ✅ | 未テストのAPI（ストーリー/セリフ、ログイン/登録）のテストを追加する（2026-10-15。今の動きを記録する安全網） | [Study/05](Study/05-testing.md) |
 | ✅ | ブランチ保護を設定し、CIが失敗したらマージできないようにする（2026-10-15） |
 | ✅ | Hooks を導入する：危ない操作（main への push、force push、強制的な巻き戻し、全ファイルの一括 add、`.env` の表示）を機械的に止め、フロントのファイルを編集したら ESLint、作業の終わりにフロントのテストを自動で実行する（2026-10-15。もとは 2a の最初の予定を前倒し） | [Study/03](Study/03-loop-engineering.md) | [Study/03](Study/03-loop-engineering.md) |
 | ⬜ | 本番のバックエンドに反映し、本番でもデータが分離されていることを確認する | |
