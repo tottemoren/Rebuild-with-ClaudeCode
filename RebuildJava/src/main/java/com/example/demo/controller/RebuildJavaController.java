@@ -56,9 +56,12 @@ public class RebuildJavaController {
             @RequestBody LoginRequest request
     ) {
 
+        // 登録時はユーザー名の前後の空白を取り除いて保存するため、ログインでも同じようにそろえる
+        String username = request.getUsername() == null ? "" : request.getUsername().trim();
+
         Optional<User> userOptional =
                 userRepository.findByUsername(
-                        request.getUsername());
+                        username);
 
         if (userOptional.isPresent()) {
 

@@ -22,11 +22,14 @@ public class UserService {
 
     public User register(
             String username,
+            String email,
             String password) {
 
         User user = new User();
 
         user.setUsername(username);
+
+        user.setEmail(email);
 
         // DBを見られてもパスワードの中身が分からないよう、ハッシュ化してから保存する
         user.setPassword(

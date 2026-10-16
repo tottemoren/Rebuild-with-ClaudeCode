@@ -8,17 +8,28 @@ function RegisterPage() {
   const [username, setUsername] =
     useState("");
 
+  const [email, setEmail] =
+    useState("");
+
   const [password, setPassword] =
     useState("");
 
   const [inviteCode, setInviteCode] =
     useState("");
 
+  const [errorMessage, setErrorMessage] =
+    useState("");
+
   const navigate = useNavigate();
 
   const register = async (): Promise<void> => {
 
-  const response = await fetch(
+  setErrorMessage("");
+
+  let response: Response;
+
+  try {
+    response = await fetch(
     `${import.meta.env.VITE_API_BASE_URL}/api/users/register`,
     {
       method: "POST",
@@ -29,20 +40,26 @@ function RegisterPage() {
 
       body: JSON.stringify({
         username: username,
+        email: email,
         password: password,
         inviteCode: inviteCode,
       }),
     }
   );
-
-  const data = await response.text();
-
-  console.log(data);
+  } catch {
+    setErrorMessage("サーバーに接続できませんでした。時間をおいて試してください");
+    return;
+  }
 
   if (response.ok) {
     alert("登録成功");
     navigate("/")
+    return;
   }
+
+  // 招待コード違い・重複などの理由は、サーバーが文章で返す
+  const message = await response.text();
+  setErrorMessage(message || "登録できませんでした");
 };
 
   return (
@@ -73,6 +90,17 @@ function RegisterPage() {
         />
 
         <input
+          type="email"
+          placeholder="メールアドレス"
+          value={email}
+          onChange={(e) =>
+            setEmail(
+              e.target.value
+            )
+          }
+        />
+
+        <input
           type="password"
           placeholder="パスワード"
           value={password}
@@ -93,6 +121,12 @@ function RegisterPage() {
             )
           }
         />
+
+        {errorMessage && (
+          <p className="register-error" role="alert">
+            {errorMessage}
+          </p>
+        )}
 
         <button 
           className="register-button"
