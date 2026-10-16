@@ -20,6 +20,12 @@ public class User {
     @Column(nullable = false, unique = true)
     private String username;
 
+    // パスワードの再設定や運営からの連絡に使う。2026年10月より前に登録したユーザーは空のまま。
+    // 他人のユーザー情報を取得できるAPIが残っている間は、外に漏れないよう返さない（段階1で持ち主の確認を入れるまで）。
+    @JsonIgnore
+    @Column(unique = true)
+    private String email;
+
     // ハッシュ化したパスワードを保存する列。フロントエンドへは絶対に返さない。
     @JsonIgnore
     @Column(nullable = false)
@@ -49,6 +55,14 @@ public class User {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {

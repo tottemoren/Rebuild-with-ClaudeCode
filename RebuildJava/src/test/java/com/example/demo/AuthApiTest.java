@@ -1,7 +1,6 @@
 package com.example.demo;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -17,6 +16,7 @@ import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.entity.User;
@@ -26,8 +26,8 @@ import com.example.demo.service.UserService;
 /**
  * ユーザー登録（/api/users/register）とログイン（/login）のテスト。
  *
- * 段階1で認証（JWT）を入れる前の「今の動き」を記録しておき、
- * 作り直しで意図せず壊していないかを確かめる安全網にする。
+ * 段階1で認証まわりを作り直す前に「今の動き」を記録した安全網。
+ * 意図して仕様を変えたときは、このテストも合わせて書き換える（2026-10-16：メールアドレスの追加、重複時の409）。
  */
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -46,7 +46,8 @@ class AuthApiTest {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
-	private static final String INVITE_CODE = "Rebuild2026";
+	// src/test/resources/config/application.properties のテスト専用の値
+	private static final String INVITE_CODE = "test-invite-code";
 
 	private static final String PASSWORD = "test-password-123";
 
@@ -55,10 +56,23 @@ class AuthApiTest {
 		return "authtest_" + System.nanoTime();
 	}
 
-	private static String registerJson(String username, String password, String inviteCode) {
+	private static String emailFor(String username) {
+		return username + "@example.com";
+	}
+
+	private static String registerJson(String username, String email, String password, String inviteCode) {
 		return """
-				{"username":"%s","password":"%s","inviteCode":"%s"}
-				""".formatted(username, password, inviteCode);
+				{"username":"%s","email":"%s","password":"%s","inviteCode":"%s"}
+				""".formatted(username, email, password, inviteCode);
+	}
+
+	private void expectRegister(String json, ResultMatcher statusMatcher, String message)
+			throws Exception {
+		mockMvc.perform(post("/api/users/register")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(json))
+				.andExpect(statusMatcher)
+				.andExpect(content().string(message));
 	}
 
 	private static String loginJson(String username, String password) {
@@ -74,12 +88,14 @@ class AuthApiTest {
 
 		mockMvc.perform(post("/api/users/register")
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(registerJson(username, PASSWORD, INVITE_CODE)))
+				.content(registerJson(username, "  " + emailFor(username).toUpperCase() + " ", PASSWORD, INVITE_CODE)))
 				.andExpect(status().isOk())
 				.andExpect(content().string("登録成功"));
 
 		Optional<User> saved = userRepository.findByUsername(username);
 		assertThat(saved).isPresent();
+		// 前後の空白を取り除き、小文字にそろえて保存する（大文字小文字の違いで重複登録されないように）
+		assertThat(saved.get().getEmail()).isEqualTo(emailFor(username));
 		assertThat(saved.get().getRole()).isEqualTo("USER");
 		assertThat(saved.get().getPassword()).isNotEqualTo(PASSWORD);
 		assertThat(passwordEncoder.matches(PASSWORD, saved.get().getPassword())).isTrue();
@@ -92,30 +108,76 @@ class AuthApiTest {
 
 		mockMvc.perform(post("/api/users/register")
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(registerJson(username, PASSWORD, "wrong-code")))
+				.content(registerJson(username, emailFor(username), PASSWORD, "wrong-code")))
 				.andExpect(status().isBadRequest());
 
 		assertThat(userRepository.findByUsername(username)).isEmpty();
 	}
 
 	@Test
-	@DisplayName("同じユーザー名では2人目を登録できない（今はエラーの扱いが無く、サーバー内部のエラーになる）")
-	void register_withDuplicateUsername_fails() throws Exception {
+	@DisplayName("同じユーザー名では登録できず、409とメッセージが返る")
+	void register_withDuplicateUsername_returns409() throws Exception {
 		String username = uniqueUsername();
-		userService.register(username, PASSWORD);
+		userService.register(username, emailFor(username), PASSWORD);
 
-		// DBの「ユーザー名は重複不可」の制約で保存に失敗する。
-		// APIがこれを扱っていないため、例外がそのまま外に出る（409を返す形にするのは今後の課題）
-		assertThrows(Exception.class, () -> mockMvc.perform(post("/api/users/register")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(registerJson(username, "another-password", INVITE_CODE))));
+		expectRegister(registerJson(username, "other_" + emailFor(username), "another-password", INVITE_CODE),
+				status().isConflict(), "このユーザー名は既に使われています");
+	}
+
+	@Test
+	@DisplayName("同じメールアドレスでは登録できず、409とメッセージが返る（大文字小文字の違いも同じとみなす）")
+	void register_withDuplicateEmail_returns409() throws Exception {
+		String username = uniqueUsername();
+		userService.register(username, emailFor(username), PASSWORD);
+
+		expectRegister(registerJson(uniqueUsername(), emailFor(username).toUpperCase(), PASSWORD, INVITE_CODE),
+				status().isConflict(), "このメールアドレスは既に登録されています");
+	}
+
+	@Test
+	@DisplayName("メールアドレスの形式が正しくないと、400が返り、ユーザーは作られない")
+	void register_withInvalidEmail_isRejected() throws Exception {
+		String username = uniqueUsername();
+
+		expectRegister(registerJson(username, "not-an-email", PASSWORD, INVITE_CODE),
+				status().isBadRequest(), "メールアドレスの形式が正しくありません");
+
+		assertThat(userRepository.findByUsername(username)).isEmpty();
+	}
+
+	@Test
+	@DisplayName("ユーザー名かパスワードが空だと、400が返る")
+	void register_withBlankUsername_isRejected() throws Exception {
+		expectRegister(registerJson("   ", "blank@example.com", PASSWORD, INVITE_CODE),
+				status().isBadRequest(), "ユーザー名とパスワードを入力してください");
+	}
+
+	@Test
+	@DisplayName("メールアドレスが長すぎると、「既に使われています」ではなく、長すぎることを伝える400が返る")
+	void register_withTooLongEmail_isRejected() throws Exception {
+		String username = uniqueUsername();
+		String tooLongEmail = "a".repeat(250) + "@example.com";
+
+		expectRegister(registerJson(username, tooLongEmail, PASSWORD, INVITE_CODE),
+				status().isBadRequest(), "ユーザー名とメールアドレスは255文字以内で入力してください");
+
+		assertThat(userRepository.findByUsername(username)).isEmpty();
+	}
+
+	@Test
+	@DisplayName("招待コードの前後に空白があっても、正しいコードなら登録できる")
+	void register_withInviteCodeSurroundedBySpaces_succeeds() throws Exception {
+		String username = uniqueUsername();
+
+		expectRegister(registerJson(username, emailFor(username), PASSWORD, "  " + INVITE_CODE + " "),
+				status().isOk(), "登録成功");
 	}
 
 	@Test
 	@DisplayName("正しいパスワードでログインすると、ユーザー情報が返り、パスワードは含まれない")
 	void login_withCorrectPassword_returnsUserWithoutPassword() throws Exception {
 		String username = uniqueUsername();
-		userService.register(username, PASSWORD);
+		userService.register(username, emailFor(username), PASSWORD);
 
 		mockMvc.perform(post("/login")
 				.contentType(MediaType.APPLICATION_JSON)
@@ -127,10 +189,23 @@ class AuthApiTest {
 	}
 
 	@Test
+	@DisplayName("ユーザー名の前後に空白を入れてログインしても、登録と同じようにそろえて照合する")
+	void login_withUsernameSurroundedBySpaces_succeeds() throws Exception {
+		String username = uniqueUsername();
+		userService.register(username, emailFor(username), PASSWORD);
+
+		mockMvc.perform(post("/login")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(loginJson(" " + username + "  ", PASSWORD)))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.username").value(username));
+	}
+
+	@Test
 	@DisplayName("パスワードが違うと、401が返る")
 	void login_withWrongPassword_returns401() throws Exception {
 		String username = uniqueUsername();
-		userService.register(username, PASSWORD);
+		userService.register(username, emailFor(username), PASSWORD);
 
 		mockMvc.perform(post("/login")
 				.contentType(MediaType.APPLICATION_JSON)

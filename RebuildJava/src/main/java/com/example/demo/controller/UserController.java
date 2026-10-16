@@ -5,10 +5,15 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.Locale;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,6 +46,17 @@ public class UserController {
     @Value("${file.upload-dir}")
     private String uploadDir;
 
+    // 公開リポジトリに書かないよう、環境変数 INVITE_CODE から受け取る。
+    // 未設定のときは、誰でも登録できる状態になるより安全なため、登録自体を受け付けない。
+    @Value("${app.invite-code:}")
+    private String inviteCode;
+
+    private static final Pattern EMAIL_PATTERN =
+            Pattern.compile("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$");
+
+    // DBの列（VARCHAR(255)）に入りきらない値を、保存の前に「長すぎる」と伝えるための上限
+    private static final int MAX_LENGTH = 255;
+
     public UserController(
             UserService userService,
             UserRepository userRepository) {
@@ -55,21 +71,70 @@ public class UserController {
             @RequestBody
             RegisterRequest request) {
 
-        if (!"Rebuild2026"
-                .equals(
-                  request.getInviteCode())) {
+        // .env の書き方やコピーで紛れ込んだ前後の空白で、正しいコードが一致しなくならないようにする
+        String expectedInviteCode = inviteCode.trim();
 
+        if (expectedInviteCode.isEmpty()) {
+            return ResponseEntity
+                    .status(HttpStatus.FORBIDDEN)
+                    .body("現在、新規登録を受け付けていません");
+        }
+
+        if (!expectedInviteCode.equals(trimToEmpty(request.getInviteCode()))) {
             return ResponseEntity
                     .badRequest()
                     .body("招待コードが違います");
         }
 
-        userService.register(
-                request.getUsername(),
-                request.getPassword());
+        String username = trimToEmpty(request.getUsername());
+        String email = trimToEmpty(request.getEmail()).toLowerCase(Locale.ROOT);
+        String password = Objects.toString(request.getPassword(), "");
+
+        if (username.isEmpty() || password.isEmpty()) {
+            return ResponseEntity
+                    .badRequest()
+                    .body("ユーザー名とパスワードを入力してください");
+        }
+
+        if (username.length() > MAX_LENGTH || email.length() > MAX_LENGTH) {
+            return ResponseEntity
+                    .badRequest()
+                    .body("ユーザー名とメールアドレスは255文字以内で入力してください");
+        }
+
+        if (!EMAIL_PATTERN.matcher(email).matches()) {
+            return ResponseEntity
+                    .badRequest()
+                    .body("メールアドレスの形式が正しくありません");
+        }
+
+        if (userRepository.existsByUsername(username)) {
+            return ResponseEntity
+                    .status(HttpStatus.CONFLICT)
+                    .body("このユーザー名は既に使われています");
+        }
+
+        if (userRepository.existsByEmail(email)) {
+            return ResponseEntity
+                    .status(HttpStatus.CONFLICT)
+                    .body("このメールアドレスは既に登録されています");
+        }
+
+        try {
+            userService.register(username, email, password);
+        } catch (DataIntegrityViolationException e) {
+            // 確認の直後に、ほぼ同時に同じ名前で登録された場合も重複として扱う
+            return ResponseEntity
+                    .status(HttpStatus.CONFLICT)
+                    .body("このユーザー名またはメールアドレスは既に使われています");
+        }
 
         return ResponseEntity.ok(
                 "登録成功");
+    }
+
+    private static String trimToEmpty(String value) {
+        return value == null ? "" : value.trim();
     }
 
     @GetMapping("/{id}")

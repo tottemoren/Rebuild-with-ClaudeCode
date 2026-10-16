@@ -158,6 +158,7 @@ Claude Code が承認を得て何らかの修正・変更を行った場合、**
 
 - 構成：利用者 → フロント用 CloudFront（S3）／API用 CloudFront（`rebuild-backend-first`）→ EC2 の Docker Compose（`backend` と `mysql`）
 - バックエンドの反映（手動）：EC2で `cd ~/Rebuild-with-ClaudeCode` → `git status`（変更が無いことを確認）→ `git pull origin main` → `docker compose up -d --build backend`。t3.micro のためビルドに数分かかる。EC2での作業はユーザーが行う
+- バックエンドの環境変数：EC2・手元とも、`compose.yml` と同じ場所の `.env`（Git の管理外）に書く。`INVITE_CODE`（新規登録の招待コード。未設定なら登録を受け付けない）。値はチャットに貼らせない・表示しない
 - API用 CloudFront の WAF（無料プラン、コア保護）で `SizeRestrictions_BODY` を「カウント」にしている。8KBを超える送信（画像アップロード、長いメモ・ストーリー）がブロックされていたため。無料プランではラベルを使った例外ルールが作れない
 - 本番でアップロードした画像は EC2 のディスク（`RebuildJava/uploads/`）にある（S3には未移行）。EC2が失われると消える
 - ローカルと本番の違い（CloudFront・WAF・オリジンの違い）で、本番だけ動かないことがある。本番の不具合は、ブラウザの開発者ツール（Network・Console）とEC2のログ（`docker logs rebuild-java`）で確認する
