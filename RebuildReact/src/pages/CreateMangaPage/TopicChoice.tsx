@@ -9,6 +9,7 @@ import type { Folder } from "../../types/Folder";
 import type { Material } from "../../types/Material";
 import type { Story } from "../../types/Story";
 import type { Dialogue } from "../../types/Dialogue";
+import { apiFetch } from "../../utils/api";
 
 function TopicChoice() {
 
@@ -30,7 +31,7 @@ function TopicChoice() {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const fetchStories = () => {
-    fetch(`${import.meta.env.VITE_API_BASE_URL}/stories`)
+    apiFetch(`/stories`)
       .then((response) => response.json())
       .then((data) => setStories(data));
   };
@@ -39,7 +40,7 @@ function TopicChoice() {
 
     setHoveredStoryId(storyId);
 
-    fetch(`${import.meta.env.VITE_API_BASE_URL}/dialogues?storyId=${storyId}`)
+    apiFetch(`/dialogues?storyId=${storyId}`)
       .then((response) => response.json())
       .then((data) => setHoveredDialogues(data));
   };
@@ -61,7 +62,7 @@ function TopicChoice() {
   };
 
   const fetchFolders = () => {
-    fetch(`${import.meta.env.VITE_API_BASE_URL}/api/folders?userId=${loginUser.id}`)
+    apiFetch(`/api/folders?userId=${loginUser.id}`)
       .then((response) => response.json())
       .then((data) => setFolders(data));
   };
@@ -72,7 +73,7 @@ function TopicChoice() {
   }, []);
 
   const fetchMaterials = (folderId: number) => {
-    fetch(`${import.meta.env.VITE_API_BASE_URL}/api/folders/${folderId}/materials`)
+    apiFetch(`/api/folders/${folderId}/materials`)
       .then((response) => response.json())
       .then((data) => setMaterials(data));
   };
@@ -83,7 +84,7 @@ function TopicChoice() {
       return;
     }
 
-    fetch(`${import.meta.env.VITE_API_BASE_URL}/api/folders`, {
+    apiFetch(`/api/folders`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -99,7 +100,7 @@ function TopicChoice() {
 
   const deleteFolder = (id: number) => {
 
-    fetch(`${import.meta.env.VITE_API_BASE_URL}/api/folders/${id}`, {
+    apiFetch(`/api/folders/${id}`, {
       method: "DELETE",
     }).then((response) => {
 
@@ -147,7 +148,7 @@ function TopicChoice() {
 
     setIsUploading(true);
 
-    fetch(`${import.meta.env.VITE_API_BASE_URL}/api/folders/${selectedFolderId}/materials`, {
+    apiFetch(`/api/folders/${selectedFolderId}/materials`, {
       method: "POST",
       body: formData,
     })
@@ -157,7 +158,7 @@ function TopicChoice() {
 
   const deleteMaterial = (id: number) => {
 
-    fetch(`${import.meta.env.VITE_API_BASE_URL}/api/materials/${id}`, {
+    apiFetch(`/api/materials/${id}`, {
       method: "DELETE",
     }).then(() => {
 

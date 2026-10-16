@@ -2,6 +2,7 @@ import "./RegisterPage.css";
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { apiFetch } from "../../utils/api";
 
 function RegisterPage() {
 
@@ -29,8 +30,8 @@ function RegisterPage() {
   let response: Response;
 
   try {
-    response = await fetch(
-    `${import.meta.env.VITE_API_BASE_URL}/api/users/register`,
+    response = await apiFetch(
+    `/api/users/register`,
     {
       method: "POST",
 

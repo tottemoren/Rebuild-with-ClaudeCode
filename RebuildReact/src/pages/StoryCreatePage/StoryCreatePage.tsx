@@ -6,6 +6,7 @@ import MainLayout from "../../components/layout/PageLayouts/MainLayout";
 import useLoginUser from "../../hooks/useLoginUser";
 import type { Dialogue } from "../../types/Dialogue";
 import type { Memo } from "../../types/Memo";
+import { apiFetch } from "../../utils/api";
 
 
 type Line = {
@@ -49,8 +50,8 @@ function StoryCreatePage() {
   const fetchStories = async () => {
 
     const response =
-      await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}/stories`
+      await apiFetch(
+        `/stories`
       );
 
     const data =
@@ -63,8 +64,8 @@ function StoryCreatePage() {
   const fetchMemos = async () => {
 
     const response =
-      await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}/api/memos`
+      await apiFetch(
+        `/api/memos`
       );
 
     const data =
@@ -86,8 +87,8 @@ function StoryCreatePage() {
   const fetchDialogues = async (storyId: number) => {
 
     const response =
-      await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}/dialogues?storyId=`
+      await apiFetch(
+        `/dialogues?storyId=`
         + storyId
       );
 
@@ -127,8 +128,8 @@ function StoryCreatePage() {
       categorize3;
 
     const response =
-      await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}/stories`,
+      await apiFetch(
+        `/stories`,
         {
           method: "POST",
 
@@ -162,8 +163,8 @@ function StoryCreatePage() {
 
         const line = lines[index];
 
-        await fetch(
-          `${import.meta.env.VITE_API_BASE_URL}/dialogues`,
+        await apiFetch(
+          `/dialogues`,
           {
 
             method: "POST",

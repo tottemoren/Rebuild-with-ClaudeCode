@@ -6,6 +6,7 @@ import { useRef, useState } from "react";
 import useLoginUser from "../../../hooks/useLoginUser";
 import type { User } from "../../../types/User";
 import { highlightExactMatches } from "../../../utils/searchHighlight";
+import { apiFetch, clearAuthToken } from "../../../utils/api";
 
 type HeaderProps = {
   centerContent?: React.ReactNode
@@ -25,6 +26,7 @@ function Header({ centerContent, secondaryRow }: HeaderProps) {
 
   const logout = () => {
     localStorage.removeItem("loginUser");
+    clearAuthToken();
     alert("ログアウトしました");
     navigate("/");
   };
@@ -71,8 +73,8 @@ function Header({ centerContent, secondaryRow }: HeaderProps) {
     setIsUploading(true);
 
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}/api/users/${user.id}/profile-image`,
+      const response = await apiFetch(
+        `/api/users/${user.id}/profile-image`,
         {
           method: "POST",
           body: formData,
