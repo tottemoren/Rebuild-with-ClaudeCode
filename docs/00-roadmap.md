@@ -170,6 +170,7 @@
 | ⬜ | DBのバックアップと、そこから戻す手順の確認 | |
 | ⬜ | 監視・ログ（障害に気づける状態） | [tech-stack.md](03-system-design/tech-stack.md) |
 | ⬜ | EC2のOS更新 | |
+| ⬜ | ドメインの管理：登録者の連絡先のメールアドレスを普段見るものにし、更新の時期（毎年9月末）を把握する。2026年10月に、連絡先のメールアドレスを確認していなかったため、ドメインが一時停止された | [Study/08](Study/08-troubleshooting.md) |
 | ⬜ | フロントエンドの自動デプロイの設定ファイルに直接書かれている CloudFront の ID と、バックエンドの CORS の許可リストに直接書かれている CloudFront のドメイン名を、Secrets や環境変数に移す（公開リポジトリに ID やドメイン名を書かない方針に合わせる） | |
 | ⬜ | 本番構成の判断：ECS へ移行するか、EC2 のまま続けるか（[4章](#4-本番構成の方針)） | [system-architecture.md](03-system-design/system-architecture/system-architecture.md) |
 
